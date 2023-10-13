@@ -1,0 +1,247 @@
+[
+{
+    "ID": 1,
+    "NAME": "TROUSERS",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 2,
+    "NAME": "SHIRT",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 3,
+    "NAME": "Pant",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 4,
+    "NAME": "JEANS",
+    "GENDER":"MALE",
+    "PRICE": 100,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 5,
+    "NAME": "T-SHIRT",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 6,
+    "NAME": "SHORTS",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 7,
+    "NAME": "VEST",
+    "GENDER":"MALE",
+    "PRICE": 100,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 8,
+    "NAME": "PYJAMA",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 9,
+    "NAME": "KURTHA ",
+    "GENDER":"MALE",
+    "PRICE": 85,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 10,
+    "NAME": "PATTU VESTHI",
+    "GENDER":"MALE",
+    "PRICE": 100,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 11,
+    "NAME": "LUNGI",
+    "GENDER":"MALE",
+    "PRICE": 10,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 12,
+    "NAME": "WAIST COAT",
+    "GENDER":"MALE",
+    "PRICE": 50,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 13,
+    "NAME": "COAT",
+    "GENDER":"MALE",
+    "PRICE": "250-500"//only overcoat250
+    //full set 500,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 14,
+    "NAME": "JACKET",
+    "GENDER":"MALE",
+    "PRICE": "150-250",//sleevlss150
+    //longer jacket 250
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 15,
+    "NAME": "SHERWANI",
+    "GENDER":"MALE",
+    "PRICE": "100-500",//based on garments
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 16,
+    "NAME": "TIE",
+    "GENDER":"MALE",
+    "PRICE": 0,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 17,
+    "NAME": "SAFARI",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 18,
+    "NAME": "TRACKS",
+    "GENDER":"MALE",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+
+{
+    "ID": 19,
+    "NAME": "Top/Shirt",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 20,
+    "NAME": "T-SHIRT",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 21,
+    "NAME": "DUPATA",
+    "PRICE": 40,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 22,
+    "NAME": "TRACK PANT",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 23,
+    "NAME": "Pant",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 24,
+    "NAME": "JEANS",
+    "PRICE": 100,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 25,
+    "NAME": "SHORTS",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 26,
+    "NAME": "PYJAMA",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 27,
+    "NAME": "KURTHI",
+    "PRICE": 80,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 28,
+    "NAME": "SALWAR TOP",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 29,
+    "NAME": "SALWAR BOTTOM",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 30,
+    "NAME": "LEGGINS",
+    "PRICE": 70,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 33,
+    "NAME": "SKIRT",
+    "PRICE": 100,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 34,
+    "NAME": "SAREE",
+    "PRICE": "250-500"//8yard 250
+    //9 yard 500,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 35,
+    "NAME": "BLOUSE",
+    "PRICE": 40,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 36,
+    "NAME": "SILK SAREE",
+    "PRICE": "250-500"//8yard 250
+    //9 yard 500,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 37,
+    "NAME": "GOWN",
+    "PRICE": "150-300"//based on clothes,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 38,
+    "NAME": "LONG TOP",
+    "PRICE": "100-200"//grand top 200
+    //long top 100,
+    "ACTIVITY":"DRYCLEAN"
+},
+{
+    "ID": 39,
+    "NAME": "GARGA CHOLI",
+    "PRICE": "300-1000",//based on cloth type
+    "ACTIVITY":"DRYCLEAN"
+},]
