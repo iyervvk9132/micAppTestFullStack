@@ -1,0 +1,119 @@
+{
+    "GENDER":"MEN",
+    "CLOTHES": [
+        {
+            "ID": 1,
+            "NAME": "TROUSERS",
+            "VARIABLE":0,
+            "PRICE": 70
+        },
+        {
+            "ID": 2,
+            "NAME": "SHIRT",
+            "VARIABLE":0,
+            "PRICE": 70
+        },
+        {
+            "ID": 3,
+            "NAME": "Pant",
+            "VARIABLE":0,
+            "PRICE": 70
+        },
+        {
+            "ID": 4,
+            "NAME": "JEANS",
+            "VARIABLE":0,
+            "PRICE": 100
+        },
+        {
+            "ID": 5,
+            "NAME": "T-SHIRT",
+            "VARIABLE":0,
+            "PRICE": 70
+        },
+        {
+            "ID": 6,
+            "NAME": "SHORTS",
+            "VARIABLE":0,
+            "PRICE": 70
+        },
+        {
+            "ID": 7,
+            "NAME": "VEST",
+            "VARIABLE":0,
+            "PRICE": 100
+        },
+        {
+            "ID": 8,
+            "NAME": "PYJAMA",
+            "VARIABLE":0,
+            "PRICE": 70
+        },
+        {
+            "ID": 9,
+            "NAME": "KURTHA ",
+            "VARIABLE":0,
+            "PRICE": 85
+        },
+        {
+            "ID": 10,
+            "NAME": "PATTU VESTHI",
+            "VARIABLE":0,
+            "PRICE": 100
+        },
+        {
+            "ID": 11,
+            "NAME": "LUNGI",
+            "VARIABLE":0,
+            "PRICE": 10
+        },
+        {
+            "ID": 12,
+            "NAME": "WAIST COAT",
+            "VARIABLE":0,
+            "PRICE": 50
+        },
+        {
+            "ID": 13,
+            "NAME": "COAT",
+            "VARIABLE":1,
+            "PRICE": "250-500",
+            "NOTES":"PRICE VARIES BASED ON COAT TYPE",
+            "INTERNAL":"OVERCOAT 250 AND FULL SET 500"
+        },
+        {
+            "ID": 14,
+            "NAME": "JACKET",
+            "VARIABLE":1,
+            "PRICE": "150-250",
+            "NOTES":"PRICE VARIES BASED ON JACKET TYPE",
+            "INTERNAL":"SLEVELESS 150 AND LONGER JACKET 500"
+        },
+        {
+            "ID": 15,
+            "NAME": "SHERWANI",
+            "VARIABLE":1,
+            "PRICE": "100-500",
+            "NOTES":"PRICE VARIES BASED ON SHERWANI TYPE",
+            "INTERNAL":"PRICES VARIES BASED ON TYPE OF CLOTHES"
+        },
+        {
+            "ID": 16,
+            "NAME": "TIE",
+            "VARIABLE":0,
+            "PRICE": 0
+        },
+        {
+            "ID": 17,
+            "NAME": "SAFARI",
+            "VARIABLE":0,
+            "PRICE": 70
+        },
+        {
+            "ID": 18,
+            "NAME": "TRACKS",
+            "VARIABLE":0,
+            "PRICE": 70
+        }
+    ]
+}
