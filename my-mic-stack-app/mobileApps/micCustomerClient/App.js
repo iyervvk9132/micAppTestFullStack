@@ -15,6 +15,7 @@ const App = () => {
       <Text>hi</Text>
       {/* <SignUpScreen></SignUpScreen>    */}
       
+      
 
     </View>
   );
