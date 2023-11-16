@@ -20,7 +20,8 @@ const customerSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now // Sets the default value to the current date and time
-  }
+  },
+  orders:[mongoose.Types.ObjectId],
 });
 
 // Create the Customer model based on the schema

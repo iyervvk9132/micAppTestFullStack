@@ -21,6 +21,10 @@ const clothesSchema = new Schema({
     enum: ['Dryclean', 'Ironing', 'Washing', 'Others'] // Specify allowed tasks
 
   },
+  Id:{
+    type: PublicKeyCredential,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Clothes', clothesSchema);
