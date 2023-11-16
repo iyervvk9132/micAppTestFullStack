@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "micCustomerClient",
+    "slug": "micCustomerClient",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
