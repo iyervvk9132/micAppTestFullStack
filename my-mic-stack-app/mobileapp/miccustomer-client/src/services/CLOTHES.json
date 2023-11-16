@@ -1,1287 +1,1287 @@
 {
-    "NAME":"MIC CLOTHES LIST",
-    "MAIN LIST":
-    [{
-        "OPERATION":"dryclean",
-        "SUBCLASS": [
+  "NAME": "MIC CLOTHES LIST",
+  "MAIN LIST": [
+    {
+      "OPERATION": "dryclean",
+      "SUBCLASS": [
         {
-            "GENDER":"MEN",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "TROUSERS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 2,
-                    "NAME": "SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 3,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 4,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 100
-                },
-                {
-                    "ID": 5,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 6,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 7,
-                    "NAME": "VEST",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 100
-                },
-                {
-                    "ID": 8,
-                    "NAME": "PYJAMA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 9,
-                    "NAME": "KURTHA ",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 85
-                },
-                {
-                    "ID": 10,
-                    "NAME": "PATTU VESTHI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 100
-                },
-                {
-                    "ID": 11,
-                    "NAME": "LUNGI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 12,
-                    "NAME": "WAIST COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 13,
-                    "NAME": "COAT",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "250-500",
-                    "NOTES":"PRICE VARIES BASED ON COAT TYPE",
-                    "INTERNAL":"OVERCOAT 250 AND FULL SET 500"
-                },
-                {
-                    "ID": 14,
-                    "NAME": "JACKET",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "150-250",
-                    "NOTES":"PRICE VARIES BASED ON JACKET TYPE",
-                    "INTERNAL":"SLEVELESS 150 AND LONGER JACKET 500"
-                },
-                {
-                    "ID": 15,
-                    "NAME": "SHERWANI",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "100-500",
-                    "NOTES":"PRICE VARIES BASED ON SHERWANI TYPE",
-                    "INTERNAL":"PRICES VARIES BASED ON TYPE OF CLOTHES"
-                },
-                {
-                    "ID": 16,
-                    "NAME": "TIE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 0
-                },
-                {
-                    "ID": 17,
-                    "NAME": "SAFARI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 18,
-                    "NAME": "TRACKS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                }
-            ]
+          "GENDER": "MEN",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "TROUSERS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 2,
+              "NAME": "SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 3,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 4,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 5,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 6,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 7,
+              "NAME": "VEST",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 8,
+              "NAME": "PYJAMA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 9,
+              "NAME": "KURTHA ",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 85
+            },
+            {
+              "ID": 10,
+              "NAME": "PATTU VESTHI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 11,
+              "NAME": "LUNGI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 12,
+              "NAME": "WAIST COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 13,
+              "NAME": "COAT",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "250-500",
+              "NOTES": "PRICE VARIES BASED ON COAT TYPE",
+              "INTERNAL": "OVERCOAT 250 AND FULL SET 500"
+            },
+            {
+              "ID": 14,
+              "NAME": "JACKET",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "150-250",
+              "NOTES": "PRICE VARIES BASED ON JACKET TYPE",
+              "INTERNAL": "SLEVELESS 150 AND LONGER JACKET 500"
+            },
+            {
+              "ID": 15,
+              "NAME": "SHERWANI",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "100-500",
+              "NOTES": "PRICE VARIES BASED ON SHERWANI TYPE",
+              "INTERNAL": "PRICES VARIES BASED ON TYPE OF CLOTHES"
+            },
+            {
+              "ID": 16,
+              "NAME": "TIE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 0
+            },
+            {
+              "ID": 17,
+              "NAME": "SAFARI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 18,
+              "NAME": "TRACKS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            }
+          ]
         },
         {
-            
-            "GENDER":"WOMEN",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Top/Shirt",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 2,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 3,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 4,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 100
-                },
-                {
-                    "ID": 5,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 6,
-                    "NAME": "PYJAMA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 7,
-                    "NAME": "KURTHI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 80
-                },
-                {
-                    "ID": 8,
-                    "NAME": "SALWAR TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 9,
-                    "NAME": "SALWAR BOTTOM",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 10,
-                    "NAME": "LEGGINS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 11,
-                    "NAME": "DUPATA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 12,
-                    "NAME": "TRACK PANT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 13,
-                    "NAME": "SKIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 100
-                },
-                {
-                    "ID": 14,
-                    "NAME": "SAREE",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "250-500",
-                    "NOTES":"PRICE VARIES BASED ON SAREE TYPE",
-                    "INTERNAL":"8 YARDS AT 250 AND 9 YARDS AT 500"
-                },
-                {
-                    "ID": 15,
-                    "NAME": "BLOUSE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 16,
-                    "NAME": "SILK SAREE",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "250-500",
-                    "NOTES":"PRICE VARIES BASED ON SILK SAREE TYPE",
-                    "INTERNAL":"8 YARDS AT 250 AND 9 YARDS AT 500"
-                },
-                {
-                    "ID": 17,
-                    "NAME": "GOWN",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "150-300",
-                    "NOTES":"PRICE VARIES BASED ON GOWN TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 150 AND 300"
-                },
-                {
-                    "ID": 18,
-                    "NAME": "LONG TOP",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "100-200",
-                    "NOTES":"PRICE VARIES BASED ON LONG TOP TYPE",
-                    "INTERNAL":"LONG TOP AT 100 AND GRAND TOP AT 200"
-                },
-                {
-                    "ID": 19,
-                    "NAME": "GARGA CHOLI",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "300-1000",
-                    "NOTES":"PRICE VARIES BASED ON GARGA CHOLI TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 300 AND  1000"
-                }
-            ]
+          "GENDER": "WOMEN",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Top/Shirt",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 2,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 3,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 4,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 5,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 6,
+              "NAME": "PYJAMA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 7,
+              "NAME": "KURTHI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 8,
+              "NAME": "SALWAR TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 9,
+              "NAME": "SALWAR BOTTOM",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 10,
+              "NAME": "LEGGINS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 11,
+              "NAME": "DUPATA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 12,
+              "NAME": "TRACK PANT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 13,
+              "NAME": "SKIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 14,
+              "NAME": "SAREE",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "250-500",
+              "NOTES": "PRICE VARIES BASED ON SAREE TYPE",
+              "INTERNAL": "8 YARDS AT 250 AND 9 YARDS AT 500"
+            },
+            {
+              "ID": 15,
+              "NAME": "BLOUSE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 16,
+              "NAME": "SILK SAREE",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "250-500",
+              "NOTES": "PRICE VARIES BASED ON SILK SAREE TYPE",
+              "INTERNAL": "8 YARDS AT 250 AND 9 YARDS AT 500"
+            },
+            {
+              "ID": 17,
+              "NAME": "GOWN",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "150-300",
+              "NOTES": "PRICE VARIES BASED ON GOWN TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 150 AND 300"
+            },
+            {
+              "ID": 18,
+              "NAME": "LONG TOP",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "100-200",
+              "NOTES": "PRICE VARIES BASED ON LONG TOP TYPE",
+              "INTERNAL": "LONG TOP AT 100 AND GRAND TOP AT 200"
+            },
+            {
+              "ID": 19,
+              "NAME": "GARGA CHOLI",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "300-1000",
+              "NOTES": "PRICE VARIES BASED ON GARGA CHOLI TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 300 AND  1000"
+            }
+          ]
         },
         {
-            
-            "GENDER":"KIDS",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 2,
-                    "NAME": "Shirt",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 3,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 4,
-                    "NAME": "FROCK",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "100-250",
-                    "NOTES":"PRICE VARIES BASED ON FROCK TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 100 AND 250"
-                },
-                {
-                    "ID": 5,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 6,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 7,
-                    "NAME": "WAIST COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 100
-                },
-                {
-                    "ID": 8,
-                    "NAME": "KURTHA ",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 9,
-                    "NAME": "COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 80
-                },
-                {
-                    "ID": 10,
-                    "NAME": "JACKET",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 80
-                },
-                {
-                    "ID": 11,
-                    "NAME": "SKIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 80
-                },
-                {
-                    "ID": 12,
-                    "NAME": "SALWAR TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 13,
-                    "NAME": "SALWAR BOTTOM",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 14,
-                    "NAME": "DUPATA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 15,
-                    "NAME": "DRESS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 100
-                },
-                {
-                    "ID": 16,
-                    "NAME": "STACKS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                }
-            ]
+          "GENDER": "KIDS",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 2,
+              "NAME": "Shirt",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 3,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 4,
+              "NAME": "FROCK",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "100-250",
+              "NOTES": "PRICE VARIES BASED ON FROCK TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 100 AND 250"
+            },
+            {
+              "ID": 5,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 6,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 7,
+              "NAME": "WAIST COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 8,
+              "NAME": "KURTHA ",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 9,
+              "NAME": "COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 10,
+              "NAME": "JACKET",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 11,
+              "NAME": "SKIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 12,
+              "NAME": "SALWAR TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 13,
+              "NAME": "SALWAR BOTTOM",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 14,
+              "NAME": "DUPATA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 15,
+              "NAME": "DRESS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 16,
+              "NAME": "STACKS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            }
+          ]
         },
-        {           
-            "GENDER":"OTHERS",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Bed Sheet",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 80
-                },
-                {
-                    "ID": 2,
-                    "NAME": "Bed Sheet X2",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 150
-                },
-                {
-                    "ID": 3,
-                    "NAME": "PILLOW COVER",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 4,
-                    "NAME": "CUSHION COVER",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 5,
-                    "NAME": "CURTAIN",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "150-300",
-                    "NOTES":"PRICE VARIES BASED ON CURTAIN TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 150 AND 300"
-                },
-                {
-                    "ID": 6,
-                    "NAME": "TABLE CLOTH",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 7,
-                    "NAME": "BATH TOWEL",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 8,
-                    "NAME": "TURKEY TOWEL",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 9,
-                    "NAME": "TABLE MATE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 10,
-                    "NAME": "BLANKET",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "200-500",
-                    "NOTES":"PRICE VARIES BASED ON BLANKET TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 200 AND 500"
-                },
-                {
-                    "ID": 11,
-                    "NAME": "KARCHIEF",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 12,
-                    "NAME": "QUILT",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "200-1000",
-                    "NOTES":"PRICE VARIES BASED ON QUILT TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 200 AND 1000"
-                }
-            ]
+        {
+          "GENDER": "OTHERS",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Bed Sheet",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 2,
+              "NAME": "Bed Sheet X2",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 150
+            },
+            {
+              "ID": 3,
+              "NAME": "PILLOW COVER",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 4,
+              "NAME": "CUSHION COVER",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 5,
+              "NAME": "CURTAIN",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "150-300",
+              "NOTES": "PRICE VARIES BASED ON CURTAIN TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 150 AND 300"
+            },
+            {
+              "ID": 6,
+              "NAME": "TABLE CLOTH",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 7,
+              "NAME": "BATH TOWEL",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 8,
+              "NAME": "TURKEY TOWEL",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 9,
+              "NAME": "TABLE MATE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 10,
+              "NAME": "BLANKET",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "200-500",
+              "NOTES": "PRICE VARIES BASED ON BLANKET TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 200 AND 500"
+            },
+            {
+              "ID": 11,
+              "NAME": "KARCHIEF",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 12,
+              "NAME": "QUILT",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "200-1000",
+              "NOTES": "PRICE VARIES BASED ON QUILT TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 200 AND 1000"
+            }
+          ]
         }
-        ]
-    },{
-    [ 
-        "OPERATION":"washing" ,
-        "SUBCLASS": [
+      ]
+    },
+    {
+      "OPERATION": "washing",
+      "SUBCLASS": [
         {
-            "GENDER":"MEN",
-            "CLOTHES": [
-                        {
-                            "ID": 1,
-                            "NAME": "TROUSERS",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 40
-                        },
-                        {
-                            "ID": 2,
-                            "NAME": "SHIRT",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 40
-                        },
-                        {
-                            "ID": 3,
-                            "NAME": "Pant",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 40
-                        },
-                        {
-                            "ID": 4,
-                            "NAME": "JEANS",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 50
-                        },
-                        {
-                            "ID": 5,
-                            "NAME": "T-SHIRT",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 40
-                        },
-                        {
-                            "ID": 6,
-                            "NAME": "SHORTS",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 40
-                        },
-                        {
-                            "ID": 7,
-                            "NAME": "VEST",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 60
-                        },
-                        {
-                            "ID": 8,
-                            "NAME": "PYJAMA",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 40
-                        },
-                        {
-                            "ID": 9,
-                            "NAME": "KURTHA ",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 50
-                        },
-                        {
-                            "ID": 10,
-                            "NAME": "PATTU VESTHI",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 80
-                        },
-                        {
-                            "ID": 11,
-                            "NAME": "LUNGI",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 60
-                        },
-                        {
-                            "ID": 12,
-                            "NAME": "WAIST COAT",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 100
-                        },
-                        
-                        {
-                            "ID": 14,
-                            "NAME": "JACKET",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 100
-                        },
-                        {
-                            "ID": 15,
-                            "NAME": "SHERWANI",
-                            "VARIABLE_PRICE":1,
-                            "PRICE": "100-500",
-                            "NOTES":"PRICE VARIES BASED ON SHERWANI TYPE",
-                            "INTERNAL":"THE PRICE RANGE IS BETWEEN 100 AND 500"
-                        },
-                        {
-                            "ID": 16,
-                            "NAME": "TIE",
-                            "VARIABLE_PRICE":0,
-                            "PRICE": 20
-                        },
-                        {
-                            "ID": 17,
-                            "NAME": "SAFARI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 18,
-                    "NAME": "TRACKS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                }
-            ]
+          "GENDER": "MEN",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "TROUSERS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 2,
+              "NAME": "SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 3,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 4,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 5,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 6,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 7,
+              "NAME": "VEST",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 60
+            },
+            {
+              "ID": 8,
+              "NAME": "PYJAMA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 9,
+              "NAME": "KURTHA ",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 10,
+              "NAME": "PATTU VESTHI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 11,
+              "NAME": "LUNGI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 60
+            },
+            {
+              "ID": 12,
+              "NAME": "WAIST COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+
+            {
+              "ID": 14,
+              "NAME": "JACKET",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 100
+            },
+            {
+              "ID": 15,
+              "NAME": "SHERWANI",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "100-500",
+              "NOTES": "PRICE VARIES BASED ON SHERWANI TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 100 AND 500"
+            },
+            {
+              "ID": 16,
+              "NAME": "TIE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 17,
+              "NAME": "SAFARI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 18,
+              "NAME": "TRACKS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            }
+          ]
         },
         {
-            "GENDER":"WOMEN",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Top/Shirt",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 2,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 3,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 4,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 5,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 6,
-                    "NAME": "PYJAMA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 7,
-                    "NAME": "KURTHI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 8,
-                    "NAME": "SALWAR TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 9,
-                    "NAME": "SALWAR BOTTOM",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 10,
-                    "NAME": "LEGGINS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 11,
-                    "NAME": "DUPATA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 12,
-                    "NAME": "TRACK PANT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 13,
-                    "NAME": "SKIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 14,
-                    "NAME": "SAREE",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "150-500",
-                    "NOTES":"PRICE VARIES BASED ON SAREE TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 150 AND 500"
-                },
-                {
-                    "ID": 15,
-                    "NAME": "BLOUSE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 16,
-                    "NAME": "SILK SAREE",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "150-500",
-                    "NOTES":"PRICE VARIES BASED ON SILK SAREE TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 150 AND 500"
-                },
-                {
-                    "ID": 17,
-                    "NAME": "GOWN",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 80
-                },
-                {
-                    "ID": 18,
-                    "NAME": "LONG TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                }
-                
-            ]
+          "GENDER": "WOMEN",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Top/Shirt",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 2,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 3,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 4,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 5,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 6,
+              "NAME": "PYJAMA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 7,
+              "NAME": "KURTHI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 8,
+              "NAME": "SALWAR TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 9,
+              "NAME": "SALWAR BOTTOM",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 10,
+              "NAME": "LEGGINS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 11,
+              "NAME": "DUPATA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 12,
+              "NAME": "TRACK PANT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 13,
+              "NAME": "SKIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 14,
+              "NAME": "SAREE",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "150-500",
+              "NOTES": "PRICE VARIES BASED ON SAREE TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 150 AND 500"
+            },
+            {
+              "ID": 15,
+              "NAME": "BLOUSE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 16,
+              "NAME": "SILK SAREE",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "150-500",
+              "NOTES": "PRICE VARIES BASED ON SILK SAREE TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 150 AND 500"
+            },
+            {
+              "ID": 17,
+              "NAME": "GOWN",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 18,
+              "NAME": "LONG TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            }
+          ]
         },
         {
-            "GENDER":"KIDS",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 2,
-                    "NAME": "Shirt",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 3,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 4,
-                    "NAME": "FROCK",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "50-100",
-                    "NOTES":"PRICE VARIES BASED ON FROCK TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 50 AND 100"
-                },
-                {
-                    "ID": 5,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 6,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 7,
-                    "NAME": "WAIST COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 8,
-                    "NAME": "KURTHA ",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 9,
-                    "NAME": "COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 70
-                },
-                {
-                    "ID": 10,
-                    "NAME": "JACKET",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 11,
-                    "NAME": "SKIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 12,
-                    "NAME": "SALWAR TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 13,
-                    "NAME": "SALWAR BOTTOM",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 14,
-                    "NAME": "DUPATA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 15,
-                    "NAME": "DRESS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 40
-                },
-                {
-                    "ID": 16,
-                    "NAME": "STACKS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                }
-            ]
+          "GENDER": "KIDS",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 2,
+              "NAME": "Shirt",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 3,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 4,
+              "NAME": "FROCK",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "50-100",
+              "NOTES": "PRICE VARIES BASED ON FROCK TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 50 AND 100"
+            },
+            {
+              "ID": 5,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 6,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 7,
+              "NAME": "WAIST COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 8,
+              "NAME": "KURTHA ",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 9,
+              "NAME": "COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 70
+            },
+            {
+              "ID": 10,
+              "NAME": "JACKET",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 11,
+              "NAME": "SKIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 12,
+              "NAME": "SALWAR TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 13,
+              "NAME": "SALWAR BOTTOM",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 14,
+              "NAME": "DUPATA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 15,
+              "NAME": "DRESS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 40
+            },
+            {
+              "ID": 16,
+              "NAME": "STACKS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            }
+          ]
         },
         {
-            "GENDER":"OTHERS",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Bed Sheet",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 80
-                },
-                {
-                    "ID": 2,
-                    "NAME": "Bed Sheet X2",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 150
-                },
-                {
-                    "ID": 3,
-                    "NAME": "PILLOW COVER",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 4,
-                    "NAME": "CUSHION COVER",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 5,
-                    "NAME": "CURTAIN",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "150-300",
-                    "NOTES":"PRICE VARIES BASED ON CURTAIN TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 150 AND 300"
-                },
-                {
-                    "ID": 6,
-                    "NAME": "TABLE CLOTH",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 7,
-                    "NAME": "BATH TOWEL",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 8,
-                    "NAME": "TURKEY TOWEL",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 9,
-                    "NAME": "TABLE MATE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 10,
-                    "NAME": "BLANKET",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "200-500",
-                    "NOTES":"PRICE VARIES BASED ON BLANKET TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 200 AND 500"
-                },
-                {
-                    "ID": 11,
-                    "NAME": "KARCHIEF",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 12,
-                    "NAME": "QUILT",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "200-1000",
-                    "NOTES":"PRICE VARIES BASED ON QUILT TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 200 AND 1000"
-                }
-            ]
+          "GENDER": "OTHERS",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Bed Sheet",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 80
+            },
+            {
+              "ID": 2,
+              "NAME": "Bed Sheet X2",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 150
+            },
+            {
+              "ID": 3,
+              "NAME": "PILLOW COVER",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 4,
+              "NAME": "CUSHION COVER",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 5,
+              "NAME": "CURTAIN",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "150-300",
+              "NOTES": "PRICE VARIES BASED ON CURTAIN TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 150 AND 300"
+            },
+            {
+              "ID": 6,
+              "NAME": "TABLE CLOTH",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 7,
+              "NAME": "BATH TOWEL",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 8,
+              "NAME": "TURKEY TOWEL",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 9,
+              "NAME": "TABLE MATE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 10,
+              "NAME": "BLANKET",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "200-500",
+              "NOTES": "PRICE VARIES BASED ON BLANKET TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 200 AND 500"
+            },
+            {
+              "ID": 11,
+              "NAME": "KARCHIEF",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 12,
+              "NAME": "QUILT",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "200-1000",
+              "NOTES": "PRICE VARIES BASED ON QUILT TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 200 AND 1000"
+            }
+          ]
         }
-    ]},
-    [
-        "OPERATION":"ironing",
-        "SUBCLASS":[
+      ]
+    },
+    {
+      "OPERATION": "ironing",
+      "SUBCLASS": [
         {
-            "GENDER":"MEN",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "TROUSERS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 2,
-                    "NAME": "SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 3,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 4,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 5,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 6,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 7,
-                    "NAME": "VEST",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 8,
-                    "NAME": "PYJAMA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 9,
-                    "NAME": "KURTHA ",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 15
-                },
-                {
-                    "ID": 10,
-                    "NAME": "PATTU VESTHI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 11,
-                    "NAME": "LUNGI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 15
-                },
-                {
-                    "ID": 12,
-                    "NAME": "WAIST COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 13,
-                    "NAME": "COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 14,
-                    "NAME": "JACKET",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 15,
-                    "NAME": "SHERWANI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 16,
-                    "NAME": "TIE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 0
-                },
-                {
-                    "ID": 17,
-                    "NAME": "SAFARI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 15
-                },
-                {
-                    "ID": 18,
-                    "NAME": "TRACKS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                }
-            ]
+          "GENDER": "MEN",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "TROUSERS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 2,
+              "NAME": "SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 3,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 4,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 5,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 6,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 7,
+              "NAME": "VEST",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 8,
+              "NAME": "PYJAMA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 9,
+              "NAME": "KURTHA ",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 15
+            },
+            {
+              "ID": 10,
+              "NAME": "PATTU VESTHI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 11,
+              "NAME": "LUNGI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 15
+            },
+            {
+              "ID": 12,
+              "NAME": "WAIST COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 13,
+              "NAME": "COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 14,
+              "NAME": "JACKET",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 15,
+              "NAME": "SHERWANI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 16,
+              "NAME": "TIE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 0
+            },
+            {
+              "ID": 17,
+              "NAME": "SAFARI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 15
+            },
+            {
+              "ID": 18,
+              "NAME": "TRACKS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            }
+          ]
         },
         {
-            "GENDER":"WOMEN",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Top/Shirt",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 2,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 3,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 4,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 5,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 6,
-                    "NAME": "PYJAMA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 7,
-                    "NAME": "KURTHI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 8,
-                    "NAME": "SALWAR TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 9,
-                    "NAME": "SALWAR BOTTOM",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 10,
-                    "NAME": "LEGGINS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 11,
-                    "NAME": "DUPATA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 12,
-                    "NAME": "TRACK PANT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 13,
-                    "NAME": "SKIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 15
-                },
-                {
-                    "ID": 14,
-                    "NAME": "SAREE",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "30-50",
-                    "NOTES":"PRICE VARIES BASED ON SAREE TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 30 AND 50"
-                },
-                {
-                    "ID": 15,
-                    "NAME": "BLOUSE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 16,
-                    "NAME": "SILK SAREE",
-                    "VARIABLE_PRICE":1,
-                    "PRICE": "40-80",
-                    "NOTES":"PRICE VARIES BASED ON SILK SAREE TYPE",
-                    "INTERNAL":"THE PRICE RANGE IS BETWEEN 40 AND 80"
-                },
-                {
-                    "ID": 17,
-                    "NAME": "GOWN",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 18,
-                    "NAME": "LONG TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 19,
-                    "NAME": "GARGA CHOLI",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 20,
-                    "NAME": "saree role polish",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 60
-                }
-            ]
+          "GENDER": "WOMEN",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Top/Shirt",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 2,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 3,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 4,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 5,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 6,
+              "NAME": "PYJAMA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 7,
+              "NAME": "KURTHI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 8,
+              "NAME": "SALWAR TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 9,
+              "NAME": "SALWAR BOTTOM",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 10,
+              "NAME": "LEGGINS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 11,
+              "NAME": "DUPATA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 12,
+              "NAME": "TRACK PANT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 13,
+              "NAME": "SKIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 15
+            },
+            {
+              "ID": 14,
+              "NAME": "SAREE",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "30-50",
+              "NOTES": "PRICE VARIES BASED ON SAREE TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 30 AND 50"
+            },
+            {
+              "ID": 15,
+              "NAME": "BLOUSE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 16,
+              "NAME": "SILK SAREE",
+              "VARIABLE_PRICE": 1,
+              "PRICE": "40-80",
+              "NOTES": "PRICE VARIES BASED ON SILK SAREE TYPE",
+              "INTERNAL": "THE PRICE RANGE IS BETWEEN 40 AND 80"
+            },
+            {
+              "ID": 17,
+              "NAME": "GOWN",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 18,
+              "NAME": "LONG TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 19,
+              "NAME": "GARGA CHOLI",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 20,
+              "NAME": "saree role polish",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 60
+            }
+          ]
         },
         {
-            "GENDER":"KIDS",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 2,
-                    "NAME": "Shirt",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 3,
-                    "NAME": "T-SHIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 4,
-                    "NAME": "Pant",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 5,
-                    "NAME": "JEANS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 6,
-                    "NAME": "SHORTS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 7,
-                    "NAME": "WAIST COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 8,
-                    "NAME": "KURTHA ",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 9,
-                    "NAME": "COAT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 10,
-                    "NAME": "JACKET",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 11,
-                    "NAME": "SKIRT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 12,
-                    "NAME": "SALWAR TOP",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 13,
-                    "NAME": "SALWAR BOTTOM",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 14,
-                    "NAME": "DUPATA",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 15,
-                    "NAME": "DRESS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 16,
-                    "NAME": "STACKS",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                }
-            ]
+          "GENDER": "KIDS",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 2,
+              "NAME": "Shirt",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 3,
+              "NAME": "T-SHIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 4,
+              "NAME": "Pant",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 5,
+              "NAME": "JEANS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 6,
+              "NAME": "SHORTS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 7,
+              "NAME": "WAIST COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 8,
+              "NAME": "KURTHA ",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 9,
+              "NAME": "COAT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 10,
+              "NAME": "JACKET",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 11,
+              "NAME": "SKIRT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 12,
+              "NAME": "SALWAR TOP",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 13,
+              "NAME": "SALWAR BOTTOM",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 14,
+              "NAME": "DUPATA",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 15,
+              "NAME": "DRESS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 16,
+              "NAME": "STACKS",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            }
+          ]
         },
         {
-            "GENDER":"OTHERS",
-            "CLOTHES": [
-                {
-                    "ID": 1,
-                    "NAME": "Bed Sheet",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 20
-                },
-                {
-                    "ID": 2,
-                    "NAME": "Bed Sheet X2",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 30
-                },
-                {
-                    "ID": 3,
-                    "NAME": "PILLOW COVER",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 8
-                },
-                {
-                    "ID": 4,
-                    "NAME": "CUSHION COVER",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 5,
-                    "NAME": "CURTAIN",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                },
-                {
-                    "ID": 6,
-                    "NAME": "TABLE CLOTH",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 7,
-                    "NAME": "BATH TOWEL",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 8,
-                    "NAME": "TURKEY TOWEL",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 9,
-                    "NAME": "TABLE MATE",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 10,
-                    "NAME": "BLANKET",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 10
-                },
-                {
-                    "ID": 11,
-                    "NAME": "KARCHIEF",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 0
-                },
-                {
-                    "ID": 12,
-                    "NAME": "GUILT",
-                    "VARIABLE_PRICE":0,
-                    "PRICE": 50
-                }
-            ]
+          "GENDER": "OTHERS",
+          "CLOTHES": [
+            {
+              "ID": 1,
+              "NAME": "Bed Sheet",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 20
+            },
+            {
+              "ID": 2,
+              "NAME": "Bed Sheet X2",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 30
+            },
+            {
+              "ID": 3,
+              "NAME": "PILLOW COVER",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 8
+            },
+            {
+              "ID": 4,
+              "NAME": "CUSHION COVER",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 5,
+              "NAME": "CURTAIN",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            },
+            {
+              "ID": 6,
+              "NAME": "TABLE CLOTH",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 7,
+              "NAME": "BATH TOWEL",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 8,
+              "NAME": "TURKEY TOWEL",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 9,
+              "NAME": "TABLE MATE",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 10,
+              "NAME": "BLANKET",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 10
+            },
+            {
+              "ID": 11,
+              "NAME": "KARCHIEF",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 0
+            },
+            {
+              "ID": 12,
+              "NAME": "GUILT",
+              "VARIABLE_PRICE": 0,
+              "PRICE": 50
+            }
+          ]
         }
-    ]]]
+      ]
+    }
+  ]
 }
