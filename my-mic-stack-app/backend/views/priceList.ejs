@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price list</title>
+  </head>
+  <body>
+    <p>
+      This is the price list below: <br />
+
+      <% for(var i=0; i < data.length; i++) { %> <% if
+      (data[i].VARIABLE_PRICE==0) { %> ID: <%= data[i].ID %><br />
+      NAME: <%= data[i].NAME %><br />
+      GENDER: <%= data[i].GENDER %><br />
+      PRICE: <%= data[i].PRICE %><br />
+      ACTIVITY: <%= data[i].OPERATION %><br />
+
+      <% } %> <% if (data[i].VARIABLE_PRICE==1) { %> ID: <%= data[i].ID %><br />
+      NAME: <%= data[i].NAME %><br />
+      GENDER: <%= data[i].GENDER %><br />
+      PRICE: <%= data[i].PRICE %>*<br />
+      ACTIVITY: <%= data[i].OPERATION %><br />
+      <% } %>
+      <br />
+      <% } %> * price change based on type of cloth
+    </p>
+
+    <%= include('partials/footer') %>
+  </body>
+</html>

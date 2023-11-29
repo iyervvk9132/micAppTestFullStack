@@ -87,7 +87,7 @@
     "ID": 13,
     "NAME": "COAT",
     "GENDER":"MALE",
-    "PRICE": "250-500"//only overcoat250
+    "PRICE": "250-500",//only overcoat250
     //full set 500,
     "ACTIVITY":"DRYCLEAN"
 },

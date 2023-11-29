@@ -19,7 +19,7 @@
     },
     {
       "ID": 3,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 70,
       "GENDER": "MEN",
@@ -153,7 +153,7 @@
     },
     {
       "ID": 19,
-      "NAME": "Top/Shirt",
+      "NAME": "TOP/SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 70,
       "GENDER": "WOMEN",
@@ -169,7 +169,7 @@
     },
     {
       "ID": 21,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 70,
       "GENDER": "WOMEN",
@@ -315,7 +315,7 @@
     },
     {
       "ID": 38,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 50,
       "GENDER": "KIDS",
@@ -323,7 +323,7 @@
     },
     {
       "ID": 39,
-      "NAME": "Shirt",
+      "NAME": "SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 50,
       "GENDER": "KIDS",
@@ -445,7 +445,7 @@
     },
     {
       "ID": 54,
-      "NAME": "Bed Sheet",
+      "NAME": "BED SHEET",
       "VARIABLE_PRICE": 0,
       "PRICE": 80,
       "GENDER": "OTHERS",
@@ -453,7 +453,7 @@
     },
     {
       "ID": 55,
-      "NAME": "Bed Sheet X2",
+      "NAME": "BED SHEET X2",
       "VARIABLE_PRICE": 0,
       "PRICE": 150,
       "GENDER": "OTHERS",
@@ -563,7 +563,7 @@
     },
     {
       "ID": 68,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
       "GENDER": "MEN",
@@ -685,7 +685,7 @@
     },
     {
       "ID": 83,
-      "NAME": "Top/Shirt",
+      "NAME": "Top/SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
       "GENDER": "FEMALE",
@@ -701,7 +701,7 @@
     },
     {
       "ID": 85,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
       "GENDER": "FEMALE",
@@ -833,7 +833,7 @@
     },
     {
       "ID": 101,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 30,
       "GENDER": "KIDS",
@@ -841,7 +841,7 @@
     },
     {
       "ID": 102,
-      "NAME": "Shirt",
+      "NAME": "SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 30,
       "GENDER": "KIDS",
@@ -963,7 +963,7 @@
     },
     {
       "ID": 117,
-      "NAME": "Bed Sheet",
+      "NAME": "BED SHEET",
       "VARIABLE_PRICE": 0,
       "PRICE": 80,
       "GENDER": "OTHERS",
@@ -971,7 +971,7 @@
     },
     {
       "ID": 118,
-      "NAME": "Bed Sheet X2",
+      "NAME": "BED SHEET X2",
       "VARIABLE_PRICE": 0,
       "PRICE": 150,
       "GENDER": "OTHERS",
@@ -1081,7 +1081,7 @@
     },
     {
       "ID": 131,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
       "GENDER": "MEN",
@@ -1209,7 +1209,7 @@
     },
     {
       "ID": 147,
-      "NAME": "Top/Shirt",
+      "NAME": "Top/SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
       "GENDER": "FEMALE",
@@ -1225,7 +1225,7 @@
     },
     {
       "ID": 149,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
       "GENDER": "FEMALE",
@@ -1373,7 +1373,7 @@
     },
     {
       "ID": 167,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 8,
       "GENDER": "KIDS",
@@ -1381,7 +1381,7 @@
     },
     {
       "ID": 168,
-      "NAME": "Shirt",
+      "NAME": "SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 8,
       "GENDER": "KIDS",
@@ -1397,7 +1397,7 @@
     },
     {
       "ID": 170,
-      "NAME": "Pant",
+      "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 8,
       "GENDER": "KIDS",
@@ -1501,7 +1501,7 @@
     },
     {
       "ID": 183,
-      "NAME": "Bed Sheet",
+      "NAME": "BED SHEET",
       "VARIABLE_PRICE": 0,
       "PRICE": 20,
       "GENDER": "OTHERS",
@@ -1509,7 +1509,7 @@
     },
     {
       "ID": 184,
-      "NAME": "Bed Sheet X2",
+      "NAME": "BED SHEET X2",
       "VARIABLE_PRICE": 0,
       "PRICE": 30,
       "GENDER": "OTHERS",

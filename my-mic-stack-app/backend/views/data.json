@@ -1,0 +1,18 @@
+[
+  {
+    "ID": 1,
+    "NAME": "TROUSERS",
+    "VARIABLE_PRICE": 0,
+    "PRICE": 70,
+    "GENDER": "MEN",
+    "OPERATION": "DRYCLEAN"
+  },
+  {
+    "ID": 2,
+    "NAME": "SHIRT",
+    "VARIABLE_PRICE": 0,
+    "PRICE": 70,
+    "GENDER": "MEN",
+    "OPERATION": "DRYCLEAN"
+  }
+]
