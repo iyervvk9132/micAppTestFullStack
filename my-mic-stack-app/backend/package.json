@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.3",
     "body-parser": "^1.20.2",
+    "cross-fetch": "^4.0.0",
     "date-time-slots": "^1.0.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
@@ -21,7 +23,9 @@
     "mongodb": "^6.3.0",
     "mongoose": "^7.6.7",
     "nexmo": "^2.9.1",
+    "node-nominatim2": "^0.1.0",
     "nodemon": "^3.0.1",
+    "nominatim-js": "^1.0.10",
     "path": "^0.12.7",
     "twilio": "^4.20.0"
   },

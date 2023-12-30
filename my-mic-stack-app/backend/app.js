@@ -6,9 +6,12 @@ const fs = require("fs").promises;
 const { readFileSync } = require("fs");
 const Nexmo = require("nexmo");
 const DateTimeSlots = require('date-time-slots').default;
+const axios = require('axios');
+
 
 const app = express();
 const port = 3000;
+
 
 
 
@@ -22,6 +25,9 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+
+
 
 const data = JSON.parse(readFileSync("./models/CLOTHLIST.json"));
 const dataList = JSON.parse(readFileSync("./models/PRICE_FINAL_DATA.json"));
@@ -42,6 +48,12 @@ const userSchema = new mongoose.Schema({
   address: {
     latitude: Number,
     longitude: Number,
+    road: String,
+    suburb:String,
+    city:String,
+    state:String,
+    country: String,
+    countryCode: String,
   },
 });
 
@@ -331,24 +343,49 @@ app.get("/:phone/verify-address", (req, res) => {
   res.render("verify-address", { phone: req.params.phone });
 });
 
+app.get("/:phone/history-orders", (req, res) => {
+  res.render("history-orders", { phone: req.params.phone });
+});
 app.post("/:phone/verify-address", async (req, res) => {
   const { phone } = req.params;
   const { latitude, longitude } = req.body;
+  let road,suburb,city,state,country,countryCode;
 
+  
   try {
-    const result = await User.updateOne(
-      { phone },
-      { $set: { address: { latitude, longitude } } }
-    );
-    console.log(result);
+      // const result2 = await nominatim.reverse({
+      //   lat: parseFloat(latitude),
+      //   lon: parseFloat(longitude),
+      //   format: "json",
+      // });
+      // console.log(result2);
+const customParams = 'format=json&zoom=18'; 
+  
+    console.log(req.body);
+    
+    
+const apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&${customParams}`;  
 
-    if (result.acknowledged ) {
-      console.log("Location saved successfully.");
-      res.redirect(`/${phone}/user-data`);
-    } else {
-      console.error("Failed to save location.");
-      res.status(500).send("Failed to save location");
-    }
+    axios.get(apiUrl)
+  .then(response => {
+    // Handle the response data
+    road=response.data.address.road
+    console.log( 'road value:',road);    
+    suburb=response.data.address.suburb;    
+    city=response.data.address.city;    
+    state=response.data.address.state;    
+    country=response.data.address.country;
+    countryCode=response.data.address.countryCode;
+    handleAddressData(phone,latitude, longitude, road, suburb, city, state, country, countryCode,res);
+    res.redirect(`/${phone}/user-data`);
+
+
+  })
+  .catch(error => {
+    // Handle errors
+    console.error('API Request Error:', error);
+  });
+  
   } catch (error) {
     console.error("Error saving location:", error);
     res.status(500).send("Internal Server Error");
@@ -363,6 +400,29 @@ app.get("/:phone/user-data", (req, res) => {
   const { phone } = req.params;
   res.render("user-data", { phone });
 });
+
+async function  handleAddressData(phone,latitude, longitude, road, suburb, city, state, country, countryCode,res) {
+  console.log( 'road value outside axios:',road);
+
+    const result = await User.updateOne(
+      { phone },
+      { $set: { address: { latitude, longitude,road,suburb,city,state,country,countryCode } } }
+    );
+    console.log(result);
+    console.log(latitude, longitude,road,suburb,city,state,country,countryCode);
+    if (result.acknowledged ) {
+      console.log("Location saved successfully.");
+      
+      console.log("result done");
+      console.log(result);
+      console.log(phone);
+    } else {
+      console.error("Failed to save location.");
+      res.status(500).send("Failed to save location");
+    }
+
+
+}
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
