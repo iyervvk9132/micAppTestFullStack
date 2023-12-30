@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const internalFlowSchema = new Schema({
     order: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Customer', // Reference to the Customer model
+        ref: 'Customer', 
         required: true
       },
     
@@ -20,7 +20,7 @@ const internalFlowSchema = new Schema({
   Task: {
     type: String,
     required: true,
-    enum: ['Dryclean', 'Ironing', 'Washing', 'Others'] // Specify allowed tasks
+    enum: ['Dryclean', 'Ironing', 'Washing', 'Others'] 
 
   },
 });

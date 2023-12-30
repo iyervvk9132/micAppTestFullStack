@@ -1,4 +1,3 @@
-<!-- views/user-data.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,9 +8,11 @@
 </head>
 <body>
     <h1>User Data</h1>
-    <p>Username: <%= userData.username %></p>
-    <a href="/<%= userData.username %>/new-order">place order</a>
+    <p>Username: <%= phone %></p>
+    <a href="/<%= phone %>/new-order">place order</a>
+    <a href="/<%= phone %>/history-orders">history order</a>
+    <a href="/<%= phone %>/user-saved-data">user saved data</a>
+    <a href="/<%= phone %>/other-user-data">additional data</a>
     
-    <!-- Add  more dynamic content based on user data -->
 </body>
 </html>

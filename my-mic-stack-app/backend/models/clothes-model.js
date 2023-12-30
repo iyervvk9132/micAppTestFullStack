@@ -18,7 +18,7 @@ const clothesSchema = new Schema({
   Task: {
     type: String,
     required: true,
-    enum: ['Dryclean', 'Ironing', 'Washing', 'Others'] // Specify allowed tasks
+    enum: ['Dryclean', 'Ironing', 'Washing', 'Others'] 
 
   },
   Id:{

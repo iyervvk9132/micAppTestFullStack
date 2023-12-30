@@ -10,15 +10,20 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "date-time-slots": "^1.0.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
+    "fs.promises": "^0.1.2",
     "json": "^11.0.0",
+    "leaflet": "^1.9.4",
     "mongodb": "^6.3.0",
-    "mongoose": "^7.6.6",
+    "mongoose": "^7.6.7",
+    "nexmo": "^2.9.1",
     "nodemon": "^3.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "twilio": "^4.20.0"
   },
   "description": ""
 }

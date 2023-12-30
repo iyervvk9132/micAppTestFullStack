@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
-// Define the customer schema
+
 const customerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true // Removes extra spaces from the name
+    trim: true 
   },
   email: {
     type: String,
     required: true,
-    unique: true, // Ensures email addresses are unique
+    unique: true, 
     trim: true
   },
   phone: {
@@ -19,14 +19,14 @@ const customerSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now // Sets the default value to the current date and time
+    default: Date.now 
   },
   orders:[{type:mongoose.Types.ObjectId,
   ref: 'order',
 }],
 });
 
-// Create the Customer model based on the schema
+
 const Customer = mongoose.model('Customer', customerSchema);
 
 module.exports = Customer;

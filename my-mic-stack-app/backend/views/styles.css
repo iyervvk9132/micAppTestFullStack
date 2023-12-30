@@ -1,4 +1,3 @@
-/* public/styles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -19,13 +18,11 @@ label {
 }
 
 input {
-    /* width: 100%; */
     padding: 8px;
     margin-bottom: 15px;
     box-sizing: border-box;
 }
 .checkbox{ 
-    /* css code here for ie */ 
     padding: 8px;
     margin-bottom: 15px;
     box-sizing: border-box;
@@ -34,7 +31,6 @@ input {
 }
 
 select {
-    /* width: 100%; */
     padding: 8px;
     margin-bottom: 15px;
     box-sizing: border-box;

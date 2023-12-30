@@ -6,8 +6,6 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Here, you can handle user login logic.
-    // For this example, we'll simply navigate to a dashboard or home screen.
     navigation.navigate('Home');
   };
 

@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
-// Define the order schema
+
 const orderSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Customer', // Reference to the Customer model
+    ref: 'Customer', 
     required: true
   },
   products: [
     {
       productName: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Clothes', // Reference to the clothes model
+        ref: 'Clothes', 
         required: true
       },
       quantity: {
@@ -31,12 +31,12 @@ const orderSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['Available', 'In Use', 'Under Maintenance', 'Out of Service'] // Specify allowed statuses
+    enum: ['Available', 'In Use', 'Under Maintenance', 'Out of Service'] 
   },
 
 });
 
-// Create the Order model based on the schema
+
 const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

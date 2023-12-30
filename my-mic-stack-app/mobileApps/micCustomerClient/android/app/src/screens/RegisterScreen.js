@@ -1,4 +1,3 @@
-// SignUpScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
@@ -12,12 +11,10 @@ const SignUpScreen = () => {
 
 
   const signUpWithEmail = () => {
-    // Implement your own logic for email/password sign-up
     console.log('Email:', email);
     console.log('Phone:', phone);
     console.log('Password:', password);
 
-    // Add your authentication logic here, for example, using Firebase or your backend API.
   };
 
   return (

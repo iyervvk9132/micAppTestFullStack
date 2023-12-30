@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pickup and Delivery</title>
+</head>
+<body>
+
+  <h1>Pickup and Delivery</h1>
+
+  <form action="/<%= phone %>/pickup-delivery" method="POST">
+
+    <label for="pickupDate">Pickup Date and Time:</label>
+    <input type="datetime-local" id="pickupDate" name="pickupDate" min="<%= getMinDateTime() %>" required onchange="updateTimes()">
+
+    <label for="deliveryDate">Delivery Date and Time:</label>
+    <input type="datetime-local" id="deliveryDate" name="deliveryDate" min="<%= getMinDateTime() %>" required onchange="updateTimes()">
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    function getMinDateTime() {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = currentDate.getDate().toString().padStart(2, '0');
+      const hours = currentDate.getHours().toString().padStart(2, '0');
+      const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    function updateTimes() {
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTimes();
+    });
+  </script>
+
+
+</body>
+</html>

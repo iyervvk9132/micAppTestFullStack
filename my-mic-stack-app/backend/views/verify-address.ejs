@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  </head>
+  <body>
+    <h1>Address Verification</h1>
+    
+    <div id="map" style="height: 400px;"></div>
+
+    <form id="locationForm" action="<%= `/${phone}/verify-address` %>" method="post">
+      <input type="hidden" name="latitude" id="latitude" value="">
+      <input type="hidden" name="longitude" id="longitude" value="">
+      
+
+      <button type="submit">Save Location</button>
+    </form>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var mymap = L.map("map").setView([51.505, -0.09], 13);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(mymap);
+    
+        var marker = L.marker([51.505, -0.09], { draggable: true }).addTo(mymap);
+    
+        marker.on("dragend", function (event) {
+          var marker = event.target;
+          var position = marker.getLatLng();
+          document.getElementById("latitude").value = position.lat.toFixed(6);
+          document.getElementById("longitude").value = position.lng.toFixed(6);
+        });
+    
+        var initialPosition = marker.getLatLng();
+        document.getElementById("latitude").value = initialPosition.lat.toFixed(6);
+        document.getElementById("longitude").value = initialPosition.lng.toFixed(6);
+      });
+    </script>
+    
+    
+  </body>
+</html>

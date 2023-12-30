@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+</head>
+
+<body>
+    <h1>Verify OTP</h1>
+    <form action="/verify-otp" method="post">
+        <label for="verificationCode">Enter OTP:</label>
+        <input type="text" id="verificationCode" name="verificationCode" required>
+        <input type="hidden" name="phone" value="<%= phone %>">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>

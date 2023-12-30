@@ -1,0 +1,24 @@
+<html>
+<head>
+  <title>Order History</title>
+</head>
+<body>
+  <h1>Order History for <%= user.username %></h1>
+
+   <% if (user.order && user.order.length > 0) { %>
+    <ul>
+      <% user.order.forEach(order => { %>
+        <li>
+            <p>Order ID: <%= order.orderId %></p>
+          <p>Pickup Date/Time: <%= order.pickupDateTime %></p>
+          <p>Delivery Date/Time: <%= order.deliveryDateTime %></p>
+          
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No orders found</p>
+  <% } %> 
+
+</body>
+</html>

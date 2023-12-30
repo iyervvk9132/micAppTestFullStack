@@ -4,14 +4,17 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const fs = require("fs").promises;
 const { readFileSync } = require("fs");
+const Nexmo = require("nexmo");
+const DateTimeSlots = require('date-time-slots').default;
 
 const app = express();
 const port = 3000;
 
-// Use bodyParser middleware to parse URL-encoded bodies
+
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Use express-session middleware for managing sessions
 app.use(
   session({
     secret: "your-secret-key",
@@ -19,101 +22,96 @@ app.use(
     saveUninitialized: true,
   })
 );
+
 const data = JSON.parse(readFileSync("./models/CLOTHLIST.json"));
 const dataList = JSON.parse(readFileSync("./models/PRICE_FINAL_DATA.json"));
-// Connect to MongoDB (change the connection string accordingly)
 mongoose.connect("mongodb://localhost:27017/micTestApp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Create a simple mongoose schema and model
 const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+  phone: String,
+  isVerified: { type: Boolean, default: false },
+  verificationCode: String,
   order: [
     {
-      orderList: [
-        {
-          items: String,
-          service: String,
-          quantity: Number,
-        },
-      ],
-
-      pickupDateTime: Date,
-      deliveryDateTime: Date,
-      orderId:mongoose.Schema.Types.ObjectId,
+      orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
     },
   ],
+  address: {
+    latitude: Number,
+    longitude: Number,
+  },
 });
 
 const User = mongoose.model("customers", userSchema);
 
-// Create a simple mongoose schema and model for orders
 const orderSchema = new mongoose.Schema({
-    userId: mongoose.Schema.Types.ObjectId,
-    orders: [
-        {
-            items: String,
-            service: String,
-            quantity: Number,
-        }
-    ],
-    pickupDateTime: Date,
-    deliveryDateTime: Date,
+  userId: mongoose.Schema.Types.ObjectId,
+  orders: [
+    {
+      items: String,
+      service: String,
+      quantity: Number,
+    },
+  ],
+  pickupDateTime: Date,
+  deliveryDateTime: Date,
 });
 
-const Order = mongoose.model('Order', orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
+const nexmo = new Nexmo({
+  apiKey: "21c82be4",
+  apiSecret: "9KykD98D0TWZ7JGb",
+});
 
-
-var username, password;
-// Set EJS as the view engine
 app.set("view engine", "ejs");
-
-// Middleware to serve static files (CSS, images, etc.)
 app.use(express.static("views"));
 
-// Declare an array to store orders
 let orderList = [];
+let result1;
 
-// Routes
 app.get("/", (req, res) => {
   res.render("home");
 });
 
-// Login route
 app.get("/login", (req, res) => {
   res.render("login");
 });
 
-// Login route
 app.post("/login", async (req, res) => {
-  username = req.body.username;
-  password = req.body.password;
+  const phone = req.body.phone;
 
   try {
-    // Check if the user with the given username exists
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ phone, isVerified: true });
 
     if (user) {
-      // Now, you need to compare the provided password with the hashed password in the database
-      // Note: You should use a password hashing library like bcrypt for security
-      // For demonstration purposes, assuming plain text passwords (not secure for production)
-      if (user.password === password) {
-        // Passwords match, so the login is successful
-        console.log("Login successful");
-        res.redirect(`/${username}/user-data`);
-      } else {
-        // Passwords don't match
-        console.log("Invalid password");
-        res.redirect("/login"); // or res.render('login', { error: 'Invalid credentials' });
-      }
+      const verificationCode = Math.floor(
+        100000 + Math.random() * 900000
+      ).toString();
+
+      await User.updateOne({ phone }, { verificationCode });
+
+      const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+
+      nexmo.message.sendSms(
+        "YourApp",
+        formattedPhone,
+        `Your verification code is: ${verificationCode}`,
+        (err, responseData) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send("Failed to send verification code");
+          } else {
+            console.log(responseData);
+            res.render("verify-otp", { phone });
+          }
+        }
+      );
     } else {
-      // User not found
-      console.log("User not found");
-      res.redirect("/login"); // or res.render('login', { error: 'Invalid credentials' });
+      res.redirect("/register");
     }
   } catch (error) {
     console.error("Error during login:", error);
@@ -121,33 +119,53 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Logout route
-app.get("/logout", (req, res) => {
-  // Destroy the session to log out the user
-  req.session.destroy(() => {
-    res.redirect("/login");
-  });
-});
 
-// New Order route
-app.get("/:username/new-order", (req, res) => {
-  // Check if the user is authenticated
+
+app.get("/:phone/new-order", (req, res) => {
   console.log(req.params);
   console.log(req.session);
 
-  res.redirect(`/${req.params.username}/orderList`);
+  res.redirect(`/${req.params.phone}/orderList`);
 });
 
-app.get("/:username/orderList", (req, res) => {
+
+app.get("/:phone/orderList", (req, res) => {
   console.log(req.params);
   res.render("orderList", {
     data: data,
     subtotal: 0,
-    username: req.params.username,
+    phone: req.params.phone,
   });
 });
 
-app.post("/:username/orderList", async (req, res) => {
+
+app.get("/:phone/pickup-delivery", (req, res) => {
+  const { phone } = req.params;
+  res.render("pickup-delivery", {  phone:req.params.phone });
+});
+
+app.post("/:phone/pickup-delivery", async (req, res) => {
+  console.log("phone/pickup-delivery");
+  const { pickupDateTime, deliveryDateTime } = req.body;
+  console.log(result1._id);
+
+  const timeSlots = DateTimeSlots.getSlots({
+    startDate: new Date(pickupDateTime),
+    endDate: new Date(deliveryDateTime),
+    startTime: 10, 
+    endTime: 18, 
+    slotDuration: 1, 
+  });
+
+  console.log(timeSlots);
+  console.log(result1._id);
+
+  res.send(result1._id);
+});
+
+
+
+app.post("/:phone/orderList", async (req, res) => {
   const nonZeroValues = {};
   let total = 0;
   let outputString = "";
@@ -156,18 +174,14 @@ app.post("/:username/orderList", async (req, res) => {
     if (req.body.hasOwnProperty(key)) {
       const value = req.body[key];
 
-      // Check if the value is not equal to 0
       if (value !== "0") {
         nonZeroValues[key] = value;
         console.log(key);
       }
     }
   }
-  // Capture pickup date/time and delivery date/time from request
-  const pickupDateTime = req.body.pickupDateTime;
-  const deliveryDateTime = req.body.deliveryDateTime;
+  
 
-  // Now nonZeroValues contains only the properties with values not equal to 0
 
   console.log("nonZeroValues");
   for (const key in nonZeroValues) {
@@ -180,7 +194,6 @@ app.post("/:username/orderList", async (req, res) => {
     if (foundItem) {
       total = total + foundItem.PRICE * nonZeroValues[key];
       try {
-        // Create an order object and push it to the array
         orderList.push({
           items: foundItem.NAME,
           service: foundItem.OPERATION,
@@ -207,45 +220,35 @@ app.post("/:username/orderList", async (req, res) => {
       }
     }
   }
-  
 
-  // Save the array of orders to MongoDB
   try {
-    // Save the array of orders to MongoDB
-    const user = await User.findOne({ username: req.params.username });
+    const user = await User.findOne({ phone: req.params.phone });
 
     if (user) {
-      // Update the user's order field with the array of orders
-      const result1 = await Order.create({
+       result1 = await Order.create({
         userId: req.session.userId,
         orders: orderList,
-        pickupDateTime,
-        deliveryDateTime,
-    });
+      });
 
       const result = await User.updateOne(
-        { username: req.params.username },
+        { phone: req.params.phone },
         { $push: { order: { orderId: result1._id } } },
         { upsert: true }
       );
 
-    //   console.log(result);
-      console.log(result1._id);
+      //   console.log(result);
 
-      // Check if the update was successful
+      console.log("result1");
+      console.log(result1);
+
       if (result.acknowledged && result.modifiedCount === 1) {
-        // If there was an upsert (document created), use upsertedId; otherwise, use _id
-        const modifiedOrderId = result.upsertedId
-          ? result.upsertedId._id
-          : user._id;
+        const modifiedOrderId = result1._id;
         console.log(
           `Order updated successfully. Modified document ID: ${modifiedOrderId}`
         );
 
-        // Now you can send this ID as a response or use it as needed
-        return res.send(
-          `Order updated successfully. Modified document ID: ${modifiedOrderId}`
-        );
+        return  res.redirect(`/${req.params.phone}/pickup-delivery`);
+
       } else {
         console.error("Failed to update order");
         return res.status(500).send("Failed to update order");
@@ -260,27 +263,30 @@ app.post("/:username/orderList", async (req, res) => {
   }
 });
 
-// Handle order submission
-app.post("/place-order", async (req, res) => {
-  // Check if the user is authenticated
-  if (!req.session.userId) {
-    res.redirect("/login");
-    return;
-  }
+app.get("/:phone/history-order", (req, res) => {
+  console.log(req.params);
+});
 
-  const { productName, quantity } = req.body;
+
+app.get("/verify-otp", (req, res) => {
+  res.render("verify-otp");
+});
+
+
+app.post("/verify-otp", async (req, res) => {
+  const { phone, verificationCode } = req.body;
 
   try {
-    // Create a new order associated with the logged-in user
-    await Order.create({
-      productName,
-      quantity,
-      userId: req.session.userId,
-    });
+    const user = await User.findOne({ phone, verificationCode });
 
-    res.redirect("/new-order");
+    if (user) {
+      await User.updateOne({ phone }, { isVerified: true });
+      res.redirect(`/${phone}/verify-address`);
+    } else {
+      res.status(401).send("Invalid verification code");
+    }
   } catch (error) {
-    console.error("Error placing order:", error);
+    console.error("Error during OTP verification:", error);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -289,57 +295,76 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
-// Example route to handle registration (you need to handle form submissions securely)
 app.post("/register", async (req, res) => {
-  // Assuming you have a form with username and password fields
-  console.log(req.body);
-
-  username = req.body.username;
-  password = req.body.password;
+  const phone = req.body.phone;
+  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
   try {
-    const newUser = await User.create({ username, password });
-    console.log("New user registered:", newUser);
-    res.redirect("/login");
+    const newUser = await User.create({
+      phone,
+      verificationCode,
+    });
+
+    const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+
+    nexmo.message.sendSms(
+      "YourApp",
+      formattedPhone,
+      `Your verification code is: ${verificationCode}`,
+      (err, responseData) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send("Failed to send verification code");
+        } else {
+          console.log(responseData);
+          res.redirect(`/${newUser.phone}/verify-otp`);
+        }
+      }
+    );
   } catch (error) {
     console.error("Error during registration:", error);
     res.status(500).send("Internal Server Error");
   }
 });
-// User data page
-app.get("/user-data", (req, res) => {
-  // This is a hypothetical user data page, you can render it or send JSON data, etc.
-  res.send("User data page");
+
+app.get("/:phone/verify-address", (req, res) => {
+  res.render("verify-address", { phone: req.params.phone });
 });
 
-// User data page with dynamic username parameter
-app.get("/:username/user-data", (req, res) => {
-  const { username } = req.params;
+app.post("/:phone/verify-address", async (req, res) => {
+  const { phone } = req.params;
+  const { latitude, longitude } = req.body;
 
-  // Assume you have a function to retrieve user data based on the username
-  const userData = getUserData(username);
+  try {
+    const result = await User.updateOne(
+      { phone },
+      { $set: { address: { latitude, longitude } } }
+    );
+    console.log(result);
 
-  if (userData) {
-    // Render a dynamic user page with the user data
-    res.render("user-data", { userData });
-  } else {
-    // Handle the case where the user is not found
-    res.status(404).send("User not found");
+    if (result.acknowledged ) {
+      console.log("Location saved successfully.");
+      res.redirect(`/${phone}/user-data`);
+    } else {
+      console.error("Failed to save location.");
+      res.status(500).send("Failed to save location");
+    }
+  } catch (error) {
+    console.error("Error saving location:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-// Example function to retrieve user data (replace this with your actual logic)
-function getUserData(username) {
-  // Perform a query or use any method to retrieve user data from your database
-  // For demonstration purposes, returning mock user data
-  return {
-    username,
-    email: "user@example.com",
-    // Add more user-related data
-  };
-}
+app.get("/user-data", (req, res) => {
+  res.send("User data page");
+});
 
-// Start the server
+app.get("/:phone/user-data", (req, res) => {
+  const { phone } = req.params;
+  res.render("user-data", { phone });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
