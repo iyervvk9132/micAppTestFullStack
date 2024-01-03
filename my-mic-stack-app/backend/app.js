@@ -7,6 +7,7 @@ const { readFileSync } = require("fs");
 const Nexmo = require("nexmo");
 const DateTimeSlots = require('date-time-slots').default;
 const axios = require('axios');
+const { time } = require("console");
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(
 
 const data = JSON.parse(readFileSync("./models/CLOTHLIST.json"));
 const dataList = JSON.parse(readFileSync("./models/PRICE_FINAL_DATA.json"));
+const pricelistdata=JSON.parse(readFileSync("./views/data.json"));
 mongoose.connect("mongodb://localhost:27017/micTestApp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -68,8 +70,11 @@ const orderSchema = new mongoose.Schema({
       quantity: Number,
     },
   ],
-  pickupDateTime: Date,
-  deliveryDateTime: Date,
+  pickupDate: Date,
+  deliveryDate: Date,
+  pickupTime: String,
+  deliveryTime: String,
+  totalPrice:Number,
 });
 
 const Order = mongoose.model("Order", orderSchema);
@@ -80,9 +85,11 @@ const nexmo = new Nexmo({
 });
 
 app.set("view engine", "ejs");
+
 app.use(express.static("views"));
 
 let orderList = [];
+let pickupDate,pickupTime,deliveryDate,deliveryTime;
 let result1;
 
 app.get("/", (req, res) => {
@@ -143,10 +150,40 @@ app.get("/:phone/new-order", (req, res) => {
 
 app.get("/:phone/orderList", (req, res) => {
   console.log(req.params);
+  let today = new Date()
+  let test = new Date()
+  let time;
+  console.log(today.getHours())
+  if(today.getHours()>=16){
+    today.setDate(today.getDate()+1);
+
+  }
+    day = today.getDate(),
+    month = today.getMonth()+1, //January is 0
+    year = today.getFullYear();
+         if(day<10){
+                day='0'+day
+            } 
+        if(month<10){
+            month='0'+month
+        }
+
+        if (test.getDay()==today.getDate()) {
+          time=today.getHours()+1;          
+        }
+        else{
+          time=10;
+        }
+        today = year+'-'+month+'-'+day;
+        console.log(time);
+        time=time+":00"
+  console.log(today)
   res.render("orderList", {
     data: data,
     subtotal: 0,
     phone: req.params.phone,
+    currentDate: today,
+    startTime:time,
   });
 });
 
@@ -158,7 +195,7 @@ app.get("/:phone/pickup-delivery", (req, res) => {
 
 app.post("/:phone/pickup-delivery", async (req, res) => {
   console.log("phone/pickup-delivery");
-  const { pickupDateTime, deliveryDateTime } = req.body;
+  const { pickupDate, deliveryDate } = req.body;
   console.log(result1._id);
 
   const timeSlots = DateTimeSlots.getSlots({
@@ -181,6 +218,8 @@ app.post("/:phone/orderList", async (req, res) => {
   const nonZeroValues = {};
   let total = 0;
   let outputString = "";
+  orderList=[];
+  
 
   for (const key in req.body) {
     if (req.body.hasOwnProperty(key)) {
@@ -231,15 +270,39 @@ app.post("/:phone/orderList", async (req, res) => {
           nonZeroValues[key];
       }
     }
+    if(key=="pickupDate"){
+      pickupDate=nonZeroValues[key];
+    }
+    if(key=="pickupTime"){
+      pickupTime=nonZeroValues[key];
+    }
+    if(key=="deliveryDate"){
+      deliveryDate=nonZeroValues[key];
+    }
+    if(key=="deliveryTime"){
+      deliveryTime=nonZeroValues[key];
+    }
+
+
   }
 
   try {
     const user = await User.findOne({ phone: req.params.phone });
 
     if (user) {
+      console.log(Date.parse(pickupDate))
+      console.log(pickupTime)
+      console.log(Date.parse(deliveryDate))
+      console.log(deliveryTime)
        result1 = await Order.create({
         userId: req.session.userId,
         orders: orderList,
+        pickupDate:Date.parse(pickupDate),
+        pickupTime:pickupTime,
+        deliveryDate:Date.parse(deliveryDate),
+        deliveryTime:deliveryTime,
+        totalPrice:total, 
+
       });
 
       const result = await User.updateOne(
@@ -259,7 +322,7 @@ app.post("/:phone/orderList", async (req, res) => {
           `Order updated successfully. Modified document ID: ${modifiedOrderId}`
         );
 
-        return  res.redirect(`/${req.params.phone}/pickup-delivery`);
+        return  res.send(result1);
 
       } else {
         console.error("Failed to update order");
@@ -275,9 +338,6 @@ app.post("/:phone/orderList", async (req, res) => {
   }
 });
 
-app.get("/:phone/history-order", (req, res) => {
-  console.log(req.params);
-});
 
 
 app.get("/verify-otp", (req, res) => {
@@ -343,8 +403,17 @@ app.get("/:phone/verify-address", (req, res) => {
   res.render("verify-address", { phone: req.params.phone });
 });
 
-app.get("/:phone/history-orders", (req, res) => {
-  res.render("history-orders", { phone: req.params.phone });
+app.get("/:phone/history-orders", async (req, res) => {
+  console.log(req.params);
+  const user = await User.findOne({ phone: req.params.phone }).populate('order.orderId');
+  if(user){
+  
+
+  res.render("historyOrders",{user:user});
+  }
+  else{
+    res.send("user not found")
+  }
 });
 app.post("/:phone/verify-address", async (req, res) => {
   const { phone } = req.params;
@@ -391,14 +460,22 @@ const apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=
     res.status(500).send("Internal Server Error");
   }
 });
+app.get("/:phone/user-saved-data",async (req,res)=>{
+  const { phone } = req.params;
+  const user = await User.findOne({ phone: req.params.phone }).populate('order.orderId');
+  console.log(user);
 
-app.get("/user-data", (req, res) => {
-  res.send("User data page");
-});
+  res.render('user-personal-data',{user})
+}
+)
 
 app.get("/:phone/user-data", (req, res) => {
   const { phone } = req.params;
   res.render("user-data", { phone });
+});
+app.get("/:phone/pricelist", (req, res) => {
+  console.log(dataList);
+  res.render("pricelist",{data:dataList.CLOTHES});
 });
 
 async function  handleAddressData(phone,latitude, longitude, road, suburb, city, state, country, countryCode,res) {

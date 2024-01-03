@@ -3,7 +3,22 @@
   <title>Order History</title>
 </head>
 <body>
-  <h1>Order History for +<%= user.phone %></h1>
+  <h1>total user data of +<%= user.phone %></h1>
+  <p>address: <%= user.address %></p>
+  <p>latitude: <%= user.address.latitude %></p>
+  <p>longitude: <%= user.address.longitude %></p>
+  <p>road: <%= user.address.road %></p>
+  <p>suburb: <%= user.address.suburb %></p>
+  <p>city: <%= user.address.city %></p>
+  <p>state: <%= user.address.state %></p>
+  <p>country: <%= user.address.country %></p>
+  <p>username: <%= user.username %></p>
+  <p>password: <%= user.password %></p>
+  <p>phone: <%= user.phone %></p>
+  <p>phone: <%= user.verificationCode %></p>
+
+
+
 
    <% if (user.order && user.order.length > 0) { %>
     <h3>Total Order Size:<%= user.order.length %></h3>
