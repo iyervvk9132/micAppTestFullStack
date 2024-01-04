@@ -340,7 +340,7 @@ app.post("/:phone/orderList", async (req, res) => {
 
 
 
-app.get("/verify-otp", (req, res) => {
+app.get("/:phone/verify-otp", (req, res) => {
   res.render("verify-otp");
 });
 
