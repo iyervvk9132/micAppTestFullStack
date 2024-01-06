@@ -353,6 +353,7 @@ app.post("/verify-otp", async (req, res) => {
 
     if (user) {
       await User.updateOne({ phone }, { isVerified: true });
+      let verify=
       res.redirect(`/${phone}/verify-address`);
     } else {
       res.status(401).send("Invalid verification code");
