@@ -7,7 +7,7 @@
     
     <div id="map" style="height: 400px;"></div>
 
-    <form id="locationForm" action="<%= `/${phone}/verify-address` %>" method="post">
+    <form id="locationForm" action="<%= `/${type}/${phone}/verify-address` %>" method="post">
       <input type="hidden" name="latitude" id="latitude" value="">
       <input type="hidden" name="longitude" id="longitude" value="">
       <input type="text" name =>

@@ -9,7 +9,7 @@
 
 <body>
     <h1>Verify OTP</h1>
-    <form action="/verify-otp" method="post">
+    <form action="/<%= user %>/<%= phone %>/verify-otp" method="post">
         <label for="verificationCode">Enter OTP:</label>
         <input type="text" id="verificationCode" name="verificationCode" required>
         <input type="hidden" name="phone" value="<%= phone %>">

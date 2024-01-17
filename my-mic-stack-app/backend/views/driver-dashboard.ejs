@@ -1,0 +1,25 @@
+<!-- driver-dashboard.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Dashboard</title>
+</head>
+<body>
+  <h1>Welcome, <%= driver.phone %>!</h1>
+
+  <!-- Button to redirect to salary page -->
+  <a href="/driver/<%= driver.phone %>/salary">Go to Salary Page</a>
+
+  <!-- Button to redirect to history of orders page -->
+  <a href="/driver/<%= driver.phone %>/history-orders">View History of Orders</a>
+
+  <!-- Button to redirect to confirm pickup page -->
+  <a href="/driver/<%= driver.phone %>/confirm-pickup">Confirm Pickup</a>
+
+  <!-- You can add more content or customize the layout as needed -->
+
+</body>
+</html>

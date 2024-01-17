@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Clothes Registration</h1>
-    <form action="/<%= phone%>/orderList" method="post">
+    <form action="/user/<%= phone%>/orderList" method="post">
       <% for(let i = 0; i < data.length; i++) {%> <%= data[i].FUNCTION %> <br />
       <% for(let j = 0; j < data[i].SUBFUNCTION.length; j++) {%> <%=
       data[i].SUBFUNCTION[j].GENDER %> <br />

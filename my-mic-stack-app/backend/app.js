@@ -49,6 +49,7 @@ const userSchema = new mongoose.Schema({
     state: String,
     country: String,
     countryCode: String,
+    isFilled: { type: Boolean, default: false },
   },
 });
 
@@ -105,6 +106,12 @@ const orderSchema = new mongoose.Schema({
   pickupTime: String,
   deliveryTime: String,
   totalPrice: Number,
+  isPickedUp:{type:Boolean,default:false},
+  isDriverConfirmed:{type:Boolean,default:false},
+  isWorkStarted:{type:Boolean,default:false},
+  isWorkCompleted:{type:Boolean,default:false},
+  isDeliveryPickuped:{type:Boolean,default:false},
+  isDelivered:{type:Boolean,default:false},
 });
 
 const Order = mongoose.model("Order", orderSchema);
@@ -162,7 +169,7 @@ app.post("/user/login", async (req, res) => {
             res.status(500).send("Failed to send verification code");
           } else {
             console.log(responseData);
-            res.render("verify-otp", { phone });
+            res.render("verify-otp", { phone,user:"user" });
           }
         }
       );
@@ -175,19 +182,26 @@ app.post("/user/login", async (req, res) => {
   }
 });
 
-app.get("/user/:phone/verify-otp", (req, res) => {
-  res.render("verify-otp");
+app.get("/user/verify-otp", (req, res) => {
+  res.render("verify-otp", { phone,user:"user" });
 });
 
-app.post("/user/verify-otp", async (req, res) => {
+app.post("/user/:phone/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
 
-  try {
+  try { 
     const user = await User.findOne({ phone, verificationCode });
 
     if (user) {
       await User.updateOne({ phone }, { isVerified: true });
-      let verify = res.redirect(`/${phone}/verify-address`);
+      console.log(user.address);
+      if((user.address.isFilled===false)){
+      let verify = res.redirect(`/user/${phone}/verify-address`);
+      }
+      else{
+        res.redirect(`/user/${phone}/user-data`);
+        
+      }
     } else {
       res.status(401).send("Invalid verification code");
     }
@@ -320,7 +334,7 @@ app.post("/user/:phone/orderList", async (req, res) => {
       console.log(Date.parse(deliveryDate));
       console.log(deliveryTime);
       result1 = await Order.create({
-        userId: req.session.userId,
+        userId: user.id,
         orders: orderList,
         pickupDate: Date.parse(pickupDate),
         pickupTime: pickupTime,
@@ -371,11 +385,21 @@ app.get("/user/register", (req, res) => {
 
 app.post("/user/register", async (req, res) => {
   const phone = req.body.phone;
-  const verificationCode = Math.floor(
-    100000 + Math.random() * 900000
-  ).toString();
+  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
   try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ phone });
+
+    if (existingUser) {
+      // Inform the user that they are already registered
+      // You might want to customize this message or show an alert box on the front end
+      const alertMessage = "User already registered. Please log in.";
+      return res.send(
+        `<script>alert('${alertMessage}'); window.location.href='/user/login';</script>`
+      );    }
+
+    // Create a new user if the user doesn't exist
     const newUser = await User.create({
       phone,
       verificationCode,
@@ -393,13 +417,13 @@ app.post("/user/register", async (req, res) => {
           res.status(500).send("Failed to send verification code");
         } else {
           console.log(responseData);
-          res.redirect(`/${newUser.phone}/verify-otp`);
+          res.redirect(`/user/${newUser.phone}/verify-otp`);
         }
       }
     );
   } catch (error) {
     console.error("Error during registration:", error);
-    res.status(500).send("Internal Server Error");
+    res.redirect("/user/login");
   }
 });
 
@@ -408,7 +432,7 @@ app.post("/user/register", async (req, res) => {
 verification page
 */
 app.get("/user/:phone/verify-address", (req, res) => {
-  res.render("verify-address", { phone: req.params.phone });
+  res.render("verify-address", { phone: req.params.phone,type:"user" });
 });
 app.post("/user/:phone/verify-address", async (req, res) => {
   const { phone } = req.params;
@@ -451,7 +475,8 @@ app.post("/user/:phone/verify-address", async (req, res) => {
           countryCode,
           res
         );
-        res.redirect(`/${phone}/user-data`);
+        
+        res.redirect(`/user/${phone}/user-data`);
       })
       .catch((error) => {
         // Handle errors
@@ -504,12 +529,12 @@ app.post("/driver/login", async (req, res) => {
   try {
     const driver = await Driver.findOne({ phone, isVerified: true });
 
-    if (user) {
+    if (driver) {
       const verificationCode = Math.floor(
         100000 + Math.random() * 900000
       ).toString();
 
-      await User.updateOne({ phone }, { verificationCode });
+      await Driver.updateOne({ phone }, { verificationCode });
 
       const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
@@ -523,7 +548,7 @@ app.post("/driver/login", async (req, res) => {
             res.status(500).send("Failed to send verification code");
           } else {
             console.log(responseData);
-            res.render("verify-otp", { phone });
+            res.render("verify-otp", { phone,user:"driver" });
           }
         }
       );
@@ -546,11 +571,23 @@ app.get("/driver/register", (req, res) => {
 
 app.post("/driver/register", async (req, res) => {
   const phone = req.body.phone;
-  const verificationCode = Math.floor(
-    100000 + Math.random() * 900000
-  ).toString();
+  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
   try {
+    // Check if the user already exists
+    const existingUser = await Driver.findOne({ phone });
+
+    if (existingUser) {
+      // Inform the user that they are already registered
+      // You might want to customize this message or show an alert box on the front end
+      const alertMessage = "driver already registered. Please log in.";
+      return res.send(
+        `<script>alert('${alertMessage}'); window.location.href='/driver/login';</script>`
+      );
+
+    }
+
+    // Create a new user if the user doesn't exist
     const newUser = await Driver.create({
       phone,
       verificationCode,
@@ -568,13 +605,13 @@ app.post("/driver/register", async (req, res) => {
           res.status(500).send("Failed to send verification code");
         } else {
           console.log(responseData);
-          res.redirect(`/${newUser.phone}/verify-otp`);
+          res.redirect(`/driver/${newUser.phone}/verify-otp`);
         }
       }
     );
   } catch (error) {
     console.error("Error during registration:", error);
-    res.status(500).send("Internal Server Error");
+    return res.redirect(`/driver/login`);
   }
 });
 
@@ -590,9 +627,9 @@ app.post("/driver/login", async (req, res) => {
   const phone = req.body.phone;
 
   try {
-    const user = await Driver.findOne({ phone, isVerified: true });
+    const driver = await Driver.findOne({ phone, isVerified: true });
 
-    if (user) {
+    if (driver) {
       const verificationCode = Math.floor(
         100000 + Math.random() * 900000
       ).toString();
@@ -611,7 +648,7 @@ app.post("/driver/login", async (req, res) => {
             res.status(500).send("Failed to send verification code");
           } else {
             console.log(responseData);
-            res.render("verify-otp", { phone });
+            res.render("verify-otp", { phone,user:"driver" });
           }
         }
       );
@@ -634,9 +671,32 @@ app.get("/driver/:phone/orderList", (req,res)=>{
 
 
 })
+app.get("/driver/:phone/verify-otp", (req, res) => {
+  console.log(req.params);
+  const { phone } = req.params;
+  res.render("verify-otp", { phone: phone, user: "driver" });
+});
 
+app.post("/driver/:phone/verify-otp", async (req, res) => {
+  const { phone, verificationCode } = req.body;
+  console.log(req.params);
+  console.log(req.body);
 
+  try {
+    const driver = await Driver.findOne({ phone, verificationCode });
 
+    if (driver) {
+      await Driver.updateOne({ phone }, { isVerified: true });
+      // Note: You don't need a separate variable here unless you plan to use it later
+      res.redirect(`/driver/${phone}/home`)
+    } else {
+      res.status(401).send("Invalid verification code");
+    }
+  } catch (error) {
+    console.error("Error during OTP verification:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 async function handleAddressData(
   phone,
   latitude,
@@ -664,6 +724,7 @@ async function handleAddressData(
           state,
           country,
           countryCode,
+          isFilled: true
         },
       },
     }
@@ -690,6 +751,73 @@ async function handleAddressData(
     res.status(500).send("Failed to save location");
   }
 }
+// Example routes for driver actions
+app.get("/driver/:phone/salary", (req, res) => {
+  // Render the salary page
+  
+  res.render("driver-salary", { driverPhone: req.params.phone });
+});
+
+app.get("/driver/:phone/history-orders", (req, res) => {
+  // Render the history of orders page
+  res.render("driver-history-orders", { driverPhone: req.params.phone });
+});
+
+app.get("/driver/:phone/confirm-pickup", async (req, res) => {
+  // Render the confirm pickup page
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight for accurate date comparison
+
+    // Find orders with pickup date equal to today and isPickedUp is either 'false' or not present
+    const orders = await Order.find({
+      
+      $or: [
+        { isDriverConfirmed: { $exists: false } }, // If isPickedUp is not present
+        { isDriverConfirmed: false } // If isPickedUp is 'false'
+      ]
+    });
+    if (orders.length === 0) {
+      return res.send("No eligible orders for pickup today");
+    }
+    res.render("driver-confirm-pickup", { driverPhone: req.params.phone, orders });
+
+  } catch (error) {
+    console.error("Error fetching orders and updating driver:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/driver/:phone/home",(req,res)=>{
+  res.render("driver-dashboard", { driver: req.params});
+
+})
+app.post("/driver/:phone/confirm-pickup/:orderId", async (req,res)=>{
+  const { phone, orderId } = req.params;
+  try {
+    // Update the order status or perform any other necessary actions
+    const order = await Order.findOne({_id:orderId})
+    const driver= await Driver.findOne({phone:phone})
+    const result = await Order.updateOne(
+      { _id: orderId },
+      { $set: { isDriverConfirmed:true,driverId:driver._id } }
+    );
+    await Driver.updateOne({phone},
+      { $push: { order: { orderId:orderId  } } },
+      { upsert: true }
+    )
+    console.log(result);
+    res.send(order);
+  }
+  catch(error){
+    
+    console.error("Error fetching orders and updating driver:", error);
+    res.status(500).send("Internal Server Error");
+
+  }
+
+
+})
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

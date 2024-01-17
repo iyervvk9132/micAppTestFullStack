@@ -1,0 +1,39 @@
+<!-- driver-confirm-pickup.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Pickup</title>
+  <!-- Add any additional styles or scripts as needed -->
+</head>
+<body>
+  <h1>Confirm Pickup</h1>
+
+  <% if (orders && orders.length > 0) { %>
+    <ul>
+      <% orders.forEach(order => { %>
+        <li>
+            <strong>Order ID:</strong> <%= order._id %><br>
+            <strong>order lists:</strong> <%= order.orders %><br>
+            <strong>user Id:</strong> <%= order.user %><br>
+            <strong>Order pickupDate:</strong> <%= order.pickupDate %><br>
+            <strong>Order pickupTime:</strong> <%= order.pickupTime %><br>
+            <strong>delivery Date:</strong> <%= order.deliveryDate %><br>
+            <strong>delivery Time:</strong> <%= order.deliveryTime %><br>
+          <!-- Add more order details as needed -->
+          <form action="/driver/<%= driverPhone %>/confirm-pickup/<%= order._id %>" method="POST">
+            <button type="submit">Confirm Pickup</button>
+          </form>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No orders to confirm pickup.</p>
+  <% } %>
+
+  <!-- Add any additional content or customization as needed -->
+
+</body>
+</html>
