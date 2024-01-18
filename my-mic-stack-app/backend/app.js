@@ -93,9 +93,10 @@ const Driver = mongoose.model("driver", driverSchema);
 
 //mongoose schema for order
 const orderSchema = new mongoose.Schema({
-  userId: mongoose.Schema.Types.ObjectId,
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "customers" },
   orders: [
     {
+      itemId:Number,
       items: String,
       service: String,
       quantity: Number,
@@ -264,16 +265,6 @@ app.post("/user/:phone/orderList", async (req, res) => {
   let outputString = "";
   orderList = [];
 
-  for (const key in req.body) {
-    if (req.body.hasOwnProperty(key)) {
-      const value = req.body[key];
-
-      if (value !== "0") {
-        nonZeroValues[key] = value;
-        console.log(key);
-      }
-    }
-  }
 
   console.log("nonZeroValues");
   for (const key in nonZeroValues) {
@@ -287,6 +278,7 @@ app.post("/user/:phone/orderList", async (req, res) => {
       total = total + foundItem.PRICE * nonZeroValues[key];
       try {
         orderList.push({
+          itemId:key,
           items: foundItem.NAME,
           service: foundItem.OPERATION,
           quantity: nonZeroValues[key],
@@ -334,7 +326,7 @@ app.post("/user/:phone/orderList", async (req, res) => {
       console.log(Date.parse(deliveryDate));
       console.log(deliveryTime);
       result1 = await Order.create({
-        userId: user.id,
+        userId: user._id,
         orders: orderList,
         pickupDate: Date.parse(pickupDate),
         pickupTime: pickupTime,
@@ -776,7 +768,7 @@ app.get("/driver/:phone/confirm-pickup", async (req, res) => {
         { isDriverConfirmed: { $exists: false } }, // If isPickedUp is not present
         { isDriverConfirmed: false } // If isPickedUp is 'false'
       ]
-    });
+    }).populate("userId");
     if (orders.length === 0) {
       return res.send("No eligible orders for pickup today");
     }
@@ -818,7 +810,98 @@ app.post("/driver/:phone/confirm-pickup/:orderId", async (req,res)=>{
 
 
 })
+app.get("/driver/:phone/edit-order-list/:orderList", async (req,res)=>{
+  const { phone, orderList } = req.params;
+  try {
+    existingOrder = await Order.findOne({_id:orderList})
+    console.log(existingOrder)
+  let quantity=0
+  res.render('orderListDriver',
+ { data: data,
+  existingOrder:existingOrder,
+  quantity:quantity,
+  phone:phone})
+  } catch (error) {
+    console.error("Error fetching orders and updating driver:", error);
+    res.status(500).send("Internal Server Error");
+    
+  }
+})
+app.post("/driver/:phone/orderList/:order", async(req,res)=>{
+ const nonZeroValues = {};
+ let total = 0;
+ let outputString = "";
+ let orderList1 = [];
 
+ 
+ const {phone,order}=req.params;
+
+ for (const key in req.body) {
+  if (req.body.hasOwnProperty(key)) {
+    const value = req.body[key];
+
+    if (value !== "0") {
+      nonZeroValues[key] = value;
+      console.log(key);
+    }
+  }
+
+}
+
+for (const key in nonZeroValues){
+  console.log(`the item no ${key} has ${nonZeroValues[key]} quantity`);
+  const foundItem = dataList.CLOTHES.find(
+    (list) => list.ID === parseInt(key)
+  );
+  console.log(`Item with ID ${key} found:`, foundItem);
+  if (foundItem) {
+    total = total + foundItem.PRICE * nonZeroValues[key];
+    try {
+      orderList1.push({
+        itemId:key,
+        items: foundItem.NAME,
+        service: foundItem.OPERATION,
+        quantity: nonZeroValues[key],
+      });
+      console.log("New order added to the list");
+      console.log(foundItem.NAME);
+    } catch (error) {
+      console.error("Error adding order to the list:", error);
+      return res.status(500).send("Internal Server Error");
+    }
+    
+    if (outputString === "") {
+      outputString =
+        JSON.stringify(foundItem) +
+        " with the quantity of " +
+        nonZeroValues[key];
+    } else {
+      outputString =
+        outputString +
+        "," +
+        JSON.stringify(foundItem) +
+        " with the quantity of " +
+        nonZeroValues[key];
+    }
+  }
+
+}
+try {
+  const result = await Order.updateOne({id:order},{
+    orders: orderList1
+  })
+  console.log(order);
+  res.send(orderList1);
+
+}
+catch(error){
+  console.log("error");
+  console.log(error);
+}
+
+})
+app.get("/test",(req,res)=>{
+})
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

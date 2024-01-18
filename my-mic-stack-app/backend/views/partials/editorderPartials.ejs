@@ -1,0 +1,24 @@
+
+
+    <% for (let i = 0; i < data.length; i++) { if (data[i].VARIABLE_PRICE==0) { %>
+    <label for="<%= data[i].ID %>"
+      ><%= data[i].NAME %> RS<%= data[i].PRICE %>.00  </label>
+   
+      <%= quantity = 0; %>
+<% for (let j = 0; j < existingOrder.length; j++) { %>
+  <% if (existingOrder[j].itemId == data[i].ID) { %>
+    <% quantity += existingOrder[j].quantity; %>
+  <% } %>
+<% } %>
+<input
+type="number"
+id="<%= data[i].ID %>"
+name="<%= data[i].ID %>"
+min="0"
+value="<%= quantity %>" 
+     
+    />
+    <br />
+    
+    <% } %> <% } %>
+    

@@ -17,7 +17,16 @@
         <li>
             <strong>Order ID:</strong> <%= order._id %><br>
             <strong>order lists:</strong> <%= order.orders %><br>
-            <strong>user Id:</strong> <%= order.user %><br>
+            <% if (order.userId && order.userId.phone) { %>
+              <strong>user phone:</strong> <%= order.userId.phone %><br>
+            <% } else { %>
+              <strong>user phone:</strong> phone not available<br>
+            <% } %>
+            <% if (order.userId && order.userId.address) { %>
+              <strong>user address:</strong> <%= order.userId.address %><br>
+            <% } else { %>
+              <strong>user address:</strong> address not available<br>
+            <% } %>
             <strong>Order pickupDate:</strong> <%= order.pickupDate %><br>
             <strong>Order pickupTime:</strong> <%= order.pickupTime %><br>
             <strong>delivery Date:</strong> <%= order.deliveryDate %><br>
@@ -25,6 +34,9 @@
           <!-- Add more order details as needed -->
           <form action="/driver/<%= driverPhone %>/confirm-pickup/<%= order._id %>" method="POST">
             <button type="submit">Confirm Pickup</button>
+          </form>
+          <form action="/driver/<%= driverPhone %>/edit-order-list/<%= order._id %>" method="GET">
+            <button type="submit">Edit Order List</button>
           </form>
         </li>
       <% }); %>

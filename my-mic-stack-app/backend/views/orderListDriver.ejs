@@ -8,36 +8,22 @@
   </head>
   <body>
     <h1>Clothes Registration</h1>
-    <form action="/<%= phone%>/orderList" method="post">
+    <form action="/driver/<%=phone%>/orderList/<%= existingOrder._id%>" method="post">
+      <%= existingOrder._id.$oid%> <br>
       <% for(let i = 0; i < data.length; i++) {%> <%= data[i].FUNCTION %> <br />
       <% for(let j = 0; j < data[i].SUBFUNCTION.length; j++) {%> <%=
       data[i].SUBFUNCTION[j].GENDER %> <br />
-      <%-
-      include('partials/orderPartials',{data:data[i].SUBFUNCTION[j].PRODUCTS})%>
+      <%-      include('partials/editorderPartials',{data:data[i].SUBFUNCTION[j].PRODUCTS,existingOrder:existingOrder.orders})%>
 
       <br />
       <%}%><br />
       <%}%> <br />
       <p>subtotal: <span id="totalPrice">0</span></p>
       
+      
 
       <button type="submit">Register</button>
     </form>
-    <script>
-
     
-    // Function to generate time options
-    
-
-
-
-      
-
-      document.addEventListener('DOMContentLoaded', () => {
-        updateTimes();
-        updateTotalPrice();
-        console.log("DOMContentLoaded")
-      });
-    </script>
   </body>
 </html>
