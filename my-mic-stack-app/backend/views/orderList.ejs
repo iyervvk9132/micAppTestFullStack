@@ -19,162 +19,166 @@
       <%}%><br />
       <%}%> <br />
       <p>subtotal: <span id="totalPrice">0</span></p>
-      
+
       <label for="pickupDate">Pickup Date:</label>
-      <input type="date" id="pickupDate" name="pickupDate" required  min="<%=currentDate  %>" onchange="updatePickupDate()" >
+      <input
+        type="date"
+        id="pickupDate"
+        name="pickupDate"
+        required
+        min="<%=currentDate  %>"
+        onchange="updatePickupDate()"
+      />
       <label for="pickupTime">Pickup Time:</label>
-      <select id="pickupTime" name="pickupTime" required>
-
-
-      </select>
-            <br>
+      <select id="pickupTime" name="pickupTime" required></select>
+      <br />
 
       <label for="deliveryDate">Delivery Date :</label>
-      <input type="date" id="deliveryDate" name="deliveryDate"  required     onchange="updateDeliveryDate()"  >
+      <input
+        type="date"
+        id="deliveryDate"
+        name="deliveryDate"
+        required
+        onchange="updateDeliveryDate()"
+      />
       <label for="deliveryTime">Delivery Time:</label>
-      <select id="deliveryTime" name="deliveryTime" required>
-      </select><br>
+      <select id="deliveryTime" name="deliveryTime" required></select
+      ><br />
 
-      <button type="submit">Register</button>
+      <button type="submit" onclick="submitAction()">Register</button>
     </form>
     <script>
-
-    
-    // Function to generate time options
-    function generatePickupTimeOptions(startHour) {
-      let finalValue="";
-      for (let hour = startHour; hour <= 17; hour++) {
-        console.log(hour+":00")
-        finalValue+="<option  value=\""+hour+":00\">"+hour+":00</option>"
-
-      }
-      console.log(finalValue);
-      document.getElementById("pickupTime").innerHTML=finalValue
-    }
-    
-    // Function to generate time options
-    function generateDeliveryTimeOptions(startHour) {
-      let finalValue="";
-      for (let hour = startHour; hour <= 17; hour++) {
-        console.log(hour+":00")
-        finalValue+="<option  value=\""+hour+":00\">"+hour+":00</option>"
-
-      }
-      console.log(finalValue);
-      document.getElementById("deliveryTime").innerHTML=finalValue
-    }
-
-    function updatePickupDate(){
-        let updateDate = new   Date(document.getElementById("pickupDate").value);
-        const treat = updateDate.setDate(updateDate.getDate()+2);
-        console.log(updateDate);
-
-
-        let temp= new Date(updateDate+2);
-        tempday = updateDate.getDate(),
-    tempmonth = updateDate.getMonth()+1, 
-    tempyear = updateDate.getFullYear();
-        if(tempday<10){
-                tempday='0'+tempday
-            } 
-        if(tempmonth<10){
-            tempmonth='0'+tempmonth
+      // Function to generate time options
+      function generatePickupTimeOptions(startHour) {
+        let finalValue = "";
+        for (let hour = startHour; hour <= 17; hour++) {
+          console.log(hour + ":00");
+          finalValue +=
+            '<option  value="' + hour + ':00">' + hour + ":00</option>";
         }
-        temp = tempyear+'-'+tempmonth+'-'+tempday;
-        document.getElementById("deliveryDate").setAttribute("min",temp);
+        console.log(finalValue);
+        document.getElementById("pickupTime").innerHTML = finalValue;
+      }
+      function submitAction() {
+        console.log(document.getElementById("pickupTime"));
+        console.log(document.getElementById("pickupDate"));
+        console.log(document.getElementById("deliveryTime"));
+        console.log(document.getElementById("deliveryDate"));
+        setTimeout(function () {
+          console.log(document.getElementById("pickupTime"));
+          console.log(document.getElementById("pickupDate"));
+          console.log(document.getElementById("deliveryTime"));
+          console.log(document.getElementById("deliveryDate"));
+        }, 5000);
+      }
+      // Function to generate time options
+      function generateDeliveryTimeOptions(startHour) {
+        let finalValue = "";
+        for (let hour = startHour; hour <= 17; hour++) {
+          console.log(hour + ":00");
+          finalValue +=
+            '<option  value="' + hour + ':00">' + hour + ":00</option>";
+        }
+        console.log(finalValue);
+        document.getElementById("deliveryTime").innerHTML = finalValue;
+      }
+
+      function updatePickupDate() {
+        let updateDate = new Date(document.getElementById("pickupDate").value);
+        updateDate.setDate(updateDate.getDate() + 2);
+
+        let temp = new Date(updateDate);
+        temp.setDate(temp.getDate() + 2);
+
+        let tempday = temp.getDate();
+        let tempmonth = temp.getMonth() + 1;
+        let tempyear = temp.getFullYear();
+
+        if (tempday < 10) {
+          tempday = "0" + tempday;
+        }
+        if (tempmonth < 10) {
+          tempmonth = "0" + tempmonth;
+        }
+
+        const minDeliveryDate = tempyear + "-" + tempmonth + "-" + tempday;
+        document.getElementById("deliveryDate").setAttribute("min", minDeliveryDate);
         let today = new Date();
 
-        if (updateDate.getDate()==today.getDate()) {
-
-          let tempTime=today.getHours()+1;
+        if (updateDate.getDate() == today.getDate()) {
+          let tempTime = today.getHours() + 1;
           console.log("true");
           generatePickupTimeOptions(tempTime);
         } else {
           console.log("false");
           generatePickupTimeOptions(10);
-          
         }
-        console.log(new   Date(updateDate).getDate());
+        console.log(new Date(updateDate).getDate());
         console.log(today.getDate());
-
       }
 
-      function updateDeliveryDate(){
-        let updateDate = new   Date(document.getElementById("deliveryDate").value);
+      function updateDeliveryDate() {
+        let updateDate = new Date(
+          document.getElementById("deliveryDate").value
+        );
         console.log(updateDate);
-        let year = updateDate.getFullYear();
-        let today = new Date();
 
-        if (updateDate.getDate()==today.getDate()) {
-
-          let tempTime=today.getHours()+1;
-          console.log("true");
-          generateDeliveryTimeOptions(tempTime);
-        } else {
-          console.log("false");
-          generateDeliveryTimeOptions(10);
-          
-        }
-        console.log(new   Date(updateDate).getDate());
-        console.log(today.getDate());
+        generateDeliveryTimeOptions(10);
 
       }
-
-
-      
 
       function getMinDateTime() {
         let today = new Date(),
-    day = today.getDate(),
-    month = today.getMonth()+1, 
-    year = today.getFullYear();
-        if(day<10){
-                day='0'+day
-            } 
-        if(month<10){
-            month='0'+month
+          day = today.getDate(),
+          month = today.getMonth() + 1,
+          year = today.getFullYear();
+        if (day < 10) {
+          day = "0" + day;
         }
-        today = year+'-'+month+'-'+day;
+        if (month < 10) {
+          month = "0" + month;
+        }
+        today = year + "-" + month + "-" + day;
 
-        document.getElementById("pickupDate"). setAttribute("min", today);
+        document.getElementById("pickupDate").setAttribute("min", today);
 
-        document.getElementById("deliveryDate"). setAttribute("min",today);
-        
-        
-      } 
+        document.getElementById("deliveryDate").setAttribute("min", today);
+      }
 
       function updateTimes() {
         getMinDateTime();
-
-        
       }
 
-       function updateTotalPrice() {
-         let totalPrice = 0;
-         console.log(document.getElementById("${<% data[0].SUBFUNCTION[0].PRODUCTS[0].ID%>} ").value)
-         
+      function updateTotalPrice() {
+        let totalPrice = 0;
+        for (let index = 1; index <= 194; index++) {
+          var test = document.getElementById(`${index}`);
+          if (test != null) {
+            console.log(test);
+          }
+        }
 
-      //   // Assuming data is a global variable
-      //   for(let i = 0; i < data.length; i++) { 
-      //     for(let j = 0; j < data[i].SUBFUNCTION.length; j++) { 
-      //       for(let k = 0; k < data[i].SUBFUNCTION[j].PRODUCTS.length; k++) { 
-      //         const Input = document.getElementById(`${data[i].SUBFUNCTION[j].PRODUCTS[k].ID} `);
-      //         const Price = parseFloat(`${ data[i].SUBFUNCTION[j].PRODUCTS[k].PRICE }`);
-      //         totalPrice += Input.value * Price;
-      //       } 
-      //     } 
-      //   } 
+        //   // Assuming data is a global variable
+        //   for(let i = 0; i < data.length; i++) {
+        //     for(let j = 0; j < data[i].SUBFUNCTION.length; j++) {
+        //       for(let k = 0; k < data[i].SUBFUNCTION[j].PRODUCTS.length; k++) {
+        //         const Input = document.getElementById(`${data[i].SUBFUNCTION[j].PRODUCTS[k].ID} `);
+        //         const Price = parseFloat(`${ data[i].SUBFUNCTION[j].PRODUCTS[k].PRICE }`);
+        //         totalPrice += Input.value * Price;
+        //       }
+        //     }
+        //   }
 
-      //   console.log(totalPrice);
+        //   console.log(totalPrice);
 
-      //   const totalPriceElement = document.getElementById('totalPrice');
-      //   totalPriceElement.textContent = totalPrice.toFixed(2); 
-       }
+        //   const totalPriceElement = document.getElementById('totalPrice');
+        //   totalPriceElement.textContent = totalPrice.toFixed(2);
+      }
 
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener("DOMContentLoaded", () => {
         updateTimes();
         updateTotalPrice();
-        console.log("DOMContentLoaded")
+        console.log("DOMContentLoaded");
       });
     </script>
   </body>

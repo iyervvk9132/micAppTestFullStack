@@ -1,0 +1,89 @@
+<!-- views/make-payment.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make Payment</title>
+  <!-- Include Razorpay.js script -->
+</head>
+<body>
+  <h1>Make Payment</h1>
+  <form id="paymentForm" action="/user/<%= phone %>/order/<%= orderId %>/payment" method="post">
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" name="amount"required>
+    <br>
+    <label for="phone">phone no:</label>
+    <input type="text" id="phone" name="phone" value="<%=phone%>" readonly>
+    <br>
+    <label for="orderId">orderId:</label>
+    <input type="text" id="orderId" name="orderId" value="<%=orderId%>" readonly>
+    <br>
+    <button type="button" onclick="makePayment()">Pay Now</button>
+  </form>
+  <script>
+ function makePayment() {
+ 
+
+  // Make an AJAX request to save the amount on the backend
+  try {
+    let phone = document.getElementById("phone").value;
+  let orderId = document.getElementById("orderId").value;
+  let amount = document.getElementById("amount").value;
+  console.log("makePayment");
+  fetch(`/user/${phone}/order/${orderId}/saveAmount`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ amount: amount }),
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  }).then(data => {
+    console.log('Backend response:', data);
+
+    if (data.error) {
+      console.error('Error saving amount on the backend:', data.error);
+    } else {
+      console.log('Amount saved successfully on the backend');
+    }
+
+    const options = {
+      key: 'rzp_test_nHQwaBNHjTq16a',
+      amount: parseFloat(amount) * 100, // Amount in paise
+      currency: 'INR',
+      name: 'Your Company Name',
+      description: 'Payment for Order',
+      order_id: data.razorpayOrderId,
+      handler: function(response) {
+        // Handle the success response from Razorpay
+    console.log('Razorpay Handler called:', response);
+    console.log('Payment successful:', response);
+        console.log('Payment successful:', response);
+        // Optionally, you can redirect to a success page or update UI
+      },
+    };
+
+    console.log('Sending amount:', amount);
+    const rzp = new Razorpay(options);
+    rzp.open();
+  })
+  .catch(error => {
+    // Handle the error, show an alert, or redirect to an error page
+    console.error('Error saving amount on the backend:', error);
+  });
+    
+  } catch (error) {
+    console.error('Error saving amount on the backend:', error);
+
+  }
+}
+
+ </script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

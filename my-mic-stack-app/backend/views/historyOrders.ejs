@@ -5,21 +5,29 @@
 <body>
   <h1>Order History for +<%= user.phone %></h1>
 
-   <% if (user.order && user.order.length > 0) { %>
-    <h3>Total Order Size:<%= user.order.length %></h3>
+  <% if (user.order && user.order.length > 0) { %>
+    <h3>Total Order Size: <%= user.order.length %></h3>
     <ul>
       <% user.order.forEach(order => { %>
-        
-        <li>          
-            <% for(let i = 0; i < order.orderId.orders.length; i++) { %>
-              <p>Order Items[<%= i%>]:" <%= order.orderId.orders[i].items %> ",Items service: "<%= order.orderId.orders[i].service %>"  ,Items quantity: <%= order.orderId.orders[i].quantity %></p>
-            <% } %>
-            <p>Pickup Date: <%= order.orderId.pickupDate %></p>
-            <p>Pickup Time: <%= order.orderId.pickupTime %></p>
-            <p>Delivery Date: <%= order.orderId.deliveryDate %></p>
-            <p>Delivery Time: <%= order.orderId.deliveryTime %></p>
-            <p>Total Price: <%= order.orderId.totalPrice %></p>
-          
+        <li>
+          <% for (let i = 0; i < order.orderId.orders.length; i++) { %>
+            <p>Order Items[<%= i %>]: "<%= order.orderId.orders[i].items %>", Items service: "<%= order.orderId.orders[i].service %>", Items quantity: <%= order.orderId.orders[i].quantity %></p>
+          <% } %>
+          <p>Pickup Date: <%= order.orderId.pickupDate %></p>
+          <p>Pickup Time: <%= order.orderId.pickupTime %></p>
+          <p>Delivery Date: <%= order.orderId.deliveryDate %></p>
+          <p>Delivery Time: <%= order.orderId.deliveryTime %></p>
+          <p>Total Price: <%= order.orderId.totalPrice %></p>
+
+          <!-- Check if unpaid amount is greater than 0 -->
+          <% if (order.orderId.payment.totalUnpaid > 0) { %>
+            <!-- Display a button for payment -->
+            <form action="/user/<%= user.phone %>/order/<%= order.orderId._id %>/payment" method="get">
+              <button type="submit">Make Payment</button>
+            </form>
+          <% } else { %>
+            <p>No payment required for this order.</p>
+          <% } %>
         </li>
       <% }); %>
     </ul>

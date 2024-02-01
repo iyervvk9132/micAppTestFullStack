@@ -1,0 +1,54 @@
+<!-- driver-history-orders.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver Pickup Order History</title>
+  </head>
+  <body>
+    <h1>Driver Pickup Order History</h1>
+
+    <% if (!pickupOrders || pickupOrders.length === 0) { %>
+    <p>No pickup orders available.</p>
+    <% } else { %>
+    <ul>
+      <% pickupOrders.forEach(pickupOrder => { %>
+      <li>
+        <strong>Order ID:</strong> <em><%= pickupOrder.orderId._id %></em><br />
+        <strong>Date:</strong><em> <%= pickupOrder.orderId.pickupDate %></em><br />
+        <strong>Time:</strong> <em><%= pickupOrder.orderId.pickupTime %></em><br />
+
+        <!-- Access order details -->
+        <ul>
+          <% if (pickupOrder.orderId.orders && pickupOrder.orderId.orders.length > 0) { %>
+            <% pickupOrder.orderId.orders.forEach(orders => { %>
+              <li>
+                <strong>Item ID:</strong> <%= orders.itemId %><br />
+                <strong>Items:</strong> <%= orders.items %><br />
+                <strong>Service:</strong> <%= orders.service %><br />
+                <strong>Quantity:</strong> <%= orders.quantity %><br />
+
+                <!-- Add Edit Order button -->
+                <hr>
+                
+              </li>
+            <% }); %>
+            <form method="get" action="/driver/<%=driverPhone%>/edit-order-list/<%= pickupOrder.orderId._id %>">
+              <button type="submit">Edit Order</button>
+            </form>
+          <% } else { %>
+            <li>No order details available.</li>
+          <% } %>
+          <hr>
+          <hr>
+        </ul>
+      </li>
+      <% }); %>
+    </ul>
+    <% } %>
+
+    <a href="/driver/<%= driverPhone %>/home">Go back to dashboard</a>
+  </body>
+</html>

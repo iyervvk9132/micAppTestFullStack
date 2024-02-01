@@ -27,6 +27,7 @@
     "nodemon": "^3.0.1",
     "nominatim-js": "^1.0.10",
     "path": "^0.12.7",
+    "razorpay": "^2.9.2",
     "twilio": "^4.20.0"
   },
   "description": ""
