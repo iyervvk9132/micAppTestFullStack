@@ -1,26 +1,51 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const session = require("express-session");
-const fs = require("fs").promises;
-const { readFileSync } = require("fs");
-const Nexmo = require("nexmo");
-const DateTimeSlots = require("date-time-slots").default;
-const axios = require("axios");
-const { time } = require("console");
-const Razorpay = require("razorpay");
-const { ObjectId } = require("mongodb");
+// Importing required modules and libraries
+const express = require("express"); // Express.js for building the web application
+const mongoose = require("mongoose"); // Mongoose for MongoDB integration
+const bodyParser = require("body-parser"); // Body-parser for parsing incoming request bodies
+const session = require("express-session"); // Express-session for managing user sessions
+const fs = require("fs").promises; // Promisified file system module for reading files
+const { readFileSync } = require("fs"); // Synchronous file read function
+const Nexmo = require("nexmo"); // Nexmo for SMS communication
+const DateTimeSlots = require("date-time-slots").default; // Library for managing date and time slots
+const axios = require("axios"); // Axios for making HTTP requests
+const { ObjectId } = require("mongodb"); // MongoDB ObjectId for unique identifiers
+const Razorpay = require("razorpay"); // Razorpay for payment processing
 
+/**
+ * @constant razorpay
+ * @description Configuring Razorpay with API keys.
+ * @property {string} key_id - Razorpay API key ID.
+ * @property {string} key_secret - Razorpay API secret key.
+ */
 const razorpay = new Razorpay({
   key_id: "rzp_test_nHQwaBNHjTq16a",
   key_secret: "7ki8eeVXevjSkwXfsFMdLHXy",
 });
 
+
+/**
+ * @constant app
+ * @description Creating an instance of Express.
+ */
 const app = express();
+
+/**
+ * @constant port
+ * @description Port number for the Express server.
+ * @default 3000
+ */
 const port = 3000;
 
+/**
+ * @middleware
+ * @description Configuring middleware to parse URL-encoded request bodies.
+ */
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/**
+ * @middleware
+ * @description Configuring Express-session for managing user sessions.
+ */
 app.use(
   session({
     secret: "your-secret-key",
@@ -29,15 +54,100 @@ app.use(
   })
 );
 
+/**
+ * @constant data
+ * @description Reading JSON file for initial data (assuming CLOTHLIST.json exists in the models directory).
+ * @type {object}
+ */
 const data = JSON.parse(readFileSync("./models/CLOTHLIST.json"));
+
+/**
+ * @constant dataList
+ * @description Reading JSON file for initial data (assuming PRICE_FINAL_DATA.json exists in the models directory).
+ * @type {object}
+ */
 const dataList = JSON.parse(readFileSync("./models/PRICE_FINAL_DATA.json"));
+
+/**
+ * @constant pricelistdata
+ * @description Reading JSON file for initial data (assuming data.json exists in the views directory).
+ * @type {object}
+ */
 const pricelistdata = JSON.parse(readFileSync("./views/data.json"));
+
+/**
+ * @constant orderList
+ * @description An array to store order information.
+ * @type {Array}
+ */
+let orderList = [];
+
+/**
+ * @constant pickupDate
+ * @description Variable to store pickup date.
+ * @type {Date}
+ */
+let pickupDate;
+
+/**
+ * @constant pickupTime
+ * @description Variable to store pickup time.
+ * @type {string}
+ */
+let pickupTime;
+
+/**
+ * @constant deliveryDate
+ * @description Variable to store delivery date.
+ * @type {Date}
+ */
+let deliveryDate;
+
+/**
+ * @constant deliveryTime
+ * @description Variable to store delivery time.
+ * @type {string}
+ */
+let deliveryTime;
+
+/**
+ * @constant result1
+ * @description Placeholder variable (assuming it will be used for some purpose in the code).
+ * @type {any}
+ */
+let result1;
+
+/**
+ * @event mongoose
+ * @description Connecting to MongoDB using Mongoose.
+ */
 mongoose.connect("mongodb://localhost:27017/micTestApp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-//mongoose schema for user
+
+/**
+ * @schema User
+ * @description Mongoose schema for the User model.
+ * @property {string} phone - User's phone number.
+ * @property {boolean} isVerified - User verification status, default is false.
+ * @property {string} verificationCode - Verification code sent to the user.
+ * @property {Array} order - Array of orders associated with the user.
+ * @property {number} totalUnpaid - Total unpaid amount by the user.
+ * @property {number} totalPaid - Total amount paid by the user.
+ * @property {ObjectId} payzappId - ObjectId reference to Payzapp (assuming Payzapp is another model).
+ * @property {Object} address - User's address information.
+ * @property {number} address.latitude - Latitude of the address.
+ * @property {number} address.longitude - Longitude of the address.
+ * @property {string} address.road - Road of the address.
+ * @property {string} address.suburb - Suburb of the address.
+ * @property {string} address.city - City of the address.
+ * @property {string} address.state - State of the address.
+ * @property {string} address.country - Country of the address.
+ * @property {string} address.countryCode - Country code of the address.
+ * @property {boolean} address.isFilled - Flag indicating if the address is filled, default is false.
+ */
 const userSchema = new mongoose.Schema({
   phone: String,
   isVerified: { type: Boolean, default: false },
@@ -47,9 +157,9 @@ const userSchema = new mongoose.Schema({
       orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
     },
   ],
-  totalUnpaid:Number,
-  totalPaid:Number,
-  payzappId:{type:ObjectId},
+  totalUnpaid: Number,
+  totalPaid: Number,
+  payzappId: { type: ObjectId },
   address: {
     latitude: Number,
     longitude: Number,
@@ -63,9 +173,33 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+
+/**
+ * @model User
+ * @description Mongoose model for the User schema.
+ */
 const User = mongoose.model("customers", userSchema);
 
-//mongoose schema for driver
+
+/**
+ * @schema Driver
+ * @description Mongoose schema for the Driver model.
+ * @property {string} phone - Driver's phone number.
+ * @property {boolean} isVerified - Driver verification status, default is false.
+ * @property {string} verificationCode - Verification code sent to the driver.
+ * @property {Array} pickupOrder - Array of pickup orders associated with the driver.
+ * @property {Array} deliveryOrder - Array of delivery orders associated with the driver.
+ * @property {Object} address - Driver's address information.
+ * @property {number} address.latitude - Latitude of the address.
+ * @property {number} address.longitude - Longitude of the address.
+ * @property {string} address.road - Road of the address.
+ * @property {string} address.suburb - Suburb of the address.
+ * @property {string} address.city - City of the address.
+ * @property {string} address.state - State of the address.
+ * @property {string} address.country - Country of the address.
+ * @property {string} address.countryCode - Country code of the address.
+ * @property {Array} salary - Array containing daily cost, monthly wages, and loan details.
+ */
 const driverSchema = new mongoose.Schema({
   phone: String,
   isVerified: { type: Boolean, default: false },
@@ -101,9 +235,35 @@ const driverSchema = new mongoose.Schema({
   ],
 });
 
+
+/**
+ * @model Driver
+ * @description Mongoose model for the Driver schema.
+ */
 const Driver = mongoose.model("driver", driverSchema);
 
-//mongoose schema for order
+
+/**
+ * @schema Order
+ * @description Mongoose schema for the Order model.
+ * @property {ObjectId} userId - ObjectId reference to the User model.
+ * @property {Array} orders - Array of items in the order.
+ * @property {number} totalPrice - Total price of the order.
+ * @property {boolean} isPaid - Flag indicating if the order is paid, default is false.
+ * @property {Object} payment - Payment details including total paid and total unpaid.
+ * @property {Date} pickupDate - Pickup date for the order.
+ * @property {Date} deliveryDate - Delivery date for the order.
+ * @property {string} pickupTime - Pickup time for the order.
+ * @property {string} deliveryTime - Delivery time for the order.
+ * @property {boolean} isPickedUp - Flag indicating if the order is picked up, default is false.
+ * @property {ObjectId} pickupDriverId - ObjectId reference to the Driver model for pickup.
+ * @property {boolean} isDriverConfirmed - Flag indicating if the driver confirmed pickup, default is false.
+ * @property {boolean} isWorkStarted - Flag indicating if work on the order has started, default is false.
+ * @property {boolean} isWorkCompleted - Flag indicating if work on the order is completed, default is false.
+ * @property {boolean} isDeliveryPickuped - Flag indicating if the delivery is picked up, default is false.
+ * @property {ObjectId} deliveryDriverId - ObjectId reference to the Driver model for delivery.
+ * @property {boolean} isDelivered - Flag indicating if the order is delivered, default is false.
+ */
 const orderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "customers" },
   orders: [
@@ -135,36 +295,60 @@ const orderSchema = new mongoose.Schema({
   isDelivered: { type: Boolean, default: false },
 });
 
+
+/**
+ * @model Order
+ * @description Mongoose model for the Order schema.
+ */
 const Order = mongoose.model("Order", orderSchema);
 
-//nexmo sms api
+
+/**
+ * @constant nexmo
+ * @description Nexmo SMS API configuration.
+ * @property {string} apiKey - Nexmo API key.
+ * @property {string} apiSecret - Nexmo API secret.
+ */
 const nexmo = new Nexmo({
   apiKey: "21c82be4",
   apiSecret: "9KykD98D0TWZ7JGb",
 });
 
+/**
+ * @event app.set
+ * @description Setting the view engine for rendering templates to EJS.
+ */
 app.set("view engine", "ejs");
 
+/**
+ * @event app.use
+ * @description Serving static files from the 'views' directory.
+ */
 app.use(express.static("views"));
 
-let orderList = [];
-let pickupDate, pickupTime, deliveryDate, deliveryTime;
-let result1;
-
-/* 
-home page
-*/
+/**
+ * @route GET /
+ * @description Renders the home page for user interaction.
+ * @returns {Object} The rendered home page.
+ */
 app.get("/", (req, res) => {
   res.render("home", { type: "user" });
 });
 
-/* 
-login page functions
-*/
+/**
+ * @route GET /user/login
+ * @description Renders the login page for user authentication.
+ * @returns {Object} The rendered login page.
+ */
 app.get("/user/login", (req, res) => {
   res.render("login", { type: "user" });
 });
-
+/**
+ * @route POST /user/login
+ * @description Handles user login by sending a verification code via SMS.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The response object or an error message.
+ */
 app.post("/user/login", async (req, res) => {
   const phone = req.body.phone;
 
@@ -202,10 +386,22 @@ app.post("/user/login", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
+/**
+ * @route GET /user/verify-otp
+ * @description Renders the OTP verification page for user authentication.
+ * @returns {Object} The rendered OTP verification page.
+ */
 app.get("/user/verify-otp", (req, res) => {
   res.render("verify-otp", { phone, user: "user" });
 });
+
+/**
+ * @route POST /user/:phone/verify-otp
+ * @description Handles OTP verification and redirects based on user verification status.
+ * @param {string} phone - The user's phone number.
+ * @param {string} verificationCode - The OTP entered by the user.
+ * @returns {Object} The response object or an error message.
+ */
 
 app.post("/user/:phone/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
@@ -230,9 +426,13 @@ app.post("/user/:phone/verify-otp", async (req, res) => {
   }
 });
 
-/* 
-order page functions
-*/
+/**
+ * @route GET /user/:phone/new-order
+ * @description Redirects users to the order list page for creating a new order.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The redirected order list page.
+ */
+
 app.get("/user/:phone/new-order", (req, res) => {
   console.log(req.params);
   console.log(req.session);
@@ -240,8 +440,14 @@ app.get("/user/:phone/new-order", (req, res) => {
   res.redirect(`/user/${req.params.phone}/orderList`);
 });
 
+/**
+ * @route GET /user/:phone/orderList
+ * @description Renders the order list page with available options for order creation.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The rendered order list page with necessary data.
+ */
 app.get("/user/:phone/orderList", (req, res) => {
-  console.log("orderList get")
+  console.log("orderList get");
   console.log(req.params);
   let today = new Date();
   let test = new Date();
@@ -250,9 +456,9 @@ app.get("/user/:phone/orderList", (req, res) => {
   if (today.getHours() >= 16) {
     today.setDate(today.getDate() + 1);
   }
-    day = today.getDate(),
-    month = today.getMonth() + 1, //January is 0
-    year = today.getFullYear();
+  (day = today.getDate()),
+    (month = today.getMonth() + 1), //January is 0
+    (year = today.getFullYear());
   if (day < 10) {
     day = "0" + day;
   }
@@ -278,13 +484,20 @@ app.get("/user/:phone/orderList", (req, res) => {
   });
 });
 
+/**
+ * @route POST /user/:phone/orderList
+ * @description Handles the creation of a new order based on user input.
+ * @param {string} phone - The user's phone number.
+ * @param {Object} req.body - The request body containing user-selected order details.
+ * @returns {Object} The response object or an error message.
+ */
 app.post("/user/:phone/orderList", async (req, res) => {
   let nonZeroValues = {};
   let total = 0;
   let outputString = "";
   orderList = [];
   console.log(req.body);
-  
+
   const { phone } = req.params;
 
   for (const key in req.body) {
@@ -297,7 +510,6 @@ app.post("/user/:phone/orderList", async (req, res) => {
       }
     }
   }
-  
 
   console.log("nonZeroValues");
   for (const key in nonZeroValues) {
@@ -391,8 +603,9 @@ app.post("/user/:phone/orderList", async (req, res) => {
 
       if (result.acknowledged && result.modifiedCount === 1) {
         const modifiedOrderId = result1._id;
-        return res.redirect(`/user/${req.params.phone}/order/${result1._id}/payment`);
-
+        return res.redirect(
+          `/user/${req.params.phone}/order/${result1._id}/payment`
+        );
 
         return res.send(result1);
       } else {
@@ -411,13 +624,21 @@ app.post("/user/:phone/orderList", async (req, res) => {
   }
 });
 
-/* 
-user registeratiom page
-*/
+/**
+ * @route GET /user/register
+ * @description Renders the user registration page.
+ * @returns {Object} The rendered registration page for users.
+ */
 app.get("/user/register", (req, res) => {
   res.render("register", { type: "user" });
 });
 
+/**
+ * @route POST /user/register
+ * @description Handles user registration, generates a verification code, and sends it via SMS.
+ * @param {string} phone - The user's phone number for registration.
+ * @returns {Object} Redirects to the OTP verification page or displays an error message.
+ */
 app.post("/user/register", async (req, res) => {
   const phone = req.body.phone;
   const verificationCode = Math.floor(
@@ -465,12 +686,23 @@ app.post("/user/register", async (req, res) => {
   }
 });
 
-/* 
-verification page
-*/
+/**
+ * @route GET /user/:phone/verify-address
+ * @description Renders the address verification page for users.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The rendered address verification page.
+ */
 app.get("/user/:phone/verify-address", (req, res) => {
   res.render("verify-address", { phone: req.params.phone, type: "user" });
 });
+
+/**
+ * @route POST /user/:phone/verify-address
+ * @description Handles user address verification using OpenStreetMap API.
+ * @param {string} phone - The user's phone number.
+ * @param {Object} req.body - The request body containing latitude and longitude.
+ * @returns {Object} Redirects to the user's home page or displays an error message.
+ */
 app.post("/user/:phone/verify-address", async (req, res) => {
   const { phone } = req.params;
   const { latitude, longitude } = req.body;
@@ -525,6 +757,12 @@ app.post("/user/:phone/verify-address", async (req, res) => {
   }
 });
 
+/**
+ * @route GET /user/:phone/history-orders
+ * @description Renders the user's order history page.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The rendered order history page for users.
+ */
 app.get("/user/:phone/history-orders", async (req, res) => {
   console.log(req.params);
   const user = await User.findOne({ phone: req.params.phone }).populate(
@@ -537,6 +775,12 @@ app.get("/user/:phone/history-orders", async (req, res) => {
   }
 });
 
+/**
+ * @route GET /user/:phone/user-saved-data
+ * @description Renders the page displaying the user's personal data.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The rendered page with the user's personal data.
+ */
 app.get("/user/:phone/user-saved-data", async (req, res) => {
   const { phone } = req.params;
   const user = await User.findOne({ phone: req.params.phone }).populate(
@@ -547,19 +791,42 @@ app.get("/user/:phone/user-saved-data", async (req, res) => {
   res.render("user-personal-data", { user });
 });
 
+/**
+ * @route GET /user/:phone/home
+ * @description Renders the user's home page.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The rendered home page for users.
+ */
 app.get("/user/:phone/home", (req, res) => {
   const { phone } = req.params;
   res.render("user-data", { phone });
 });
+
+/**
+ * @route GET /user/:phone/pricelist
+ * @description Renders the price list page with available options for users.
+ * @returns {Object} The rendered price list page.
+ */
 app.get("/user/:phone/pricelist", (req, res) => {
   console.log(dataList);
   res.render("pricelist", { data: dataList.CLOTHES });
 });
 
+/**
+ * @route GET /driver/login
+ * @description Renders the login page for driver authentication.
+ * @returns {Object} The rendered login page for drivers.
+ */
 app.get("/driver/login", (req, res) => {
   res.render("login", { type: "driver" });
 });
 
+/**
+ * @route POST /driver/login
+ * @description Handles driver login by sending a verification code via SMS.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The response object or an error message.
+ */
 app.post("/driver/login", async (req, res) => {
   const phone = req.body.phone;
 
@@ -598,13 +865,21 @@ app.post("/driver/login", async (req, res) => {
   }
 });
 
-/* 
-user registeratiom page
-*/
+/**
+ * @route GET /driver/register
+ * @description Renders the driver registration page.
+ * @returns {Object} The rendered registration page for drivers.
+ */
 app.get("/driver/register", (req, res) => {
   res.render("register", { type: "driver" });
 });
 
+/**
+ * @route POST /driver/register
+ * @description Handles driver registration, generates a verification code, and sends it via SMS.
+ * @param {string} phone - The driver's phone number for registration.
+ * @returns {Object} Redirects to the OTP verification page or displays an error message.
+ */
 app.post("/driver/register", async (req, res) => {
   const phone = req.body.phone;
   const verificationCode = Math.floor(
@@ -652,13 +927,21 @@ app.post("/driver/register", async (req, res) => {
   }
 });
 
-/* 
-login page functions
-*/
+/**
+ * @route GET /driver/login
+ * @description Renders the login page for driver authentication.
+ * @returns {Object} The rendered login page for drivers.
+ */
 app.get("/driver/login", (req, res) => {
   res.render("login", { type: "driver" });
 });
 
+/**
+ * @route POST /driver/login
+ * @description Handles driver login by sending a verification code via SMS.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The response object or an error message.
+ */
 app.post("/driver/login", async (req, res) => {
   const phone = req.body.phone;
 
@@ -697,6 +980,12 @@ app.post("/driver/login", async (req, res) => {
   }
 });
 
+/**
+ * @route GET /driver/:phone/orderList
+ * @description Renders the page for updating order details by drivers.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The rendered order update page for drivers.
+ */
 app.get("/driver/:phone/orderList", (req, res) => {
   //build an page for order update
   console.log(req.params);
@@ -706,8 +995,13 @@ app.get("/driver/:phone/orderList", (req, res) => {
   });
 });
 
-// Add this route to your existing Express application
-
+/**
+ * @route GET /user/:phone/order/:orderId/payment
+ * @description Renders the payment page for users.
+ * @param {string} phone - The user's phone number.
+ * @param {string} orderId - The ID of the order.
+ * @returns {Object} The rendered payment page with EJS template.
+ */
 app.get("/user/:phone/order/:orderId/payment", (req, res) => {
   const { phone, orderId } = req.params;
 
@@ -715,24 +1009,27 @@ app.get("/user/:phone/order/:orderId/payment", (req, res) => {
   res.render("make-payment", { phone, orderId });
 });
 
-
-
+/**
+ * @route POST /user/:phone/order/:orderId/saveAmount
+ * @description Saves the paid amount to the backend for an order.
+ * @param {string} phone - The user's phone number.
+ * @param {string} orderId - The ID of the order.
+ * @param {Object} req.body - The request body containing the paid amount.
+ * @returns {Object} The response object or an error message.
+ */
 app.post("/user/:phone/order/:orderId/saveAmount", async (req, res) => {
   const { phone, orderId } = req.params;
   const { amount } = req.body;
   console.log("saveAmount");
   console.log(req.params);
-  console.log("saveAmountserverside:",req.body);
-
+  console.log("saveAmountserverside:", req.body);
 
   try {
     // Save the amount to your backend (e.g., update a database)
     if (amount === undefined || amount === 0) {
       console.log("Amount data is not found or is zero");
-    }
-    
-    else{
-      console.log("amount is: ",amount)
+    } else {
+      console.log("amount is: ", amount);
     }
     const options = {
       amount: amount * 100, // Razorpay expects amount in paise
@@ -746,13 +1043,20 @@ app.post("/user/:phone/order/:orderId/saveAmount", async (req, res) => {
 
     // For simplicity, here we are sending the Razorpay order ID as JSON
     res.json({ razorpayOrderId: razorpayOrder.id });
-
   } catch (error) {
-    console.error('Error saving amount on the backend:', error);
-  res.status(500).json({ error: error.message });
+    console.error("Error saving amount on the backend:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
+/**
+ * @route POST /user/:phone/order/:orderId/payment
+ * @description Handles the payment process for users.
+ * @param {string} phone - The user's phone number.
+ * @param {string} orderId - The ID of the order.
+ * @param {Object} req.body - The request body containing the payment details.
+ * @returns {Object} The response object or an error message.
+ */
 app.post("/user/:phone/order/:orderId/payment", async (req, res) => {
   const { phone, orderId } = req.params;
   const { amount } = req.body;
@@ -803,13 +1107,25 @@ app.post("/user/:phone/order/:orderId/payment", async (req, res) => {
   }
 });
 
-
+/**
+ * @route GET /driver/:phone/verify-otp
+ * @description Renders the OTP verification page for drivers.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The rendered OTP verification page for drivers.
+ */
 app.get("/driver/:phone/verify-otp", (req, res) => {
   console.log(req.params);
   const { phone } = req.params;
   res.render("verify-otp", { phone: phone, user: "driver" });
 });
 
+/**
+ * @route POST /driver/:phone/verify-otp
+ * @description Handles OTP verification for drivers.
+ * @param {string} phone - The driver's phone number.
+ * @param {Object} req.body - The request body containing the verification code.
+ * @returns {Object} Redirects to the driver's home page or displays an error message.
+ */
 app.post("/driver/:phone/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
   console.log(req.params);
@@ -830,6 +1146,21 @@ app.post("/driver/:phone/verify-otp", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+/**
+ * @function handleAddressData
+ * @description Updates the user's address information in the backend.
+ * @param {string} phone - The user's phone number.
+ * @param {string} latitude - The latitude of the address.
+ * @param {string} longitude - The longitude of the address.
+ * @param {string} road - The road of the address.
+ * @param {string} suburb - The suburb of the address.
+ * @param {string} city - The city of the address.
+ * @param {string} state - The state of the address.
+ * @param {string} country - The country of the address.
+ * @param {string} countryCode - The country code of the address.
+ * @param {Object} res - The response object.
+ */
 async function handleAddressData(
   phone,
   latitude,
@@ -884,22 +1215,47 @@ async function handleAddressData(
     res.status(500).send("Failed to save location");
   }
 }
-// Example routes for driver actions
+
+/**
+ * @route GET /driver/:phone/salary
+ * @description Renders the salary page for drivers.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The rendered salary page.
+ */
 app.get("/driver/:phone/salary", (req, res) => {
   // Render the salary page
 
   res.render("driver-salary", { driverPhone: req.params.phone });
 });
 
+/**
+ * @route GET /driver/:phone/history-orders
+ * @description Renders the history of orders page for drivers.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The rendered history of orders page.
+ */
 app.get("/driver/:phone/history-orders", (req, res) => {
   // Render the history of orders page
   res.render("driver-history-orders", { driverPhone: req.params.phone });
 });
+
+/**
+ * @route POST /driver/:phone/history-orders
+ * @description Handles post requests for the history of orders page for drivers.
+ * @param {Object} req.body - The request body.
+ * @param {string} phone - The driver's phone number.
+ */
 app.post("/driver/:phone/history-orders", async (req, res) => {
   console.log(req.body);
   console.log(req.params);
 });
-// Example route for rendering driver pickup order history
+
+/**
+ * @route GET /driver/:phone/history-pickup-orders
+ * @description Renders the history of pickup orders page for drivers.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The rendered history of pickup orders page.
+ */
 app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
   try {
     const driver = await Driver.findOne({ phone: req.params.phone }).populate(
@@ -924,6 +1280,12 @@ app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
   }
 });
 
+/**
+ * @route GET /driver/:phone/confirm-pickup
+ * @description Renders the confirm pickup page for drivers, displaying eligible orders for pickup.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The rendered confirm pickup page with eligible orders.
+ */
 app.get("/driver/:phone/confirm-pickup", async (req, res) => {
   // Render the confirm pickup page
   try {
@@ -950,9 +1312,23 @@ app.get("/driver/:phone/confirm-pickup", async (req, res) => {
   }
 });
 
+/**
+ * @route GET /driver/:phone/home
+ * @description Renders the driver dashboard page.
+ * @param {string} phone - The driver's phone number.
+ * @returns {Object} The rendered driver dashboard page.
+ */
 app.get("/driver/:phone/home", (req, res) => {
   res.render("driver-dashboard", { driver: req.params });
 });
+
+/**
+ * @route POST /driver/:phone/confirm-pickup/:orderId
+ * @description Handles the confirmation of order pickup by a driver.
+ * @param {string} phone - The driver's phone number.
+ * @param {string} orderId - The ID of the order to confirm pickup.
+ * @returns {Object} Redirects to the driver's home page or displays an error message.
+ */
 app.post("/driver/:phone/confirm-pickup/:orderId", async (req, res) => {
   const { phone, orderId } = req.params;
 
@@ -991,8 +1367,13 @@ app.post("/driver/:phone/confirm-pickup/:orderId", async (req, res) => {
   }
 });
 
-// ...
-
+/**
+ * @route GET /driver/:phone/edit-order-list/:orderList
+ * @description Renders the page for editing an order list by a driver.
+ * @param {string} phone - The driver's phone number.
+ * @param {string} orderList - The ID of the order list to edit.
+ * @returns {Object} The rendered order list editing page with order details.
+ */
 app.get("/driver/:phone/edit-order-list/:orderList", async (req, res) => {
   const { phone, orderList } = req.params;
   try {
@@ -1011,6 +1392,14 @@ app.get("/driver/:phone/edit-order-list/:orderList", async (req, res) => {
   }
 });
 
+/**
+ * @route POST /driver/:phone/orderList/:orderList
+ * @description Handles the submission of an updated order list by a driver.
+ * @param {string} phone - The driver's phone number.
+ * @param {string} orderList - The ID of the order list to update.
+ * @param {Object} req.body - The request body containing the updated order details.
+ * @returns {Object} Redirects to the driver's home page or displays an error message.
+ */
 app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
   const nonZeroValues = {};
   let total = 0;
@@ -1083,9 +1472,18 @@ app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
   }
 });
 
-// ...
-
+/**
+ * @route GET /test
+ * @description A placeholder route for testing purposes.
+ */
 app.get("/test", (req, res) => {});
+
+/**
+ * @listen
+ * @description Starts the server and listens on the specified port.
+ * @param {number} port - The port number on which the server will run.
+ * @returns {Object} Logs the server URL to the console.
+ */
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
