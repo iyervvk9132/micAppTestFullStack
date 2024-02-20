@@ -11,15 +11,15 @@
 </head>
 
 <body>
-  <h1>Make Payment</h1>
+    <h1>Make Payment</h1>
   <form id="paymentForm" action="/user/<%= phone %>/order/<%= orderId %>/payment" method="post">
     <label for="amount">Amount:</label>
     <input type="number" id="amount" name="amount" required>
     <br>
-    <label for="phone">Phone no:</label>
+    <label for="phone">phone no:</label>
     <input type="text" id="phone" name="phone" value="<%=phone%>" readonly>
     <br>
-    <label for="orderId">Order ID:</label>
+    <label for="orderId">orderId:</label>
     <input type="text" id="orderId" name="orderId" value="<%=orderId%>" readonly>
     <br>
     <button type="submit">Pay Now</button>
@@ -40,46 +40,31 @@
           // Handle the success response from Razorpay
         },
       };
-  
+
       const rzp = new Razorpay(options);
       rzp.open();
     }
-  
+
     // Fetch Razorpay order ID from the server and initiate payment
     window.addEventListener('load', async function () {
-      const phoneElement = document.getElementById('phone');
-      const orderIdElement = document.getElementById('orderId');
-  
-      // Check if elements exist before retrieving values
-      if (phoneElement && orderIdElement) {
-        const phone = phoneElement.value;
-        const orderId = orderIdElement.value;
-  
-        try {
-          const response = await fetch(`/user/${phone}/order/${orderId}/saveAmount`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ amount: 0 }), // Set a dummy amount, as it's not needed here
-          });
-  
-          if (!response.ok) {
-            console.error('Failed to fetch Razorpay order ID:', response.status);
-            return;
-          }
-  
-          const data = await response.json();
-          console.log('Fetched Razorpay order ID:', data.razorpayOrderId);
-  
-          // Initiate Razorpay payment with the fetched order ID
-          initiateRazorpayPayment(data.razorpayOrderId.id, 100); // Pass the actual amount
-        } catch (error) {
-          console.error('Error fetching Razorpay order ID:', error);
-        }
-      } else {
-        console.error('Phone or orderId element not found.');
+      const response = await fetch(`/user/${phone}/order/${orderId}/saveAmount`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: 0 }), // Set a dummy amount, as it's not needed here
+      });
+
+      if (!response.ok) {
+        console.error('Failed to fetch Razorpay order ID:', response.status);
+        return;
       }
+
+      const data = await response.json();
+      console.log('Fetched Razorpay order ID:', data.razorpayOrderId);
+
+      // Initiate Razorpay payment with the fetched order ID
+      initiateRazorpayPayment(data.razorpayOrderId.id, 100); // Pass the actual amount
     });
   </script>
 </body>

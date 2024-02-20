@@ -10,6 +10,9 @@ const DateTimeSlots = require("date-time-slots").default; // Library for managin
 const axios = require("axios"); // Axios for making HTTP requests
 const { ObjectId } = require("mongodb"); // MongoDB ObjectId for unique identifiers
 const Razorpay = require("razorpay"); // Razorpay for payment processing
+const uuid = require("uuid");
+const cors = require('cors');
+
 
 /**
  * @constant razorpay
@@ -17,10 +20,12 @@ const Razorpay = require("razorpay"); // Razorpay for payment processing
  * @property {string} key_id - Razorpay API key ID.
  * @property {string} key_secret - Razorpay API secret key.
  */
+
 const razorpay = new Razorpay({
-  key_id: "rzp_test_nHQwaBNHjTq16a",
-  key_secret: "7ki8eeVXevjSkwXfsFMdLHXy",
+  key_id: "rzp_test_hz7exB8EYQbPhc",
+  key_secret: "i2LIhe1AicXd8VidEuFapAYU",
 });
+
 
 
 /**
@@ -35,6 +40,12 @@ const app = express();
  * @default 3000
  */
 const port = 3000;
+
+/**
+ * @middleware
+ * @description Configuring middleware to parse JSON request bodies.
+ */
+app.use(bodyParser.json());
 
 /**
  * @middleware
@@ -53,6 +64,15 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+
+/**
+
+@middleware
+@description Configures CORS (Cross-Origin Resource Sharing) to allow cross-origin requests.
+*/
+ app.use(cors());
+
 
 /**
  * @constant data
@@ -121,10 +141,7 @@ let result1;
  * @event mongoose
  * @description Connecting to MongoDB using Mongoose.
  */
-mongoose.connect("mongodb://localhost:27017/micTestApp", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect("mongodb://localhost:27017/micTestApp");
 
 
 /**
@@ -324,7 +341,8 @@ app.set("view engine", "ejs");
  * @event app.use
  * @description Serving static files from the 'views' directory.
  */
-app.use(express.static("views"));
+app.use(express.static("views")); 
+
 
 /**
  * @route GET /
@@ -351,18 +369,23 @@ app.get("/user/login", (req, res) => {
  */
 app.post("/user/login", async (req, res) => {
   const phone = req.body.phone;
+  console.log("user/login");
+  console.log(req.body);
+  const newphone=phone.substring(1);
+  console.log(newphone);
 
   try {
-    const user = await User.findOne({ phone, isVerified: true });
+    const user = await User.findOne({ phone:newphone });
+    console.log(user);
 
     if (user) {
       const verificationCode = Math.floor(
         100000 + Math.random() * 900000
       ).toString();
 
-      await User.updateOne({ phone }, { verificationCode });
+      await User.updateOne({ newphone }, { verificationCode });
 
-      const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+      const formattedPhone = newphone.startsWith("+") ? newphone : `+${newphone}`;
 
       nexmo.message.sendSms(
         "YourApp",
@@ -371,21 +394,22 @@ app.post("/user/login", async (req, res) => {
         (err, responseData) => {
           if (err) {
             console.error(err);
-            res.status(500).send("Failed to send verification code");
+            res.status(500).json({success:false,message:"Failed to send verification code"});
           } else {
             console.log(responseData);
-            res.render("verify-otp", { phone, user: "user" });
+            res.status(200).json({success:true,message:"verification code success"});
           }
         }
       );
     } else {
-      res.redirect("/user/register");
+      res.status(200).json({success:false,message:"user not registered"});
     }
   } catch (error) {
     console.error("Error during login:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({success:false,message:"Internal Server Error"});
   }
 });
+
 /**
  * @route GET /user/verify-otp
  * @description Renders the OTP verification page for user authentication.
@@ -416,6 +440,42 @@ app.post("/user/:phone/verify-otp", async (req, res) => {
         let verify = res.redirect(`/user/${phone}/verify-address`);
       } else {
         res.redirect(`/user/${phone}/home`);
+      }
+    } else {
+      res.status(401).send("Invalid verification code");
+    }
+  } catch (error) {
+    console.error("Error during OTP verification:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+/**
+ * @route POST /user/verify-otp
+ * @description Handles OTP verification and redirects based on user verification status.
+ * @param {string} phone - The user's phone number.
+ * @param {string} verificationCode - The OTP entered by the user.
+ * @returns {Object} The response object or an error message.
+ */
+
+app.post("/user/verify-otp", async (req, res) => {
+  const { phone, verificationCode } = req.body;
+  console.log(req.body);
+  const newPhone=phone;
+  
+  try {
+    const user = await User.findOne({ phone:newPhone, verificationCode });
+    console.log(user);
+
+    if (user) {
+      await User.updateOne({ newPhone }, { isVerified: true });
+      console.log(user.address);
+      if (user.address.isFilled === false) {
+        let verify = res.redirect(`/user/${newPhone}/verify-address`);
+        res.status(200);
+      } else {
+        res.redirect(`/user/${newPhone}/home`);
+        res.status(200);
       }
     } else {
       res.status(401).send("Invalid verification code");
@@ -578,11 +638,11 @@ app.post("/user/:phone/orderList", async (req, res) => {
       console.log(deliveryTime);
       result1 = await Order.create({
         userId: user._id,
-        orders: orderList,
+        // orders: orderList,
         pickupDate: Date.parse(pickupDate),
         pickupTime: pickupTime,
-        deliveryDate: Date.parse(deliveryDate),
-        deliveryTime: deliveryTime,
+        // deliveryDate: Date.parse(deliveryDate),
+        // deliveryTime: deliveryTime,
         totalPrice: total,
         payment: {
           totalPaid: 0, // Initialize totalPaid as 0 when creating the order
@@ -635,11 +695,16 @@ app.get("/user/register", (req, res) => {
 
 /**
  * @route POST /user/register
- * @description Handles user registration, generates a verification code, and sends it via SMS.
- * @param {string} phone - The user's phone number for registration.
- * @returns {Object} Redirects to the OTP verification page or displays an error message.
+ * @description Handles user registration, checks if the user already exists, and sends a verification code via SMS.
+ * @param {string} phone - The phone number provided by the user for registration.
+ * @returns {Object} Returns a response based on user registration status:
+ *                   - If the user is already registered, returns an error message with status 400 if the request is from a mobile device, otherwise redirects to the login page.
+ *                   - If the user is not already registered, creates a new user, sends a verification code via SMS, and redirects to the OTP verification page.
+ *                   - If an error occurs during registration, returns an error message with status 500.
  */
+
 app.post("/user/register", async (req, res) => {
+  console.log|("post for user is entered");
   const phone = req.body.phone;
   const verificationCode = Math.floor(
     100000 + Math.random() * 900000
@@ -651,11 +716,20 @@ app.post("/user/register", async (req, res) => {
 
     if (existingUser) {
       // Inform the user that they are already registered
-      // You might want to customize this message or show an alert box on the front end
-      const alertMessage = "User already registered. Please log in.";
-      return res.send(
-        `<script>alert('${alertMessage}'); window.location.href='/user/login';</script>`
-      );
+      // Customize the message based on the user-agent
+      const userAgent = req.headers["user-agent"];
+      const isMobile = /Mobile/.test(userAgent);
+      const message = isMobile
+        ? "User already registered. Please log in using the mobile app."
+        : "User already registered. Please log in.";
+
+      if (isMobile) {
+        return res.status(400).json({ message });
+      } else {
+        return res.send(
+          `<script>alert('${message}'); window.location.href='/user/login';</script>`
+        );
+      }
     }
 
     // Create a new user if the user doesn't exist
@@ -682,7 +756,7 @@ app.post("/user/register", async (req, res) => {
     );
   } catch (error) {
     console.error("Error during registration:", error);
-    res.redirect("/user/login");
+    res.status(500).send("An error occurred during registration");
   }
 });
 
@@ -768,8 +842,10 @@ app.get("/user/:phone/history-orders", async (req, res) => {
   const user = await User.findOne({ phone: req.params.phone }).populate(
     "order.orderId"
   );
+  console.log(user.order);
   if (user) {
-    res.render("historyOrders", { user: user });
+    res.send({orders: user.order});
+    // res.render("historyOrders", { user: user });
   } else {
     res.send("user not found");
   }
@@ -808,8 +884,18 @@ app.get("/user/:phone/home", (req, res) => {
  * @returns {Object} The rendered price list page.
  */
 app.get("/user/:phone/pricelist", (req, res) => {
-  console.log(dataList);
-  res.render("pricelist", { data: dataList.CLOTHES });
+  try {
+    // Read the price list data from the JSON file
+
+    // Extract the price list based on the phone number (here, we just return the entire 'CLOTHES' list)
+     // Change this to get the relevant price list based on the phone number
+
+    res.status(200).json({ data: dataList.CLOTHES });
+    
+  } catch (err) {
+    console.error('Error fetching price list:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 /**
@@ -996,6 +1082,26 @@ app.get("/driver/:phone/orderList", (req, res) => {
 });
 
 /**
+ * @route GET /user/:phone/order/:orderId/saveAmount
+ * @description Renders the payment page for users.
+ * @param {string} phone - The user's phone number.
+ * @param {string} orderId - The ID of the order.
+ * @returns {Object} The rendered payment page with EJS template.
+ */
+app.get("/user/:phone/order/:orderId/saveAmount", (req, res) => {
+  const { phone, orderId } = req.params;
+  console.log(req.params);
+  const razorpayOrderId = razorpay.orders.fetch(orderId)
+  console.log("razorpayOrderId:");
+  console.log(razorpayOrderId);
+  const amount=razorpayOrderId.amount;
+
+
+  // Render the make-payment page with EJS template
+  res.render("razorpay", { phone, orderId, amount });
+});
+
+/**
  * @route GET /user/:phone/order/:orderId/payment
  * @description Renders the payment page for users.
  * @param {string} phone - The user's phone number.
@@ -1060,28 +1166,35 @@ app.post("/user/:phone/order/:orderId/saveAmount", async (req, res) => {
 app.post("/user/:phone/order/:orderId/payment", async (req, res) => {
   const { phone, orderId } = req.params;
   const { amount } = req.body;
+  console.log("payment");
   console.log(req.params);
   console.log(req.body);
+  console.log("uuid.v4: ");
+  const razorpayId=uuid.v4();
+  console.log(razorpayId);
 
   try {
     // Create a Razorpay order
     const options = {
       amount: amount * 100, // Razorpay expects amount in paise
       currency: "INR",
-      receipt: `order_${orderId}`,
+      receipt: `p${razorpayId}`,
     };
     console.log(options);
 
     const razorpayOrder = await razorpay.orders.create(options);
 
+    console.log("razorpayOrder:");
+    console.log(razorpayOrder);
     // Now, you have the Razorpay order, and you can pass its ID to the client-side
     // for further processing (e.g., using Razorpay.js on the frontend)
 
     // For simplicity, here we are sending the Razorpay order ID as JSON
-    res.json({ razorpayOrderId: razorpayOrder.id });
+    res.redirect(`/user/${phone}/order/${razorpayOrder.id}/saveAmount`);
     // Deduct the paid amount from the unpaid amount and update the order
     const order = await Order.findById(orderId);
 
+    console.log(order);
     if (order) {
       const paidAmount = parseFloat(amount);
       const remainingUnpaid = order.payment.totalUnpaid - paidAmount;
@@ -1098,12 +1211,13 @@ app.post("/user/:phone/order/:orderId/payment", async (req, res) => {
         }
       );
       console.log("Payment details updated successfully.");
+      console.log(order);
     } else {
       console.error("Order not found for payment update.");
     }
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error });
   }
 });
 
@@ -1478,6 +1592,46 @@ app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
  */
 app.get("/test", (req, res) => {});
 
+// Route to initiate a payment
+app.post('/create-payment', async (req, res) => {
+  const { amount, currency, receipt, notes } = req.body;
+  console.log(req.body);
+  
+
+  try {
+    const orderOptions = {
+      amount: parseFloat(amount) * 100, // Razorpay expects amount in paise
+      currency,
+      receipt,
+      notes,
+    };
+
+    const order = await razorpay.orders.create(orderOptions);
+
+    res.json({ orderId: order.id, amount: order.amount });
+  } catch (error) {
+    console.error('Error creating Razorpay order:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route to handle payment success
+app.post('/payment-success', (req, res) => {
+  const { paymentId, orderId, signature } = req.body;
+
+  // Verify the payment signature
+  const isValidSignature = razorpay.verifyPaymentSignature({
+    orderId,
+    paymentId,
+    signature,
+  });
+
+  if (isValidSignature) {
+    res.json({ success: true, message: 'Payment successful' });
+  } else {
+    res.status(400).json({ success: false, message: 'Invalid payment signature' });
+  }
+});
 /**
  * @listen
  * @description Starts the server and listens on the specified port.
