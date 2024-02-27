@@ -701,7 +701,7 @@ app.post("/user/register", async (req, res) => {
   const phone = req.body.phone;
   const verificationCode = Math.floor(
     100000 + Math.random() * 900000
-  ).toString();
+  ).toString(); 
 
   try {
     // Check if the user already exists
@@ -1376,11 +1376,12 @@ app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
     // Assuming driver has a pickupOrder array
     const pickupOrders = driver.pickupOrder || [];
     console.log(pickupOrders);
+    res.status(200).json(driver)
 
-    res.render("driver-history-orders", {
-      pickupOrders,
-      driverPhone: req.params.phone,
-    });
+    // res.render("driver-history-orders", {
+    //   pickupOrders,
+    //   driverPhone: req.params.phone,
+    // });
   } catch (error) {
     console.error("Error fetching driver and pickup orders:", error);
     res.status(500).send("Internal Server Error");
