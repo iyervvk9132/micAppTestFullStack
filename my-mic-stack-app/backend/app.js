@@ -1365,9 +1365,7 @@ app.post("/driver/:phone/history-orders", async (req, res) => {
  */
 app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
   try {
-    const driver = await Driver.findOne({ phone: req.params.phone }).populate(
-      "pickupOrder.orderId"
-    );
+    const driver = await Driver.findOne({ phone: req.params.phone });
 
     if (!driver) {
       return res.status(404).send("Driver not found");
@@ -1376,7 +1374,7 @@ app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
     // Assuming driver has a pickupOrder array
     const pickupOrders = driver.pickupOrder || [];
     console.log(pickupOrders);
-    res.status(200).json(driver)
+    res.status(200).json(pickupOrders)
 
     // res.render("driver-history-orders", {
     //   pickupOrders,
@@ -1491,8 +1489,11 @@ app.get("/driver/:phone/edit-order-list/:orderList", async (req, res) => {
     const mongooseOrderList = new mongoose.Types.ObjectId(orderList);
     console.log(mongooseOrderList);
     console.log(typeof mongooseOrderList);
+    const driverid=await Driver.findOne({phone});
+    console.log(driverid);
+
     const existingOrder = await Order.findOne({ _id: mongooseOrderList });
-    console.log(existingOrder);
+    console.log(existingOrder, dataList);
     res.json({ existingOrder, dataList});
   } catch (error) {
     console.error("Error fetching orders and updating driver:", error);
