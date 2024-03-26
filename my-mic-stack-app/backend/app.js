@@ -424,7 +424,11 @@ app.post("/user/:phone/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
 
   try {
-    const user = await User.findOne({ phone, verificationCode });
+    console.log("verify-otp");
+    console.log(req.body);
+    
+
+    const user = await User.findOne({ phone, verificationCode  });
 
     if (user) {
       await User.updateOne({ phone }, { isVerified: true });
