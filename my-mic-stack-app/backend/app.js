@@ -314,8 +314,8 @@ const Order = mongoose.model("Order", orderSchema);
  * @property {string} apiSecret - Nexmo API secret.
  */
 const nexmo = new Nexmo({
-  apiKey: "21c82be4",
-  apiSecret: "9KykD98D0TWZ7JGb",
+  apiKey: "9554da47",
+  apiSecret: "SR1K1dNZ8rx7dJAK",
 });
 
 /**
@@ -364,44 +364,37 @@ app.post("/user/login", async (req, res) => {
     const user = await User.findOne({ phone: newphone });
     console.log(user);
 
+    let verificationCode;
     if (user) {
-      const verificationCode = Math.floor(
-        100000 + Math.random() * 900000
-      ).toString();
-
-      await User.updateOne({ newphone }, { verificationCode });
-
-      const formattedPhone = newphone.startsWith("+")
-        ? newphone
-        : `+${newphone}`;
-
-      nexmo.message.sendSms(
-        "YourApp",
-        formattedPhone,
-        `Your verification code is: ${verificationCode}`,
-        (err, responseData) => {
-          if (err) {
-            console.error(err);
-            res.status(500).json({
-              success: false,
-              message: "Failed to send verification code",
-            });
-          } else {
-            console.log(responseData);
-            res
-              .status(200)
-              .json({ success: true, message: "verification code success" });
-          }
-        }
-      );
+      verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+      await User.updateOne({ phone: newphone }, { verificationCode });
     } else {
-      res.status(200).json({ success: false, message: "user not registered" });
+      verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+      await User.create({ phone: newphone, verificationCode });
     }
+
+    
+    nexmo.message.sendSms(
+      "YourApp",
+      phone,
+      `Your verification code is: ${verificationCode}`,
+      (err, responseData) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ success: false, message: "Failed to send verification code" });
+        } else {
+          console.log(responseData);
+          res.status(200).json({ success: true, message: "verification code success" });
+        }
+      }
+    );
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
+
+
 
 /**
  * @route GET /user/verify-otp
@@ -458,7 +451,7 @@ app.post("/user/:phone/verify-otp", async (req, res) => {
 app.post("/user/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
   console.log(req.body);
-  const newPhone = phone;
+  const newPhone  = phone.startsWith('+') ?phone.substring(1):phone;
 
   try {
     const user = await User.findOne({ phone: newPhone, verificationCode });
@@ -468,10 +461,10 @@ app.post("/user/verify-otp", async (req, res) => {
       await User.updateOne({ newPhone }, { isVerified: true });
       console.log(user.address);
       if (user.address.isFilled === false) {
-        let verify = res.redirect(`/user/${newPhone}/verify-address`);
+        // let verify = res.redirect(`/user/${newPhone}/verify-address`);
         res.status(200);
       } else {
-        res.redirect(`/user/${newPhone}/home`);
+        // res.redirect(`/user/${newPhone}/home`);
         res.status(200);
       }
     } else {
@@ -627,6 +620,7 @@ app.post("/user/:phone/orderList", async (req, res) => {
 
   try {
     const user = await User.findOne({ phone: req.params.phone });
+    console.log(req.params);
 
     if (user) {
       console.log(Date.parse(pickupDate));
@@ -700,42 +694,15 @@ app.get("/user/register", (req, res) => {
  *                   - If an error occurs during registration, returns an error message with status 500.
  */
 
+
 app.post("/user/register", async (req, res) => {
-  console.log | "post for user is entered";
+  console.log("post for user is entered");
   const phone = req.body.phone;
-  const verificationCode = Math.floor(
-    100000 + Math.random() * 900000
-  ).toString(); 
+  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
   try {
-    // Check if the user already exists
-    const existingUser = await User.findOne({ phone });
-
-    if (existingUser) {
-      // Inform the user that they are already registered
-      // Customize the message based on the user-agent
-      const userAgent = req.headers["user-agent"];
-      const isMobile = /Mobile/.test(userAgent);
-      const message = isMobile
-        ? "User already registered. Please log in using the mobile app"
-        : "User already registered. Please log in.";
-
-      if (isMobile) {
-        return res.status(400).json({ message });
-      } else {
-        return res.send(
-          `<script>alert('${message}'); window.location.href='/user/login';</script>`
-        );
-      }
-    }
-
-    // Create a new user if the user doesn't exist
-    const newUser = await User.create({
-      phone,
-      verificationCode,
-    });
-
-    const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+    const newUser = await User.create({ phone, verificationCode });
+    const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
 
     nexmo.message.sendSms(
       "YourApp",
@@ -756,6 +723,7 @@ app.post("/user/register", async (req, res) => {
     res.status(500).send("An error occurred during registration");
   }
 });
+
 
 /**
  * @route GET /user/:phone/verify-address
@@ -922,7 +890,7 @@ app.post("/driver/login", async (req, res) => {
 
       await Driver.updateOne({ phone }, { verificationCode });
 
-      const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+      const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
 
       nexmo.message.sendSms(
         "YourApp",
@@ -989,7 +957,7 @@ app.post("/driver/register", async (req, res) => {
       verificationCode,
     });
 
-    const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+    const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
 
     nexmo.message.sendSms(
       "YourApp",
@@ -1039,7 +1007,7 @@ app.post("/driver/login", async (req, res) => {
 
       await Driver.updateOne({ phone }, { verificationCode });
 
-      const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+      const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
 
       nexmo.message.sendSms(
         "YourApp",
