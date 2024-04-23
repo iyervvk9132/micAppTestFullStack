@@ -454,11 +454,11 @@ app.post("/user/verify-otp", async (req, res) => {
   const newPhone  = phone.startsWith('+') ?phone.substring(1):phone;
 
   try {
-    const user = await User.findOne({ phone: newPhone, verificationCode });
+    const user = await User.findOne({ phone: phone, verificationCode });
     console.log(user);
 
     if (user) {
-      await User.updateOne({ newPhone }, { isVerified: true });
+      await User.updateOne({ phone }, { isVerified: true });
       console.log(user.address);
       if (user.address.isFilled === false) {
         // let verify = res.redirect(`/user/${newPhone}/verify-address`);
@@ -702,11 +702,11 @@ app.post("/user/register", async (req, res) => {
 
   try {
     const newUser = await User.create({ phone, verificationCode });
-    const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
+    const phone = phone.startsWith('+') ? phone : `+${phone}`;
 
     nexmo.message.sendSms(
       "YourApp",
-      formattedPhone,
+      phone,
       `Your verification code is: ${verificationCode}`,
       (err, responseData) => {
         if (err) {
@@ -894,7 +894,7 @@ app.post("/driver/login", async (req, res) => {
 
       nexmo.message.sendSms(
         "YourApp",
-        formattedPhone,
+        phone,
         `Your verification code is: ${verificationCode}`,
         (err, responseData) => {
           if (err) {
@@ -961,7 +961,7 @@ app.post("/driver/register", async (req, res) => {
 
     nexmo.message.sendSms(
       "YourApp",
-      formattedPhone,
+      phone,
       `Your verification code is: ${verificationCode}`,
       (err, responseData) => {
         if (err) {
@@ -1011,7 +1011,7 @@ app.post("/driver/login", async (req, res) => {
 
       nexmo.message.sendSms(
         "YourApp",
-        formattedPhone,
+        phone,
         `Your verification code is: ${verificationCode}`,
         (err, responseData) => {
           if (err) {

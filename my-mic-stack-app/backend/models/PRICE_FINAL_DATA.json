@@ -688,7 +688,7 @@
       "NAME": "Top/SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -696,7 +696,7 @@
       "NAME": "T-SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -704,7 +704,7 @@
       "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -712,7 +712,7 @@
       "NAME": "JEANS",
       "VARIABLE_PRICE": 0,
       "PRICE": 50,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -720,7 +720,7 @@
       "NAME": "SHORTS",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -728,7 +728,7 @@
       "NAME": "PYJAMA",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -736,7 +736,7 @@
       "NAME": "KURTHI",
       "VARIABLE_PRICE": 0,
       "PRICE": 50,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -744,7 +744,7 @@
       "NAME": "SALWAR TOP",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -752,7 +752,7 @@
       "NAME": "SALWAR BOTTOM",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -760,7 +760,7 @@
       "NAME": "LEGGINS",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -768,7 +768,7 @@
       "NAME": "DUPATA",
       "VARIABLE_PRICE": 0,
       "PRICE": 30,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -776,7 +776,7 @@
       "NAME": "TRACK PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 40,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -784,7 +784,7 @@
       "NAME": "SKIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 70,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -794,7 +794,7 @@
       "PRICE": "150-500",
       "NOTES": "PRICE VARIES BASED ON SAREE TYPE",
       "INTERNAL": "THE PRICE RANGE IS BETWEEN 150 AND 500",
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -802,7 +802,7 @@
       "NAME": "BLOUSE",
       "VARIABLE_PRICE": 0,
       "PRICE": 30,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -812,7 +812,7 @@
       "PRICE": "150-500",
       "NOTES": "PRICE VARIES BASED ON SILK SAREE TYPE",
       "INTERNAL": "THE PRICE RANGE IS BETWEEN 150 AND 500",
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -820,7 +820,7 @@
       "NAME": "GOWN",
       "VARIABLE_PRICE": 0,
       "PRICE": 80,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -828,7 +828,7 @@
       "NAME": "LONG TOP",
       "VARIABLE_PRICE": 0,
       "PRICE": 70,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "WASHING"
     },
     {
@@ -1212,7 +1212,7 @@
       "NAME": "Top/SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1220,7 +1220,7 @@
       "NAME": "T-SHIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1228,7 +1228,7 @@
       "NAME": "PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1236,7 +1236,7 @@
       "NAME": "JEANS",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1244,7 +1244,7 @@
       "NAME": "SHORTS",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1252,7 +1252,7 @@
       "NAME": "PYJAMA",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1260,7 +1260,7 @@
       "NAME": "KURTHI",
       "VARIABLE_PRICE": 0,
       "PRICE": 20,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1268,7 +1268,7 @@
       "NAME": "SALWAR TOP",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1276,7 +1276,7 @@
       "NAME": "SALWAR BOTTOM",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1284,7 +1284,7 @@
       "NAME": "LEGGINS",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1292,7 +1292,7 @@
       "NAME": "DUPATA",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1300,7 +1300,7 @@
       "NAME": "TRACK PANT",
       "VARIABLE_PRICE": 0,
       "PRICE": 10,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1308,7 +1308,7 @@
       "NAME": "SKIRT",
       "VARIABLE_PRICE": 0,
       "PRICE": 15,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1318,7 +1318,7 @@
       "PRICE": "30-50",
       "NOTES": "PRICE VARIES BASED ON SAREE TYPE",
       "INTERNAL": "THE PRICE RANGE IS BETWEEN 30 AND 50",
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1326,7 +1326,7 @@
       "NAME": "BLOUSE",
       "VARIABLE_PRICE": 0,
       "PRICE": 8,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1336,7 +1336,7 @@
       "PRICE": "40-80",
       "NOTES": "PRICE VARIES BASED ON SILK SAREE TYPE",
       "INTERNAL": "THE PRICE RANGE IS BETWEEN 40 AND 80",
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1344,7 +1344,7 @@
       "NAME": "GOWN",
       "VARIABLE_PRICE": 0,
       "PRICE": 20,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1352,7 +1352,7 @@
       "NAME": "LONG TOP",
       "VARIABLE_PRICE": 0,
       "PRICE": 20,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1360,7 +1360,7 @@
       "NAME": "GARGA CHOLI",
       "VARIABLE_PRICE": 0,
       "PRICE": 50,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
@@ -1368,7 +1368,7 @@
       "NAME": "saree role polish",
       "VARIABLE_PRICE": 0,
       "PRICE": 60,
-      "GENDER": "FEMALE",
+      "GENDER": "WOMEN",
       "OPERATION": "IRONING"
     },
     {
