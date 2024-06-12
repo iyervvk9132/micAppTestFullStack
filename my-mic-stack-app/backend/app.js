@@ -285,12 +285,12 @@ const orderSchema = new mongoose.Schema({
   payment: {
     totalPaid: { type: Number, default: 0 },
     totalUnpaid: { type: Number, default: 0 },
+    razorpayOrderId: String, // New subfield for Razorpay order ID
   },
   pickupDate: Date,
   deliveryDate: Date,
   pickupTime: String,
   deliveryTime: String,
-  totalPrice: Number,
   isPickedUp: { type: Boolean, default: false },
   pickupDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "driver" },
   isDriverConfirmed: { type: Boolean, default: false },
@@ -300,6 +300,7 @@ const orderSchema = new mongoose.Schema({
   deliveryDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "driver" },
   isDelivered: { type: Boolean, default: false },
 });
+
 
 /**
  * @model Order
@@ -394,7 +395,80 @@ app.post("/user/login", async (req, res) => {
   }
 });
 
+/**
+ * @route POST /user/account-details
+ * @description Handles the submission of user account details like name, phone number, and address.
+ * @param {string} name - The user's name.
+ * @param {string} phone - The user's phone number.
+ * @param {Object} address - The user's address details.
+ * @param {number} address.latitude - The latitude of the address.
+ * @param {number} address.longitude - The longitude of the address.
+ * @param {string} address.road - The road of the address.
+ * @param {string} address.suburb - The suburb of the address.
+ * @param {string} address.city - The city of the address.
+ * @param {string} address.state - The state of the address.
+ * @param {string} address.country - The country of the address.
+ * @param {string} address.countryCode - The country code of the address.
+ * @returns {Object} The response object or an error message.
+ */
+app.post("/user/:phone/account-details", async (req, res) => {
+  const {  phone } = req.body;
 
+  try {
+    // Find the user by phone number
+    const user = await User.findOne({ phone });
+
+    if (user) {
+      // Update user details
+      user.name = name;
+      user.address = {
+        ...address,
+        isFilled: true,
+      };
+      await user.save();
+
+      res.status(200).json({ success: true, message: "Account details updated successfully" });
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error updating account details:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+
+/**
+ * @route POST /user/:phone/details
+ * @description Retrieves customer details based on the provided phone number.
+ * @param {string} phone - The user's phone number.
+ * @returns {Object} The user details or an error message.
+ */
+app.post("/user/:phone/details", async (req, res) => {
+  const { phone } = req.params;
+
+  try {
+    const user = await User.findOne({ phone });
+
+    if (user) {
+      res.status(200).json({
+        success: true,
+        user: {
+          phone: user.phone,
+          isVerified: user.isVerified,
+          totalUnpaid: user.totalUnpaid,
+          totalPaid: user.totalPaid,
+          address: user.address,
+        },
+      });
+    } else {
+      res.status(404).json({ success: false, message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error retrieving user details:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
 
 /**
  * @route GET /user/verify-otp
@@ -623,6 +697,16 @@ app.post("/user/:phone/orderList", async (req, res) => {
     console.log(req.params);
 
     if (user) {
+  
+      // Generate Razorpay order with amount 0
+      razorpay.orders.create({ amount: 100, currency: "INR" }, async (err, order) => {
+        if (err) {
+          console.error("Error creating Razorpay order:", err);
+          return res.status(500).send("Failed to create Razorpay order");
+        } else {
+          // Update the order document with Razorpay order ID
+          const razorpayOrderId = order.id;
+          
       console.log(Date.parse(pickupDate));
       console.log(pickupTime);
       console.log(Date.parse(deliveryDate));
@@ -638,31 +722,34 @@ app.post("/user/:phone/orderList", async (req, res) => {
         payment: {
           totalPaid: 0, // Initialize totalPaid as 0 when creating the order
           totalUnpaid: total, // Initialize totalUnpaid with the total amount
+          razorpayOrderId: razorpayOrderId // Placeholder for the Razorpay order ID
         },
       });
 
-      const result = await User.updateOne(
-        { phone: req.params.phone },
-        { $push: { order: { orderId: result1._id } } },
-        { upsert: true }
-      );
+          const result = await User.updateOne(
+            { phone: req.params.phone },
+            { $push: { order: { orderId: result1._id } } },
+            { upsert: true }
+          );
 
-      //   console.log(result);
+          //   console.log(result);
 
-      console.log("result1");
-      console.log(result1);
+          console.log("result1");
+          console.log(result1);
 
-      if (result.acknowledged && result.modifiedCount === 1) {
-        const modifiedOrderId = result1._id;
-        return res.redirect(
-          `/user/${req.params.phone}/order/${result1._id}/payment`
-        );
+          if (result.acknowledged && result.modifiedCount === 1) {
+            const modifiedOrderId = result1._id;
+            return res.redirect(
+              `/user/${req.params.phone}/order/${result1._id}/payment`
+            );
 
-        return res.send(result1);
-      } else {
-        console.error("Failed to update order");
-        return res.status(500).send("Failed to update order");
-      }
+            return res.send(result1);
+          } else {
+            console.error("Failed to update order");
+            return res.status(500).send("Failed to update order");
+          }
+        }
+      });
     } else {
       console.error("User not found");
       return res.status(404).send("User not found");
@@ -674,6 +761,7 @@ app.post("/user/:phone/orderList", async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 });
+
 
 /**
  * @route GET /user/register
