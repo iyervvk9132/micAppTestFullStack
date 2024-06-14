@@ -1699,6 +1699,61 @@ app.post("/payment-success", (req, res) => {
       .json({ success: false, message: "Invalid payment signature" });
   }
 });
+
+
+
+
+app.post('/user/:phone/updateAddress', async (req, res) => {
+  const { phone } = req.params;
+  const {
+    latitude,
+    longitude,
+    road,
+    suburb,
+    city,
+    state,
+    country,
+    countryCode,
+  } = req.body;
+
+  try {
+    let user = await User.findOne({ phone });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.address = {
+      latitude: parseFloat(latitude),
+      longitude: parseFloat(longitude),
+      road,
+      suburb,
+      city,
+      state,
+      country,
+      countryCode,
+      isFilled: true, 
+    };
+
+    await user.save();
+
+    res.status(200).json({ message: 'Address updated successfully', user });
+  } catch (error) {
+    console.error('Error updating address:', error);
+    res.status(500).json({ message: 'Failed to update address' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @listen
  * @description Starts the server and listens on the specified port.
