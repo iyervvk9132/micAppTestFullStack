@@ -1701,8 +1701,21 @@ app.post("/payment-success", (req, res) => {
 });
 
 
-
-
+/**
+ * @route POST /user/:phone/updateAddress
+ * @description Updates the address details for a user identified by their phone number.
+ * @param {string} phone - The user's phone number.
+ * @param {Object} req.body - The request body containing the updated address details.
+ * @param {string} req.body.latitude - The latitude of the new address.
+ * @param {string} req.body.longitude - The longitude of the new address.
+ * @param {string} req.body.road - The road name of the new address.
+ * @param {string} req.body.suburb - The suburb of the new address.
+ * @param {string} req.body.city - The city of the new address.
+ * @param {string} req.body.state - The state of the new address.
+ * @param {string} req.body.country - The country of the new address.
+ * @param {string} req.body.countryCode - The country code of the new address.
+ * @returns {Object} - Returns a JSON object with a success message and the updated user details, or an error message.
+ */
 app.post('/user/:phone/updateAddress', async (req, res) => {
   const { phone } = req.params;
   const {
@@ -1743,6 +1756,7 @@ app.post('/user/:phone/updateAddress', async (req, res) => {
     res.status(500).json({ message: 'Failed to update address' });
   }
 });
+
 
 
 
