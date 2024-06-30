@@ -12,7 +12,7 @@ const { ObjectId } = require("mongodb"); // MongoDB ObjectId for unique identifi
 const Razorpay = require("razorpay"); // Razorpay for payment processing
 const uuid = require("uuid");
 const cors = require("cors");
-
+const jwt = require("jsonwebtoken");
 /**
  * @constant razorpay
  * @description Configuring Razorpay with API keys.
@@ -37,6 +37,7 @@ const app = express();
  */
 const port = 3000;
 
+const secretKey = "iyer_vivek";
 /**
  * @middleware
  * @description Configuring middleware to parse JSON request bodies.
@@ -181,6 +182,14 @@ const userSchema = new mongoose.Schema({
     countryCode: String,
     isFilled: { type: Boolean, default: false },
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 /**
@@ -301,7 +310,6 @@ const orderSchema = new mongoose.Schema({
   isDelivered: { type: Boolean, default: false },
 });
 
-
 /**
  * @model Order
  * @description Mongoose model for the Order schema.
@@ -340,6 +348,28 @@ app.get("/", (req, res) => {
   res.render("home", { type: "user" });
 });
 
+const verifyToken = async (req, res, next) => {
+  const token = req.header("Authorization").replace("Bearer ", "");
+
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    const user = await User.findOne({
+      _id: decoded._id,
+      "tokens.token": token,
+    });
+
+    if (!user) {
+      throw new Error();
+    }
+
+    req.user = user;
+    req.token = token;
+    next();
+  } catch (error) {
+    res.status(401).send({ error: "Please authenticate." });
+  }
+};
+
 /**
  * @route GET /user/login
  * @description Renders the login page for user authentication.
@@ -374,7 +404,6 @@ app.post("/user/login", async (req, res) => {
       await User.create({ phone: newphone, verificationCode });
     }
 
-    
     nexmo.message.sendSms(
       "YourApp",
       phone,
@@ -382,10 +411,17 @@ app.post("/user/login", async (req, res) => {
       (err, responseData) => {
         if (err) {
           console.error(err);
-          res.status(500).json({ success: false, message: "Failed to send verification code" });
+          res
+            .status(500)
+            .json({
+              success: false,
+              message: "Failed to send verification code",
+            });
         } else {
           console.log(responseData);
-          res.status(200).json({ success: true, message: "verification code success" });
+          res
+            .status(200)
+            .json({ success: true, message: "verification code success" });
         }
       }
     );
@@ -394,11 +430,9 @@ app.post("/user/login", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
-
 /**
- * @route POST /user/account-details
+ * @route POST /user/:phone/account-details
  * @description Handles the submission of user account details like name, phone number, and address.
- * @param {string} name - The user's name.
  * @param {string} phone - The user's phone number.
  * @param {Object} address - The user's address details.
  * @param {number} address.latitude - The latitude of the address.
@@ -411,8 +445,9 @@ app.post("/user/login", async (req, res) => {
  * @param {string} address.countryCode - The country code of the address.
  * @returns {Object} The response object or an error message.
  */
-app.post("/user/:phone/account-details", async (req, res) => {
-  const {  phone } = req.body;
+app.post("/user/:phone/account-details", verifyToken, async (req, res) => {
+  const { name, address } = req.body;
+  const { phone } = req.params;
 
   try {
     // Find the user by phone number
@@ -427,7 +462,12 @@ app.post("/user/:phone/account-details", async (req, res) => {
       };
       await user.save();
 
-      res.status(200).json({ success: true, message: "Account details updated successfully" });
+      res
+        .status(200)
+        .json({
+          success: true,
+          message: "Account details updated successfully",
+        });
     } else {
       res.status(404).json({ success: false, message: "User not found" });
     }
@@ -436,7 +476,6 @@ app.post("/user/:phone/account-details", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
-
 
 /**
  * @route POST /user/:phone/details
@@ -479,6 +518,7 @@ app.get("/user/verify-otp", (req, res) => {
   res.render("verify-otp", { phone, user: "user" });
 });
 
+
 /**
  * @route POST /user/:phone/verify-otp
  * @description Handles OTP verification and redirects based on user verification status.
@@ -486,24 +526,37 @@ app.get("/user/verify-otp", (req, res) => {
  * @param {string} verificationCode - The OTP entered by the user.
  * @returns {Object} The response object or an error message.
  */
-
 app.post("/user/:phone/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
 
   try {
     console.log("verify-otp");
     console.log(req.body);
-    
 
-    const user = await User.findOne({ phone, verificationCode  });
+    const user = await User.findOne({ phone, verificationCode });
 
     if (user) {
       await User.updateOne({ phone }, { isVerified: true });
       console.log(user.address);
+
+      // Generate JWT token
+      const token = jwt.sign(
+        { _id: user._id.toString(), phone: user.phone },
+        secretKey
+      );
+
+      // Store the token in the database
+      user.tokens = user.tokens.concat({ token });
+      await user.save();
+
       if (user.address.isFilled === false) {
-        let verify = res.redirect(`/user/${phone}/verify-address`);
+        res.redirect(`/user/${phone}/verify-address`);
       } else {
-        res.redirect(`/user/${phone}/home`);
+        res.json({
+          message: "Verification successful",
+          token,
+          redirectUrl: `/user/${phone}/home`,
+        });
       }
     } else {
       res.status(401).send("Invalid verification code");
@@ -525,7 +578,7 @@ app.post("/user/:phone/verify-otp", async (req, res) => {
 app.post("/user/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
   console.log(req.body);
-  const newPhone  = phone.startsWith('+') ?phone.substring(1):phone;
+  const newPhone = phone.startsWith("+") ? phone.substring(1) : phone;
 
   try {
     const user = await User.findOne({ phone: phone, verificationCode });
@@ -615,7 +668,7 @@ app.get("/user/:phone/orderList", (req, res) => {
  * @param {Object} req.body - The request body containing user-selected order details.
  * @returns {Object} The response object or an error message.
  */
-app.post("/user/:phone/orderList", async (req, res) => {
+app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
   let nonZeroValues = {};
   let total = 0;
   let outputString = "";
@@ -697,59 +750,61 @@ app.post("/user/:phone/orderList", async (req, res) => {
     console.log(req.params);
 
     if (user) {
-  
       // Generate Razorpay order with amount 0
-      razorpay.orders.create({ amount: 100, currency: "INR" }, async (err, order) => {
-        if (err) {
-          console.error("Error creating Razorpay order:", err);
-          return res.status(500).send("Failed to create Razorpay order");
-        } else {
-          // Update the order document with Razorpay order ID
-          const razorpayOrderId = order.id;
-          
-      console.log(Date.parse(pickupDate));
-      console.log(pickupTime);
-      console.log(Date.parse(deliveryDate));
-      console.log(deliveryTime);
-      result1 = await Order.create({
-        userId: user._id,
-        // orders: orderList,
-        pickupDate: Date.parse(pickupDate),
-        pickupTime: pickupTime,
-        // deliveryDate: Date.parse(deliveryDate),
-        // deliveryTime: deliveryTime,
-        totalPrice: total,
-        payment: {
-          totalPaid: 0, // Initialize totalPaid as 0 when creating the order
-          totalUnpaid: total, // Initialize totalUnpaid with the total amount
-          razorpayOrderId: razorpayOrderId // Placeholder for the Razorpay order ID
-        },
-      });
+      razorpay.orders.create(
+        { amount: 100, currency: "INR" },
+        async (err, order) => {
+          if (err) {
+            console.error("Error creating Razorpay order:", err);
+            return res.status(500).send("Failed to create Razorpay order");
+          } else {
+            // Update the order document with Razorpay order ID
+            const razorpayOrderId = order.id;
 
-          const result = await User.updateOne(
-            { phone: req.params.phone },
-            { $push: { order: { orderId: result1._id } } },
-            { upsert: true }
-          );
+            console.log(Date.parse(pickupDate));
+            console.log(pickupTime);
+            console.log(Date.parse(deliveryDate));
+            console.log(deliveryTime);
+            result1 = await Order.create({
+              userId: user._id,
+              // orders: orderList,
+              pickupDate: Date.parse(pickupDate),
+              pickupTime: pickupTime,
+              // deliveryDate: Date.parse(deliveryDate),
+              // deliveryTime: deliveryTime,
+              totalPrice: total,
+              payment: {
+                totalPaid: 0, // Initialize totalPaid as 0 when creating the order
+                totalUnpaid: total, // Initialize totalUnpaid with the total amount
+                razorpayOrderId: razorpayOrderId, // Placeholder for the Razorpay order ID
+              },
+            });
 
-          //   console.log(result);
-
-          console.log("result1");
-          console.log(result1);
-
-          if (result.acknowledged && result.modifiedCount === 1) {
-            const modifiedOrderId = result1._id;
-            return res.redirect(
-              `/user/${req.params.phone}/order/${result1._id}/payment`
+            const result = await User.updateOne(
+              { phone: req.params.phone },
+              { $push: { order: { orderId: result1._id } } },
+              { upsert: true }
             );
 
-            return res.send(result1);
-          } else {
-            console.error("Failed to update order");
-            return res.status(500).send("Failed to update order");
+            //   console.log(result);
+
+            console.log("result1");
+            console.log(result1);
+
+            if (result.acknowledged && result.modifiedCount === 1) {
+              const modifiedOrderId = result1._id;
+              return res.redirect(
+                `/user/${req.params.phone}/order/${result1._id}/payment`
+              );
+
+              return res.send(result1);
+            } else {
+              console.error("Failed to update order");
+              return res.status(500).send("Failed to update order");
+            }
           }
         }
-      });
+      );
     } else {
       console.error("User not found");
       return res.status(404).send("User not found");
@@ -761,7 +816,6 @@ app.post("/user/:phone/orderList", async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 });
-
 
 /**
  * @route GET /user/register
@@ -782,15 +836,16 @@ app.get("/user/register", (req, res) => {
  *                   - If an error occurs during registration, returns an error message with status 500.
  */
 
-
 app.post("/user/register", async (req, res) => {
   console.log("post for user is entered");
   const phone = req.body.phone;
-  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const verificationCode = Math.floor(
+    100000 + Math.random() * 900000
+  ).toString();
 
   try {
     const newUser = await User.create({ phone, verificationCode });
-    const phone = phone.startsWith('+') ? phone : `+${phone}`;
+    const phone = phone.startsWith("+") ? phone : `+${phone}`;
 
     nexmo.message.sendSms(
       "YourApp",
@@ -812,7 +867,6 @@ app.post("/user/register", async (req, res) => {
   }
 });
 
-
 /**
  * @route GET /user/:phone/verify-address
  * @description Renders the address verification page for users.
@@ -830,7 +884,7 @@ app.get("/user/:phone/verify-address", (req, res) => {
  * @param {Object} req.body - The request body containing latitude and longitude.
  * @returns {Object} Redirects to the user's home page or displays an error message.
  */
-app.post("/user/:phone/verify-address", async (req, res) => {
+app.post("/user/:phone/verify-address", verifyToken, async (req, res) => {
   const { phone } = req.params;
   const { latitude, longitude } = req.body;
   let road, suburb, city, state, country, countryCode;
@@ -890,7 +944,7 @@ app.post("/user/:phone/verify-address", async (req, res) => {
  * @param {string} phone - The user's phone number.
  * @returns {Object} The rendered order history page for users.
  */
-app.get("/user/:phone/history-orders", async (req, res) => {
+app.get("/user/:phone/history-orders", verifyToken, async (req, res) => {
   console.log(req.params);
   const user = await User.findOne({ phone: req.params.phone }).populate(
     "order.orderId"
@@ -978,7 +1032,7 @@ app.post("/driver/login", async (req, res) => {
 
       await Driver.updateOne({ phone }, { verificationCode });
 
-      const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
+      const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
       nexmo.message.sendSms(
         "YourApp",
@@ -1045,7 +1099,7 @@ app.post("/driver/register", async (req, res) => {
       verificationCode,
     });
 
-    const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
+    const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
     nexmo.message.sendSms(
       "YourApp",
@@ -1095,7 +1149,7 @@ app.post("/driver/login", async (req, res) => {
 
       await Driver.updateOne({ phone }, { verificationCode });
 
-      const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
+      const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
       nexmo.message.sendSms(
         "YourApp",
@@ -1142,17 +1196,26 @@ app.get("/driver/:phone/orderList", (req, res) => {
  * @param {string} orderId - The ID of the order.
  * @returns {Object} The rendered payment page with EJS template.
  */
-app.get("/user/:phone/order/:orderId/saveAmount", (req, res) => {
-  const { phone, orderId } = req.params;
-  console.log(req.params);
-  const razorpayOrderId = razorpay.orders.fetch(orderId);
-  console.log("razorpayOrderId:");
-  console.log(razorpayOrderId);
-  const amount = razorpayOrderId.amount;
+app.get(
+  "/user/:phone/order/:orderId/saveAmount",
+  verifyToken,
+  async (req, res) => {
+    const { phone, orderId } = req.params;
+    console.log(req.params);
 
-  // Render the make-payment page with EJS template
-  res.render("razorpay", { phone, orderId, amount });
-});
+    try {
+      const razorpayOrderId = await razorpay.orders.fetch(orderId);
+      console.log("razorpayOrderId:", razorpayOrderId);
+      const amount = razorpayOrderId.amount;
+
+      // Render the make-payment page with EJS template
+      res.render("razorpay", { phone, orderId, amount });
+    } catch (error) {
+      console.error("Error fetching Razorpay order:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
 
 /**
  * @route GET /user/:phone/order/:orderId/payment
@@ -1161,7 +1224,7 @@ app.get("/user/:phone/order/:orderId/saveAmount", (req, res) => {
  * @param {string} orderId - The ID of the order.
  * @returns {Object} The rendered payment page with EJS template.
  */
-app.get("/user/:phone/order/:orderId/payment", (req, res) => {
+app.get("/user/:phone/order/:orderId/payment", verifyToken, (req, res) => {
   const { phone, orderId } = req.params;
 
   // Render the make-payment page with EJS template
@@ -1176,37 +1239,41 @@ app.get("/user/:phone/order/:orderId/payment", (req, res) => {
  * @param {Object} req.body - The request body containing the paid amount.
  * @returns {Object} The response object or an error message.
  */
-app.post("/user/:phone/order/:orderId/saveAmount", async (req, res) => {
-  const { phone, orderId } = req.params;
-  const { amount } = req.body;
-  console.log("saveAmount");
-  console.log(req.params);
-  console.log("saveAmountserverside:", req.body);
+app.post(
+  "/user/:phone/order/:orderId/saveAmount",
+  verifyToken,
+  async (req, res) => {
+    const { phone, orderId } = req.params;
+    const { amount } = req.body;
+    console.log("saveAmount");
+    console.log(req.params);
+    console.log("saveAmountserverside:", req.body);
 
-  try {
-    // Save the amount to your backend (e.g., update a database)
-    if (amount === undefined || amount === 0) {
-      console.log("Amount data is not found or is zero");
-    } else {
-      console.log("amount is: ", amount);
+    try {
+      if (amount === undefined || amount === 0) {
+        console.log("Amount data is not found or is zero");
+        return res
+          .status(400)
+          .json({ error: "Amount data is not found or is zero" });
+      }
+
+      const options = {
+        amount: amount * 100, // Razorpay expects amount in paise
+        currency: "INR",
+        receipt: `order_${orderId}`,
+      };
+      console.log(options);
+
+      const razorpayOrder = await razorpay.orders.create(options);
+
+      // For simplicity, here we are sending the Razorpay order ID as JSON
+      res.json({ razorpayOrderId: razorpayOrder.id });
+    } catch (error) {
+      console.error("Error saving amount on the backend:", error);
+      res.status(500).json({ error: error.message });
     }
-    const options = {
-      amount: amount * 100, // Razorpay expects amount in paise
-      currency: "INR",
-      receipt: `order_${orderId}`,
-    };
-    console.log(options);
-
-    // ...
-    const razorpayOrder = await razorpay.orders.create(options);
-
-    // For simplicity, here we are sending the Razorpay order ID as JSON
-    res.json({ razorpayOrderId: razorpayOrder.id });
-  } catch (error) {
-    console.error("Error saving amount on the backend:", error);
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
 /**
  * @route POST /user/:phone/order/:orderId/payment
@@ -1216,63 +1283,59 @@ app.post("/user/:phone/order/:orderId/saveAmount", async (req, res) => {
  * @param {Object} req.body - The request body containing the payment details.
  * @returns {Object} The response object or an error message.
  */
-app.post("/user/:phone/order/:orderId/payment", async (req, res) => {
-  const { phone, orderId } = req.params;
-  const { amount } = req.body;
-  console.log("payment");
-  console.log(req.params);
-  console.log(req.body);
-  console.log("uuid.v4: ");
-  const razorpayId = uuid.v4();
-  console.log(razorpayId);
+app.post(
+  "/user/:phone/order/:orderId/payment",
+  verifyToken,
+  async (req, res) => {
+    const { phone, orderId } = req.params;
+    const { amount } = req.body;
+    console.log("payment");
+    console.log(req.params);
+    console.log(req.body);
+    console.log("uuid.v4: ");
+    const razorpayId = uuid.v4();
+    console.log(razorpayId);
 
-  try {
-    // Create a Razorpay order
-    const options = {
-      amount: amount * 100, // Razorpay expects amount in paise
-      currency: "INR",
-      receipt: `p${razorpayId}`,
-    };
-    console.log(options);
+    try {
+      const options = {
+        amount: amount * 100, // Razorpay expects amount in paise
+        currency: "INR",
+        receipt: `p${razorpayId}`,
+      };
+      console.log(options);
 
-    const razorpayOrder = await razorpay.orders.create(options);
+      const razorpayOrder = await razorpay.orders.create(options);
+      console.log("razorpayOrder:", razorpayOrder);
 
-    console.log("razorpayOrder:");
-    console.log(razorpayOrder);
-    // Now, you have the Razorpay order, and you can pass its ID to the client-side
-    // for further processing (e.g., using Razorpay.js on the frontend)
+      res.redirect(`/user/${phone}/order/${razorpayOrder.id}/saveAmount`);
 
-    // For simplicity, here we are sending the Razorpay order ID as JSON
-    res.redirect(`/user/${phone}/order/${razorpayOrder.id}/saveAmount`);
-    // Deduct the paid amount from the unpaid amount and update the order
-    const order = await Order.findById(orderId);
-
-    console.log(order);
-    if (order) {
-      const paidAmount = parseFloat(amount);
-      const remainingUnpaid = order.payment.totalUnpaid - paidAmount;
-      const totalPaid = order.payment.totalPaid + paidAmount;
-
-      // Update order's payment details
-      await Order.updateOne(
-        { _id: orderId },
-        {
-          $set: {
-            "payment.totalPaid": totalPaid,
-            "payment.totalUnpaid": remainingUnpaid,
-          },
-        }
-      );
-      console.log("Payment details updated successfully.");
+      const order = await Order.findById(orderId);
       console.log(order);
-    } else {
-      console.error("Order not found for payment update.");
+      if (order) {
+        const paidAmount = parseFloat(amount);
+        const remainingUnpaid = order.payment.totalUnpaid - paidAmount;
+        const totalPaid = order.payment.totalPaid + paidAmount;
+
+        // Update order's payment details
+        await Order.updateOne(
+          { _id: orderId },
+          {
+            $set: {
+              "payment.totalPaid": totalPaid,
+              "payment.totalUnpaid": remainingUnpaid,
+            },
+          }
+        );
+        console.log("Payment details updated successfully.");
+      } else {
+        console.error("Order not found for payment update.");
+      }
+    } catch (error) {
+      console.error("Error creating Razorpay order:", error);
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    console.error("Error creating Razorpay order:", error);
-    res.status(500).json({ error: error });
   }
-});
+);
 
 /**
  * @route GET /driver/:phone/verify-otp
@@ -1434,7 +1497,7 @@ app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
     // Assuming driver has a pickupOrder array
     const pickupOrders = driver.pickupOrder || [];
     console.log(pickupOrders);
-    res.status(200).json(pickupOrders)
+    res.status(200).json(pickupOrders);
 
     // res.render("driver-history-orders", {
     //   pickupOrders,
@@ -1549,18 +1612,17 @@ app.get("/driver/:phone/edit-order-list/:orderList", async (req, res) => {
     const mongooseOrderList = new mongoose.Types.ObjectId(orderList);
     console.log(mongooseOrderList);
     console.log(typeof mongooseOrderList);
-    const driverid=await Driver.findOne({phone});
+    const driverid = await Driver.findOne({ phone });
     console.log(driverid);
 
     const existingOrder = await Order.findOne({ _id: mongooseOrderList });
     console.log(existingOrder, dataList);
-    res.json({ existingOrder, dataList});
+    res.json({ existingOrder, dataList });
   } catch (error) {
     console.error("Error fetching orders and updating driver:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 /**
  * @route POST /driver/:phone/orderList/:orderList
@@ -1569,7 +1631,7 @@ app.get("/driver/:phone/edit-order-list/:orderList", async (req, res) => {
  * @param {string} orderList - The ID of the order list to update.
  * @param {Object} req.body - The request body containing the updated order details.
  * @returns {Object} Redirects to the driver's home page or displays an error message.
- */ 
+ */
 app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
   const nonZeroValues = {};
   let total = 0;
@@ -1577,14 +1639,13 @@ app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
   let orderList1 = [];
 
   const { phone, orderList } = req.params;
-  
+
   console.log(orderList);
   console.log(typeof orderList);
   const mongooseOrderList = new mongoose.Types.ObjectId(orderList);
   console.log(mongooseOrderList);
   console.log(typeof mongooseOrderList);
   console.log(req.body);
-
 
   for (const key in req.body) {
     if (req.body.hasOwnProperty(key)) {
@@ -1598,7 +1659,9 @@ app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
   }
 
   for (const key in nonZeroValues) {
-    console.log(`the item no ${key} has ${nonZeroValues[key].quantity} quantity`);
+    console.log(
+      `the item no ${key} has ${nonZeroValues[key].quantity} quantity`
+    );
     const foundItem = dataList.CLOTHES.find(
       (list) => list.ID === parseInt(key)
     );
@@ -1645,7 +1708,6 @@ app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
     console.log(orderList1);
     res.status(200).json({ message: "Order list updated successfully" });
     console.log("success app value");
-
   } catch (error) {
     console.log("error");
     console.log(error);
@@ -1700,7 +1762,6 @@ app.post("/payment-success", (req, res) => {
   }
 });
 
-
 /**
  * @route POST /user/:phone/updateAddress
  * @description Updates the address details for a user identified by their phone number.
@@ -1716,7 +1777,7 @@ app.post("/payment-success", (req, res) => {
  * @param {string} req.body.countryCode - The country code of the new address.
  * @returns {Object} - Returns a JSON object with a success message and the updated user details, or an error message.
  */
-app.post('/user/:phone/updateAddress', async (req, res) => {
+app.post("/user/:phone/updateAddress", verifyToken, async (req, res) => {
   const { phone } = req.params;
   const {
     latitude,
@@ -1733,7 +1794,7 @@ app.post('/user/:phone/updateAddress', async (req, res) => {
     let user = await User.findOne({ phone });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     user.address = {
@@ -1745,28 +1806,17 @@ app.post('/user/:phone/updateAddress', async (req, res) => {
       state,
       country,
       countryCode,
-      isFilled: true, 
+      isFilled: true,
     };
 
     await user.save();
 
-    res.status(200).json({ message: 'Address updated successfully', user });
+    res.status(200).json({ message: "Address updated successfully", user });
   } catch (error) {
-    console.error('Error updating address:', error);
-    res.status(500).json({ message: 'Failed to update address' });
+    console.error("Error updating address:", error);
+    res.status(500).json({ message: "Failed to update address" });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * @listen
