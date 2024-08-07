@@ -174,12 +174,15 @@ const userSchema = new mongoose.Schema({
   address: {
     latitude: Number,
     longitude: Number,
-    road: String,
-    suburb: String,
-    city: String,
-    state: String,
-    country: String,
-    countryCode: String,
+    streetName: String,
+    areaName: String,
+    cityName: String,
+    stateName: String,
+    countryName: String,
+    zipCode: String,
+    userApartmentName: String,
+    userStreetName: String,
+    userLandmark: String,
     isFilled: { type: Boolean, default: false },
   },
   tokens: [
@@ -672,7 +675,7 @@ app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
   let nonZeroValues = {};
   let total = 0;
   let outputString = "";
-  orderList = [];
+  let orderList = [];
   console.log(req.body);
 
   const { phone } = req.params;
@@ -691,9 +694,7 @@ app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
   console.log("nonZeroValues");
   for (const key in nonZeroValues) {
     console.log(`the item no ${key} has ${nonZeroValues[key]} quantity`);
-    const foundItem = dataList.CLOTHES.find(
-      (list) => list.ID === parseInt(key)
-    );
+    const foundItem = dataList.CLOTHES.find((list) => list.ID === parseInt(key));
 
     console.log(`Item with ID ${key} found:`, foundItem);
     if (foundItem) {
@@ -725,20 +726,20 @@ app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
           nonZeroValues[key];
       }
     }
-    if (key == "pickupDate") {
+    if (key === "pickupDate") {
       pickupDate = nonZeroValues[key];
       console.log("pickupDate");
       console.log(nonZeroValues[key]);
     }
-    if (key == "pickupTime") {
+    if (key === "pickupTime") {
       pickupTime = nonZeroValues[key];
       console.log("pickupTime");
       console.log(nonZeroValues[key]);
     }
-    if (key == "deliveryDate") {
+    if (key === "deliveryDate") {
       deliveryDate = nonZeroValues[key];
     }
-    if (key == "deliveryTime") {
+    if (key === "deliveryTime") {
       deliveryTime = nonZeroValues[key];
       console.log("deliveryTime");
       console.log(nonZeroValues[key]);
@@ -749,66 +750,65 @@ app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
     const user = await User.findOne({ phone: req.params.phone });
     console.log(req.params);
 
-    if (user) {
-      // Generate Razorpay order with amount 0
-      razorpay.orders.create(
-        { amount: 100, currency: "INR" },
-        async (err, order) => {
-          if (err) {
-            console.error("Error creating Razorpay order:", err);
-            return res.status(500).send("Failed to create Razorpay order");
-          } else {
-            // Update the order document with Razorpay order ID
-            const razorpayOrderId = order.id;
-
-            console.log(Date.parse(pickupDate));
-            console.log(pickupTime);
-            console.log(Date.parse(deliveryDate));
-            console.log(deliveryTime);
-            result1 = await Order.create({
-              userId: user._id,
-              // orders: orderList,
-              pickupDate: Date.parse(pickupDate),
-              pickupTime: pickupTime,
-              // deliveryDate: Date.parse(deliveryDate),
-              // deliveryTime: deliveryTime,
-              totalPrice: total,
-              payment: {
-                totalPaid: 0, // Initialize totalPaid as 0 when creating the order
-                totalUnpaid: total, // Initialize totalUnpaid with the total amount
-                razorpayOrderId: razorpayOrderId, // Placeholder for the Razorpay order ID
-              },
-            });
-
-            const result = await User.updateOne(
-              { phone: req.params.phone },
-              { $push: { order: { orderId: result1._id } } },
-              { upsert: true }
-            );
-
-            //   console.log(result);
-
-            console.log("result1");
-            console.log(result1);
-
-            if (result.acknowledged && result.modifiedCount === 1) {
-              const modifiedOrderId = result1._id;
-              return res.redirect(
-                `/user/${req.params.phone}/order/${result1._id}/payment`
-              );
-
-              return res.send(result1);
-            } else {
-              console.error("Failed to update order");
-              return res.status(500).send("Failed to update order");
-            }
-          }
-        }
-      );
-    } else {
+    if (!user) {
       console.error("User not found");
       return res.status(404).send("User not found");
     }
+
+    if (!user.address || !user.address.isFilled) {
+      console.error("User address not filled");
+      return res.status(400).send("User address is not filled. Please update your address.");
+    }
+
+    // Generate Razorpay order with amount 0
+    razorpay.orders.create(
+      { amount: 100, currency: "INR" },
+      async (err, order) => {
+        if (err) {
+          console.error("Error creating Razorpay order:", err);
+          return res.status(500).send("Failed to create Razorpay order");
+        } else {
+          // Update the order document with Razorpay order ID
+          const razorpayOrderId = order.id;
+
+          console.log(Date.parse(pickupDate));
+          console.log(pickupTime);
+          console.log(Date.parse(deliveryDate));
+          console.log(deliveryTime);
+          const result1 = await Order.create({
+            userId: user._id,
+            // orders: orderList,
+            pickupDate: Date.parse(pickupDate),
+            pickupTime: pickupTime,
+            // deliveryDate: Date.parse(deliveryDate),
+            // deliveryTime: deliveryTime,
+            totalPrice: total,
+            payment: {
+              totalPaid: 0, // Initialize totalPaid as 0 when creating the order
+              totalUnpaid: total, // Initialize totalUnpaid with the total amount
+              razorpayOrderId: razorpayOrderId, // Placeholder for the Razorpay order ID
+            },
+          });
+
+          const result = await User.updateOne(
+            { phone: req.params.phone },
+            { $push: { order: { orderId: result1._id } } },
+            { upsert: true }
+          );
+
+          console.log("result1");
+          console.log(result1);
+
+          if (result.acknowledged && result.modifiedCount === 1) {
+            const modifiedOrderId = result1._id;
+            return res.redirect(`/user/${req.params.phone}/order/${result1._id}/payment`);
+          } else {
+            console.error("Failed to update order");
+            return res.status(500).send("Failed to update order");
+          }
+        }
+      }
+    );
   } catch (error) {
     console.log(pickupTime);
     console.log(deliveryTime);
@@ -1782,16 +1782,20 @@ app.post("/user/:phone/updateAddress", verifyToken, async (req, res) => {
   const {
     latitude,
     longitude,
-    road,
-    suburb,
-    city,
-    state,
-    country,
-    countryCode,
+    streetName,
+    areaName,
+    cityName,
+    zipCode,
+    stateName,
+    countryName,
+    userApartmentName,
+    userStreetName,
+    userLandmark
   } = req.body;
 
   try {
     let user = await User.findOne({ phone });
+    console.log(req.body);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -1800,16 +1804,21 @@ app.post("/user/:phone/updateAddress", verifyToken, async (req, res) => {
     user.address = {
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
-      road,
-      suburb,
-      city,
-      state,
-      country,
-      countryCode,
+      streetName,
+      areaName,
+      cityName,
+      zipCode,
+      stateName,
+      countryName,
+      userApartmentName,
+      userStreetName,
+      userLandmark,
       isFilled: true,
     };
+    console.log("address is added");
 
     await user.save();
+    console.log("address is saved");
 
     res.status(200).json({ message: "Address updated successfully", user });
   } catch (error) {
