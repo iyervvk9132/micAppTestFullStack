@@ -552,15 +552,12 @@ app.post("/user/:phone/verify-otp", async (req, res) => {
       user.tokens = user.tokens.concat({ token });
       await user.save();
 
-      if (user.address.isFilled === false) {
-        res.redirect(`/user/${phone}/verify-address`);
-      } else {
         res.json({
           message: "Verification successful",
           token,
           redirectUrl: `/user/${phone}/home`,
         });
-      }
+      
     } else {
       res.status(401).send("Invalid verification code");
     }
