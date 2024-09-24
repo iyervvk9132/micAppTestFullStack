@@ -373,14 +373,7 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-/**
- * @route GET /user/login
- * @description Renders the login page for user authentication.
- * @returns {Object} The rendered login page.
- */
-app.get("/user/login", (req, res) => {
-  res.render("login", { type: "user" });
-});
+
 /**
  * @route POST /user/login
  * @description Handles user login by sending a verification code via SMS.
@@ -1001,14 +994,6 @@ app.get("/user/:phone/pricelist", (req, res) => {
   }
 });
 
-/**
- * @route GET /driver/login
- * @description Renders the login page for driver authentication.
- * @returns {Object} The rendered login page for drivers.
- */
-app.get("/driver/login", (req, res) => {
-  res.render("login", { type: "driver" });
-});
 
 /**
  * @route POST /driver/login
@@ -1016,45 +1001,57 @@ app.get("/driver/login", (req, res) => {
  * @param {string} phone - The driver's phone number.
  * @returns {Object} The response object or an error message.
  */
-app.post("/driver/login", async (req, res) => {
-  const phone = req.body.phone;
+// app.post("/driver/login", async (req, res) => {
+//   const phone = req.body.phone;
+//   console.log("driver/login");
+//   console.log(req.body);
+//   const newphone = phone.substring(1); // Remove leading '+' if present
+//   console.log(newphone);
 
-  try {
-    const driver = await Driver.findOne({ phone, isVerified: true });
+//   try {
+//     const driver = await Driver.findOne({ phone: newphone });
+//     console.log(driver);
 
-    if (driver) {
-      const verificationCode = Math.floor(
-        100000 + Math.random() * 900000
-      ).toString();
+//     let verificationCode;
+//     if (driver) {
+//       verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+//       await Driver.updateOne({ phone: newphone }, { verificationCode });
+//     } else {
+//       // If driver is not found, send the error response and return to stop further code execution
+//       return res.status(500).send("Not registered to login. Contact Admin");
+//     }
 
-      await Driver.updateOne({ phone }, { verificationCode });
+//     // Send SMS using Nexmo
+//     nexmo.message.sendSms(
+//       "YourApp",
+//       phone,
+//       `Your verification code is: ${verificationCode}`,
+//       (err, responseData) => {
+//         if (err) {
+//           console.error(err);
+//           // If error in sending SMS, send the response and return
+//           return res.status(500).json({
+//             success: false,
+//             message: "Failed to send verification code",
+//           });
+//         } else {
+//           console.log(responseData);
+//           // If successful, send the success response
+//           return res.status(200).json({
+//             success: true,
+//             message: "Verification code sent successfully",
+//           });
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error during login:", error);
+//     // Send server error response
+//     return res.status(500).json({ success: false, message: "Internal Server Error" });
+//   }
+// });
 
-      const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
-      nexmo.message.sendSms(
-        "YourApp",
-        phone,
-        `Your verification code is: ${verificationCode}`,
-        (err, responseData) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Failed to send verification code");
-          } else {
-            console.log(responseData);
-            res.json({ phone, verificationCode });
-
-            // res.render("verify-otp", { phone, user: "driver" });
-          }
-        }
-      );
-    } else {
-      res.redirect("/driver/register");
-    }
-  } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
 
 /**
  * @route GET /driver/register
@@ -1118,14 +1115,6 @@ app.post("/driver/register", async (req, res) => {
   }
 });
 
-/**
- * @route GET /driver/login
- * @description Renders the login page for driver authentication.
- * @returns {Object} The rendered login page for drivers.
- */
-app.get("/driver/login", (req, res) => {
-  res.render("login", { type: "driver" });
-});
 
 /**
  * @route POST /driver/login
@@ -1135,14 +1124,17 @@ app.get("/driver/login", (req, res) => {
  */
 app.post("/driver/login", async (req, res) => {
   const phone = req.body.phone;
+  console.log("driver/login");
+  console.log(req.body);
+  const newphone = phone.substring(1); // Remove leading '+' if present
+  console.log(newphone);
 
   try {
-    const driver = await Driver.findOne({ phone, isVerified: true });
+    const driver = await Driver.findOne({ phone:newphone, isVerified: true });
+    console.log("Driver found:", driver);
 
     if (driver) {
-      const verificationCode = Math.floor(
-        100000 + Math.random() * 900000
-      ).toString();
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
       await Driver.updateOne({ phone }, { verificationCode });
 
@@ -1154,22 +1146,28 @@ app.post("/driver/login", async (req, res) => {
         `Your verification code is: ${verificationCode}`,
         (err, responseData) => {
           if (err) {
-            console.error(err);
-            res.status(500).send("Failed to send verification code");
+            console.error("Nexmo error:", err);
+            return res.status(500).send("Failed to send verification code");
           } else {
-            console.log(responseData);
-            res.render("verify-otp", { phone, user: "driver" });
-          }
+            console.log("Nexmo response:", responseData);
+            return res.status(200).json({
+              success: true,
+              message: "Driver found and verification code sent successfully"
+            });
+                    }
         }
       );
     } else {
-      res.redirect("/driver/register");
+      console.log("Driver not registered or not verified.");
+      return res.status(401).send("Not registered or unverified driver");
     }
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).send("Internal Server Error");
+    console.error("Error during login:", error.message); // Log the error message
+    console.error(error); // Log the full error object for more context
+    return res.status(500).send("Internal Server Error");
   }
 });
+
 
 /**
  * @route GET /driver/:phone/orderList
@@ -1355,16 +1353,22 @@ app.get("/driver/:phone/verify-otp", (req, res) => {
  */
 app.post("/driver/:phone/verify-otp", async (req, res) => {
   const { phone, verificationCode } = req.body;
-  console.log(req.params);
-  console.log(req.body);
 
   try {
+    console.log("verify-otp");
+    console.log(req.body);
+    console.log(req.body);
+
     const driver = await Driver.findOne({ phone, verificationCode });
+    console.log(driver);
+    console.log(driver);
 
     if (driver) {
-      await Driver.updateOne({ phone }, { isVerified: true });
-      // Note: You don't need a separate variable here unless you plan to use it later
-      res.redirect(`/driver/${phone}/home`);
+      console.log(driver.address);
+        res.json({
+          message: "Verification successful",
+        });
+      
     } else {
       res.status(401).send("Invalid verification code");
     }
@@ -1461,21 +1465,46 @@ app.get("/driver/:phone/salary", (req, res) => {
  * @param {string} phone - The driver's phone number.
  * @returns {Object} The rendered history of orders page.
  */
-app.get("/driver/:phone/history-orders", (req, res) => {
-  // Render the history of orders page
-  res.render("driver-history-orders", { driverPhone: req.params.phone });
-});
+// app.get("/driver/:phone/history-orders", (req, res) => {
+//   // Render the history of orders page
+//   // res.render("driver-history-orders", { driverPhone: req.params.phone });
+// });
 
-/**
+ /**
  * @route POST /driver/:phone/history-orders
- * @description Handles post requests for the history of orders page for drivers.
+ * @description Handles post requests for the history of orders page for drivers, without considering driver ID.
  * @param {Object} req.body - The request body.
  * @param {string} phone - The driver's phone number.
  */
-app.post("/driver/:phone/history-orders", async (req, res) => {
-  console.log(req.body);
-  console.log(req.params);
+ app.get("/driver/:phone/history-orders", async (req, res) => {
+  console.log("started");
+  try {
+    // const { phone } = req.params;
+    // console.log("phone");
+    // console.log(phone);
+
+
+    // Fetch all orders associated with this phone number
+    const orders = await Order.find().populate('userId');
+    console.log("orders");
+    console.log(orders);
+
+    if (orders.length === 0) {
+      // Send response if no orders are found and return to prevent further execution
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    // Send response with the orders
+    return res.status(200).json({ orders });
+
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    // Handle server error and return response
+    return res.status(500).json({ message: "Server error" });
+  }
 });
+
+
 
 /**
  * @route GET /driver/:phone/history-pickup-orders
@@ -1485,11 +1514,7 @@ app.post("/driver/:phone/history-orders", async (req, res) => {
  */
 app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
   try {
-    const driver = await Driver.findOne({ phone: req.params.phone });
-
-    if (!driver) {
-      return res.status(404).send("Driver not found");
-    }
+    
 
     // Assuming driver has a pickupOrder array
     const pickupOrders = driver.pickupOrder || [];
