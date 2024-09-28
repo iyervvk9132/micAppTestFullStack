@@ -1136,7 +1136,7 @@ app.post("/driver/login", async (req, res) => {
     if (driver) {
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-      await Driver.updateOne({ phone }, { verificationCode });
+      await Driver.updateOne({ phone:newphone }, { verificationCode });
 
       const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
