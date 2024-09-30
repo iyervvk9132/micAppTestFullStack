@@ -304,6 +304,7 @@ const orderSchema = new mongoose.Schema({
   pickupTime: String,
   deliveryTime: String,
   isPickedUp: { type: Boolean, default: false },
+  isPickedUpReached:{type: Boolean, default: false},
   pickupDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "driver" },
   isDriverConfirmed: { type: Boolean, default: false },
   isWorkStarted: { type: Boolean, default: false },
@@ -1848,6 +1849,163 @@ app.post("/user/:phone/updateAddress", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Failed to update address" });
   }
 });
+
+
+app.post('/driver/:phone/driver-pickup1', async (req, res) => {
+  const { phone } = req.params;  // Extract driver phone number from URL
+  const { order } = req.body;    // Extract order ID from request body
+
+  try {
+    // Find the order by ID
+    const orderData = await Order.findById(order);
+    if (!orderData) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Find the driver by phone number
+    const driverData = await Driver.findOne({ phone });
+    if (!driverData) {
+      return res.status(404).json({ error: 'Driver not found' });
+    }
+
+    // Update the order with pickupDriverId
+    orderData.pickupDriverId = driverData._id;
+    orderData.isDriverConfirmed = true;  // Set driver confirmation
+    await orderData.save();
+
+    // Update the driver with the order in pickupOrder array
+    driverData.pickupOrder.push({
+      orderId: orderData._id,
+      date: new Date()  // Add current date for the pickup order
+    });
+    await driverData.save();
+
+    res.json({ message: 'Driver pickup confirmed and order updated' });
+  } catch (error) {
+    console.error('Error updating order and driver:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/driver/:phone/order/:orderId/reached-location', async (req, res) => {
+  const { phone, orderId } = req.params;
+
+  try {
+    // Find the order by orderId
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Update the order with the "isPickedUpReached" flag
+    order.isPickedUpReached = true;
+    await order.save();
+
+    // Optionally, update driver record or log reaching location, etc.
+    const driver = await Driver.findOne({ phone });
+    if (driver) {
+      // You can add logic to update the driver record or other business logic here
+      console.log(`Driver ${phone} reached the location for order ${orderId}`);
+    }
+
+    return res.status(200).json({ message: 'Order status updated to reached location', order });
+  } catch (error) {
+    console.error('Error updating order:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.post('/driver/:phone/order/:orderId/', async (req, res) => {
+  const { phone, orderId } = req.params;
+
+  try {
+    // Find the order by orderId
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Update the order with the "isPickedUpReached" flag
+    // Optionally, update driver record or log reaching location, etc.
+    const driver = await Driver.findOne({ phone });
+    if (driver) {
+      // You can add logic to update the driver record or other business logic here
+      console.log(`Driver ${phone} reached the location for order ${orderId}`);
+    }
+
+    return res.status(200).json({ message: 'Order status updated to reached location', order });
+  } catch (error) {
+    console.error('Error updating order:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+// Route to fetch a specific order for a driver by phone and orderId
+app.get('/driver/:phone/order/:orderId', async (req, res) => {
+  const { phone, orderId } = req.params;
+
+  try {
+    // Find the driver using the phone number
+    const driver = await Driver.findOne({ phone });
+    if (!driver) {
+      return res.status(404).json({ message: 'Driver not found' });
+    }
+
+    // Find the order using the orderId and confirm the driver is assigned to it
+    const order = await Order.findOne({ _id: orderId });
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found or not assigned to this driver' });
+    }
+
+    // Respond with the order details
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Error fetching order:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.post('/:phone/orders/:orderId', async (req, res) => {
+  const { phone, orderId } = req.params;
+  const { orders, totalPrice } = req.body;
+
+  try {
+    // Find the driver by phone number
+    const driver = await Driver.findOne({ phone });
+    if (!driver) {
+      return res.status(404).json({ message: 'Driver not found' });
+    }
+
+    // Find the order by ID
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Update the orders array by appending new items
+    order.orders = orders;
+
+
+    // Update the total price
+    order.totalPrice = totalPrice;
+    order.isPickedUp=true;
+
+    // Save the updated order
+    await order.save();
+
+    return res.status(200).json({ message: 'Order updated successfully', order });
+  } catch (error) {
+    console.error('Error updating order:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
+
 
 /**
  * @listen
