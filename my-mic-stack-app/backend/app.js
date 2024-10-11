@@ -290,6 +290,7 @@ const orderSchema = new mongoose.Schema({
       items: String,
       service: String,
       quantity: Number,
+      price: Number,
     },
   ],
   totalPrice: Number,
@@ -1876,6 +1877,42 @@ app.post('/driver/:phone/driver-pickup1', async (req, res) => {
     // Update the driver with the order in pickupOrder array
     driverData.pickupOrder.push({
       orderId: orderData._id,
+    });
+    await driverData.save();
+
+    res.json({ message: 'Driver pickup confirmed and order updated' });
+  } catch (error) {
+    console.error('Error updating order and driver:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+app.post('/driver/:phone/driver-delivery1', async (req, res) => {
+  const { phone } = req.params;  // Extract driver phone number from URL
+  const { order } = req.body;    // Extract order ID from request body
+
+  try {
+    // Find the order by ID
+    const orderData = await Order.findById(order);
+    if (!orderData) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Find the driver by phone number
+    const driverData = await Driver.findOne({ phone });
+    if (!driverData) {
+      return res.status(404).json({ error: 'Driver not found' });
+    }
+
+    // Update the order with deliveryDriverId
+    orderData.deliveryDriverId = driverData._id;
+    orderData.isDeliveryPickuped = true;  // Set driver confirmation
+    await orderData.save();
+
+    // Update the driver with the order in pickupOrder array
+    driverData.deliveryOrder.push({
+      orderId: orderData._id,
       date: new Date()  // Add current date for the pickup order
     });
     await driverData.save();
@@ -1967,9 +2004,10 @@ app.get('/driver/:phone/order/:orderId', async (req, res) => {
   }
 });
 
-app.post('/:phone/orders/:orderId', async (req, res) => {
+app.post('/driver/:phone/orders/:orderId', async (req, res) => {
   const { phone, orderId } = req.params;
-  const { orders, totalPrice } = req.body;
+  const { orders, totalPrice,isPaid } = req.body;
+  console.log("req.body",req.body)
 
   try {
     // Find the driver by phone number
@@ -1991,6 +2029,8 @@ app.post('/:phone/orders/:orderId', async (req, res) => {
     // Update the total price
     order.totalPrice = totalPrice;
     order.isPickedUp=true;
+    order.isPaid=isPaid;
+    console.log("order:".order)
 
     // Save the updated order
     await order.save();
