@@ -246,6 +246,14 @@ const driverSchema = new mongoose.Schema({
     country: String,
     countryCode: String,
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   salary: [
     {
       dailyCost: [{ date: Date, money: Number }],
@@ -305,7 +313,7 @@ const orderSchema = new mongoose.Schema({
   pickupTime: String,
   deliveryTime: String,
   isPickedUp: { type: Boolean, default: false },
-  isPickedUpReached:{type: Boolean, default: false},
+  isPickedUpReached: { type: Boolean, default: false },
   pickupDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "driver" },
   isDriverConfirmed: { type: Boolean, default: false },
   isWorkStarted: { type: Boolean, default: false },
@@ -313,6 +321,7 @@ const orderSchema = new mongoose.Schema({
   isDeliveryPickuped: { type: Boolean, default: false },
   deliveryDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "driver" },
   isDelivered: { type: Boolean, default: false },
+  deliveryCompletedAt:Date,
 });
 
 /**
@@ -374,6 +383,34 @@ const verifyToken = async (req, res, next) => {
     res.status(401).send({ error: "Please authenticate." });
   }
 };
+const verifyDriverToken = async (req, res, next) => {
+  console.log("req:", req.headers); // Log headers for debugging
+  const token = req.headers['authorization']?.replace("Bearer ", ""); // Use optional chaining
+console.log(token);
+  // Check if token is undefined
+  if (!token) {
+    console.error("error undefined token")
+      return res.status(401).send({ error: "Authentication required. Token not found." });
+  }
+
+  try {
+      const decoded = jwt.verify(token, secretKey);
+      const driver = await Driver.findOne({
+          _id: decoded._id,
+          "tokens.token": token,
+      });
+
+      if (!driver) {
+          throw new Error();
+      }
+
+      req.driver = driver;
+      req.token = token;
+      next();
+  } catch (error) {
+      res.status(401).send({ error: "Please authenticate as a driver." });
+  }
+};
 
 
 /**
@@ -409,12 +446,10 @@ app.post("/user/login", async (req, res) => {
       (err, responseData) => {
         if (err) {
           console.error(err);
-          res
-            .status(500)
-            .json({
-              success: false,
-              message: "Failed to send verification code",
-            });
+          res.status(500).json({
+            success: false,
+            message: "Failed to send verification code",
+          });
         } else {
           console.log(responseData);
           res
@@ -460,12 +495,10 @@ app.post("/user/:phone/account-details", verifyToken, async (req, res) => {
       };
       await user.save();
 
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Account details updated successfully",
-        });
+      res.status(200).json({
+        success: true,
+        message: "Account details updated successfully",
+      });
     } else {
       res.status(404).json({ success: false, message: "User not found" });
     }
@@ -516,7 +549,6 @@ app.get("/user/verify-otp", (req, res) => {
   res.render("verify-otp", { phone, user: "user" });
 });
 
-
 /**
  * @route POST /user/:phone/verify-otp
  * @description Handles OTP verification and redirects based on user verification status.
@@ -547,12 +579,11 @@ app.post("/user/:phone/verify-otp", async (req, res) => {
       user.tokens = user.tokens.concat({ token });
       await user.save();
 
-        res.json({
-          message: "Verification successful",
-          token,
-          redirectUrl: `/user/${phone}/home`,
-        });
-      
+      res.json({
+        message: "Verification successful",
+        token,
+        redirectUrl: `/user/${phone}/home`,
+      });
     } else {
       res.status(401).send("Invalid verification code");
     }
@@ -686,7 +717,9 @@ app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
   console.log("nonZeroValues");
   for (const key in nonZeroValues) {
     console.log(`the item no ${key} has ${nonZeroValues[key]} quantity`);
-    const foundItem = dataList.CLOTHES.find((list) => list.ID === parseInt(key));
+    const foundItem = dataList.CLOTHES.find(
+      (list) => list.ID === parseInt(key)
+    );
 
     console.log(`Item with ID ${key} found:`, foundItem);
     if (foundItem) {
@@ -749,7 +782,9 @@ app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
 
     if (!user.address || !user.address.isFilled) {
       console.error("User address not filled");
-      return res.status(400).send("User address is not filled. Please update your address.");
+      return res
+        .status(400)
+        .send("User address is not filled. Please update your address.");
     }
 
     // Generate Razorpay order with amount 0
@@ -793,7 +828,9 @@ app.post("/user/:phone/orderList", verifyToken, async (req, res) => {
 
           if (result.acknowledged && result.modifiedCount === 1) {
             const modifiedOrderId = result1._id;
-            return res.redirect(`/user/${req.params.phone}/order/${result1._id}/payment`);
+            return res.redirect(
+              `/user/${req.params.phone}/order/${result1._id}/payment`
+            );
           } else {
             console.error("Failed to update order");
             return res.status(500).send("Failed to update order");
@@ -996,7 +1033,6 @@ app.get("/user/:phone/pricelist", (req, res) => {
   }
 });
 
-
 /**
  * @route POST /driver/login
  * @description Handles driver login by sending a verification code via SMS.
@@ -1053,16 +1089,14 @@ app.get("/user/:phone/pricelist", (req, res) => {
 //   }
 // });
 
-
-
 /**
  * @route GET /driver/register
  * @description Renders the driver registration page.
  * @returns {Object} The rendered registration page for drivers.
  */
-app.get("/driver/register", (req, res) => {
-  res.render("register", { type: "driver" });
-});
+// app.get("/driver/register", (req, res) => {
+//   res.render("register", { type: "driver" });
+// });
 
 /**
  * @route POST /driver/register
@@ -1070,53 +1104,52 @@ app.get("/driver/register", (req, res) => {
  * @param {string} phone - The driver's phone number for registration.
  * @returns {Object} Redirects to the OTP verification page or displays an error message.
  */
-app.post("/driver/register", async (req, res) => {
-  const phone = req.body.phone;
-  const verificationCode = Math.floor(
-    100000 + Math.random() * 900000
-  ).toString();
+// app.post("/driver/register", async (req, res) => {
+//   const phone = req.body.phone;
+//   const verificationCode = Math.floor(
+//     100000 + Math.random() * 900000
+//   ).toString();
 
-  try {
-    // Check if the user already exists
-    const existingUser = await Driver.findOne({ phone });
+//   try {
+//     // Check if the user already exists
+//     const existingUser = await Driver.findOne({ phone });
 
-    if (existingUser) {
-      // Inform the user that they are already registered
-      // You might want to customize this message or show an alert box on the front end
-      const alertMessage = "driver already registered. Please log in.";
-      return res.send(
-        `<script>alert('${alertMessage}'); window.location.href='/driver/login';</script>`
-      );
-    }
+//     if (existingUser) {
+//       // Inform the user that they are already registered
+//       // You might want to customize this message or show an alert box on the front end
+//       const alertMessage = "driver already registered. Please log in.";
+//       return res.send(
+//         `<script>alert('${alertMessage}'); window.location.href='/driver/login';</script>`
+//       );
+//     }
 
-    // Create a new user if the user doesn't exist
-    const newUser = await Driver.create({
-      phone,
-      verificationCode,
-    });
+//     // Create a new user if the user doesn't exist
+//     const newUser = await Driver.create({
+//       phone,
+//       verificationCode,
+//     });
 
-    const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
+//     const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
-    nexmo.message.sendSms(
-      "YourApp",
-      phone,
-      `Your verification code is: ${verificationCode}`,
-      (err, responseData) => {
-        if (err) {
-          console.error(err);
-          res.status(500).send("Failed to send verification code");
-        } else {
-          console.log(responseData);
-          res.redirect(`/driver/${newUser.phone}/verify-otp`);
-        }
-      }
-    );
-  } catch (error) {
-    console.error("Error during registration:", error);
-    return res.redirect(`/driver/login`);
-  }
-});
-
+//     nexmo.message.sendSms(
+//       "YourApp",
+//       phone,
+//       `Your verification code is: ${verificationCode}`,
+//       (err, responseData) => {
+//         if (err) {
+//           console.error(err);
+//           res.status(500).send("Failed to send verification code");
+//         } else {
+//           console.log(responseData);
+//           res.redirect(`/driver/${newUser.phone}/verify-otp`);
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error during registration:", error);
+//     return res.redirect(`/driver/login`);
+//   }
+// });
 
 /**
  * @route POST /driver/login
@@ -1132,13 +1165,15 @@ app.post("/driver/login", async (req, res) => {
   console.log(newphone);
 
   try {
-    const driver = await Driver.findOne({ phone:newphone, isVerified: true });
+    const driver = await Driver.findOne({ phone: newphone, isVerified: true });
     console.log("Driver found:", driver);
 
     if (driver) {
-      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const verificationCode = Math.floor(
+        100000 + Math.random() * 900000
+      ).toString();
 
-      await Driver.updateOne({ phone:newphone }, { verificationCode });
+      await Driver.updateOne({ phone: newphone }, { verificationCode });
 
       const formattedPhone = phone.startsWith("+") ? phone : `+${phone}`;
 
@@ -1154,9 +1189,9 @@ app.post("/driver/login", async (req, res) => {
             console.log("Nexmo response:", responseData);
             return res.status(200).json({
               success: true,
-              message: "Driver found and verification code sent successfully"
+              message: "Driver found and verification code sent successfully",
             });
-                    }
+          }
         }
       );
     } else {
@@ -1169,7 +1204,6 @@ app.post("/driver/login", async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 });
-
 
 /**
  * @route GET /driver/:phone/orderList
@@ -1367,10 +1401,22 @@ app.post("/driver/:phone/verify-otp", async (req, res) => {
 
     if (driver) {
       console.log(driver.address);
-        res.json({
-          message: "Verification successful",
-        });
-      
+      // Generate JWT token
+
+      const token = jwt.sign(
+        { _id: driver._id.toString(), phone: driver.phone },
+
+        secretKey
+      );
+
+      // Store the token in the database
+
+      driver.tokens = driver.tokens.concat({ token });
+      await driver.save();
+      res.json({
+        message: "Verification successful",
+        token,
+      });
     } else {
       res.status(401).send("Invalid verification code");
     }
@@ -1472,22 +1518,21 @@ app.get("/driver/:phone/salary", (req, res) => {
 //   // res.render("driver-history-orders", { driverPhone: req.params.phone });
 // });
 
- /**
+/**
  * @route POST /driver/:phone/history-orders
  * @description Handles post requests for the history of orders page for drivers, without considering driver ID.
  * @param {Object} req.body - The request body.
  * @param {string} phone - The driver's phone number.
  */
- app.get("/driver/:phone/history-orders", async (req, res) => {
+app.get("/driver/:phone/history-orders", async (req, res) => {
   console.log("started");
   try {
     // const { phone } = req.params;
     // console.log("phone");
     // console.log(phone);
 
-
     // Fetch all orders associated with this phone number
-    const orders = await Order.find().populate('userId');
+    const orders = await Order.find().populate("userId");
     console.log("orders");
     console.log(orders);
 
@@ -1498,15 +1543,12 @@ app.get("/driver/:phone/salary", (req, res) => {
 
     // Send response with the orders
     return res.status(200).json({ orders });
-
   } catch (error) {
     console.error("Error fetching orders:", error);
     // Handle server error and return response
     return res.status(500).json({ message: "Server error" });
   }
 });
-
-
 
 /**
  * @route GET /driver/:phone/history-pickup-orders
@@ -1516,8 +1558,6 @@ app.get("/driver/:phone/salary", (req, res) => {
  */
 app.get("/driver/:phone/history-pickup-orders", async (req, res) => {
   try {
-    
-
     // Assuming driver has a pickupOrder array
     const pickupOrders = driver.pickupOrder || [];
     console.log(pickupOrders);
@@ -1583,7 +1623,7 @@ app.get("/driver/:phone/home", (req, res) => {
  * @param {string} orderId - The ID of the order to confirm pickup.
  * @returns {Object} Redirects to the driver's home page or displays an error message.
  */
-app.post("/driver/:phone/confirm-pickup/:orderId", async (req, res) => {
+app.post("/driver/:phone/confirm-pickup/:orderId", verifyDriverToken, async (req, res) => {
   const { phone, orderId } = req.params;
 
   try {
@@ -1656,7 +1696,7 @@ app.get("/driver/:phone/edit-order-list/:orderList", async (req, res) => {
  * @param {Object} req.body - The request body containing the updated order details.
  * @returns {Object} Redirects to the driver's home page or displays an error message.
  */
-app.post("/driver/:phone/orderList/:orderList", async (req, res) => {
+app.post("/driver/:phone/orderList/:orderList", verifyDriverToken,  async (req, res) => {
   const nonZeroValues = {};
   let total = 0;
   let outputString = "";
@@ -1814,7 +1854,7 @@ app.post("/user/:phone/updateAddress", verifyToken, async (req, res) => {
     countryName,
     userApartmentName,
     userStreetName,
-    userLandmark
+    userLandmark,
   } = req.body;
 
   try {
@@ -1851,27 +1891,26 @@ app.post("/user/:phone/updateAddress", verifyToken, async (req, res) => {
   }
 });
 
-
-app.post('/driver/:phone/driver-pickup1', async (req, res) => {
-  const { phone } = req.params;  // Extract driver phone number from URL
-  const { order } = req.body;    // Extract order ID from request body
+app.post("/driver/:phone/driver-pickup1", verifyDriverToken,  async (req, res) => {
+  const { phone } = req.params; // Extract driver phone number from URL
+  const { order } = req.body; // Extract order ID from request body
 
   try {
     // Find the order by ID
     const orderData = await Order.findById(order);
     if (!orderData) {
-      return res.status(404).json({ error: 'Order not found' });
+      return res.status(404).json({ error: "Order not found" });
     }
 
     // Find the driver by phone number
     const driverData = await Driver.findOne({ phone });
     if (!driverData) {
-      return res.status(404).json({ error: 'Driver not found' });
+      return res.status(404).json({ error: "Driver not found" });
     }
 
     // Update the order with pickupDriverId
     orderData.pickupDriverId = driverData._id;
-    orderData.isDriverConfirmed = true;  // Set driver confirmation
+    orderData.isDriverConfirmed = true; // Set driver confirmation
     await orderData.save();
 
     // Update the driver with the order in pickupOrder array
@@ -1880,58 +1919,57 @@ app.post('/driver/:phone/driver-pickup1', async (req, res) => {
     });
     await driverData.save();
 
-    res.json({ message: 'Driver pickup confirmed and order updated' });
+    res.json({ message: "Driver pickup confirmed and order updated" });
   } catch (error) {
-    console.error('Error updating order and driver:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error updating order and driver:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-
-app.post('/driver/:phone/driver-delivery1', async (req, res) => {
-  const { phone } = req.params;  // Extract driver phone number from URL
-  const { order } = req.body;    // Extract order ID from request body
+app.post("/driver/:phone/driver-delivery1", verifyDriverToken,  async (req, res) => {
+  const { phone } = req.params; // Extract driver phone number from URL
+  const { order } = req.body; // Extract order ID from request body
 
   try {
     // Find the order by ID
     const orderData = await Order.findById(order);
     if (!orderData) {
-      return res.status(404).json({ error: 'Order not found' });
+      return res.status(404).json({ error: "Order not found" });
     }
 
     // Find the driver by phone number
     const driverData = await Driver.findOne({ phone });
     if (!driverData) {
-      return res.status(404).json({ error: 'Driver not found' });
+      return res.status(404).json({ error: "Driver not found" });
     }
 
     // Update the order with deliveryDriverId
     orderData.deliveryDriverId = driverData._id;
-    orderData.isDeliveryPickuped = true;  // Set driver confirmation
+    orderData.isDeliveryPickuped = true; // Set driver confirmation
     await orderData.save();
 
     // Update the driver with the order in pickupOrder array
     driverData.deliveryOrder.push({
       orderId: orderData._id,
-      date: new Date()  // Add current date for the pickup order
+      date: new Date(), // Add current date for the pickup order
     });
     await driverData.save();
 
-    res.json({ message: 'Driver pickup confirmed and order updated' });
+    res.json({ message: "Driver pickup confirmed and order updated" });
   } catch (error) {
-    console.error('Error updating order and driver:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error updating order and driver:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.post('/driver/:phone/order/:orderId/reached-location', async (req, res) => {
+app.post("/driver/:phone/order/:orderId/reached-location", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
 
   try {
     // Find the order by orderId
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
 
     // Update the order with the "isPickedUpReached" flag
@@ -1945,21 +1983,23 @@ app.post('/driver/:phone/order/:orderId/reached-location', async (req, res) => {
       console.log(`Driver ${phone} reached the location for order ${orderId}`);
     }
 
-    return res.status(200).json({ message: 'Order status updated to reached location', order });
+    return res
+      .status(200)
+      .json({ message: "Order status updated to reached location", order });
   } catch (error) {
-    console.error('Error updating order:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error updating order:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-app.post('/driver/:phone/order/:orderId/', async (req, res) => {
+app.post("/driver/:phone/order/:orderId/", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
 
   try {
     // Find the order by orderId
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
 
     // Update the order with the "isPickedUpReached" flag
@@ -1970,104 +2010,177 @@ app.post('/driver/:phone/order/:orderId/', async (req, res) => {
       console.log(`Driver ${phone} reached the location for order ${orderId}`);
     }
 
-    return res.status(200).json({ message: 'Order status updated to reached location', order });
+    return res
+      .status(200)
+      .json({ message: "Order status updated to reached location", order });
   } catch (error) {
-    console.error('Error updating order:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error updating order:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-
 // Route to fetch a specific order for a driver by phone and orderId
-app.get('/driver/:phone/order/:orderId', async (req, res) => {
+app.get("/driver/:phone/order/:orderId", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
 
   try {
     // Find the driver using the phone number
     const driver = await Driver.findOne({ phone });
     if (!driver) {
-      return res.status(404).json({ message: 'Driver not found' });
+      return res.status(404).json({ message: "Driver not found" });
     }
 
     // Find the order using the orderId and confirm the driver is assigned to it
     const order = await Order.findOne({ _id: orderId });
 
     if (!order) {
-      return res.status(404).json({ message: 'Order not found or not assigned to this driver' });
+      return res
+        .status(404)
+        .json({ message: "Order not found or not assigned to this driver" });
     }
 
     // Respond with the order details
     res.status(200).json(order);
   } catch (error) {
-    console.error('Error fetching order:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error fetching order:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-app.post('/driver/:phone/orders/:orderId', async (req, res) => {
+app.post("/driver/:phone/orders/:orderId", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
-  const { orders, totalPrice,isPaid } = req.body;
-  console.log("req.body",req.body)
+  const { orders, totalPrice, isPaid } = req.body;
+  console.log("req.body", req.body);
 
   try {
     // Find the driver by phone number
     const driver = await Driver.findOne({ phone });
     if (!driver) {
-      return res.status(404).json({ message: 'Driver not found' });
+      return res.status(404).json({ message: "Driver not found" });
     }
 
     // Find the order by ID
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
 
     // Update the orders array by appending new items
     order.orders = orders;
 
-
     // Update the total price
     order.totalPrice = totalPrice;
-    order.isPickedUp=true;
-    order.isPaid=isPaid;
-    console.log("order:".order)
+    order.isPickedUp = true;
+    order.isPaid = isPaid;
+    console.log("order:".order);
 
     // Save the updated order
     await order.save();
 
-    return res.status(200).json({ message: 'Order updated successfully', order });
+    return res
+      .status(200)
+      .json({ message: "Order updated successfully", order });
   } catch (error) {
-    console.error('Error updating order:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error updating order:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-
-app.post('/orders/:orderId/update-payment', async (req, res) => {
+app.post("/orders/:orderId/update-payment", async (req, res) => {
   const { orderId } = req.params;
   const { isPaid } = req.body;
 
   try {
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
 
-    order.isPaid = true;
+    order.isPaid = isPaid;
     console.log("order:", order);
 
     await order.save();
-    return res.status(200).json({ message: 'Order updated successfully', order });
+    return res
+      .status(200)
+      .json({ message: "Order updated successfully", order });
   } catch (error) {
-    console.error('Error updating order:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error updating order:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
+app.post("/driver/:phone/order/:orderId/complete-delivery", verifyDriverToken, async (req, res) => {
+  const { phone, orderId } = req.params;
+  console.log("complete-delivery",req.params);
 
+  try {
+    // Find the order by orderId
+    const order = await Order.findOne({ _id: orderId });
 
+    if (!order) {
+      return res.status(404).send("Order not found");
+    }
 
+    // Verify that the driver exists and is verified
+    const driver = await Driver.findOne({ phone, isVerified: true });
 
+    if (!driver) {
+      return res.status(404).send("Driver not found or not verified");
+    }
+
+    const completedOrder = {
+      orderId: order._id,
+      date: new Date(),
+    };
+
+    // Add completedOrder to the driver's completedOrders array
+    await Driver.updateOne({ phone }, { $push: { completedOrders: completedOrder } });
+
+    // Update the order status to completed
+    await Order.updateOne(
+      { _id: orderId },
+      { $set: { isDelivered: true, deliveryCompletedAt: new Date() } }
+    );
+
+    return res.status(200).send("Delivery completed successfully");
+  } catch (error) {
+    console.error("Error updating order for delivery completion:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/driver/:phone/order/:orderId/payment-status", verifyDriverToken, async (req, res) => {
+  const { phone, orderId } = req.params;
+
+  try {
+    // Find the order by orderId
+    const order = await Order.findById(orderId);
+    
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Find the driver by phone number and check if they're verified
+    const driver = await Driver.findOne({ phone, isVerified: true });
+
+    if (!driver) {
+      return res.status(404).json({ message: "Driver not found or not verified" });
+    }
+
+    // Update the order's payment status to true
+    order.paymentStatus = true; // Assuming there is a 'paymentStatus' field in the order schema
+    await order.save();
+
+    return res.status(200).json({ 
+      orderId: order._id, 
+      paymentStatus: true,
+      message: "Payment status updated successfully" 
+    });
+  } catch (error) {
+    console.error("Error updating order payment status:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 /**
  * @listen
