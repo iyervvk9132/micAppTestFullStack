@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User"); // Adjust the path based on your project structure
+const User = require("../models/userModel"); // Adjust the path based on your project structure
 const secretKey = "iyer_vivek";
 
 const verifyToken = async (req, res, next) => {
