@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel"); // Adjust the path based on your project structure
+const Driver = require("../models/driverModel");
 const secretKey = "iyer_vivek";
 
 const verifyToken = async (req, res, next) => {
@@ -27,7 +28,6 @@ const verifyToken = async (req, res, next) => {
 
 
 const verifyDriverToken = async (req, res, next) => {
-  console.log("req:", req.headers); // Log headers for debugging
   const token = req.headers['authorization']?.replace("Bearer ", ""); // Use optional chaining
 console.log(token);
   // Check if token is undefined

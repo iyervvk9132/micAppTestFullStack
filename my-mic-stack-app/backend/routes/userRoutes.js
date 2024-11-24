@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middlewares/verifyToken'); // Example for using a middleware
+const {verifyToken} = require('../middlewares/verifyToken'); // Example for using a middleware
 const User = require('../models/userModel');
 const nexmo = require('../middlewares/message');
 const jwt = require("jsonwebtoken");
