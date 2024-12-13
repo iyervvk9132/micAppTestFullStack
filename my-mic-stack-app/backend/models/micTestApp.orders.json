@@ -1,349 +1,1788 @@
 [{
   "_id": {
-    "$oid": "6568538dce7dd3442d0e0bfe"
+    "$oid": "660c12d56ec7b890b9750c48"
   },
   "userId": {
-    "$oid": "6567f58a04d5264447547603"
+    "$oid": "660bfcfe81bbced854f9f3c3"
   },
-  "__v": 0
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-03T14:11:50.299Z"
+  },
+  "pickupTime": "10:00 AM",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "__v": 8,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "isPickedUpReached": true,
+  "isPaid": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 10,
+      "_id": {
+        "$oid": "67077627fcb5c373abaeaf2d"
+      }
+    }
+  ],
+  "totalPrice": 100,
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-10-31T07:01:18.323Z"
+  }
 },
 {
   "_id": {
-    "$oid": "65685b854683a388aa909fc6"
+    "$oid": "660c1d6a9d4a3a8d5f33e52d"
   },
   "userId": {
-    "$oid": "6567f58a04d5264447547603"
+    "$oid": "660bfcfe81bbced854f9f3c3"
   },
-  "__v": 0
+  "totalPrice": 1200,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-03T14:59:37.375Z"
+  },
+  "pickupTime": "10:00 AM",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 18,
+      "price": 25,
+      "_id": {
+        "$oid": "672307e9727e9378fceaae07"
+      }
+    },
+    {
+      "itemId": 2,
+      "quantity": 25,
+      "price": 30,
+      "_id": {
+        "$oid": "672307e9727e9378fceaae08"
+      }
+    }
+  ],
+  "__v": 1,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-10-31T07:03:15.618Z"
+  }
 },
 {
   "_id": {
-    "$oid": "65685c244683a388aa909fc9"
+    "$oid": "660c1e7d9d4a3a8d5f33e53c"
   },
   "userId": {
-    "$oid": "6567f58a04d5264447547603"
+    "$oid": "660bfcfe81bbced854f9f3c3"
   },
-  "__v": 0
+  "totalPrice": 50,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-03T15:04:18.367Z"
+  },
+  "pickupTime": "10:00 AM",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 5,
+      "price": 10,
+      "_id": {
+        "$oid": "672315be727e9378fceab79b"
+      }
+    }
+  ],
+  "__v": 1,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-10-31T08:20:04.466Z"
+  }
 },
 {
   "_id": {
-    "$oid": "65685c7065b94e76b93e13bd"
+    "$oid": "660e2afaf64c66cb3eac7852"
   },
   "userId": {
-    "$oid": "6567f58a04d5264447547603"
+    "$oid": "660bfcfe81bbced854f9f3c3"
   },
-  "__v": 0
+  "totalPrice": 200,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-04T04:21:43.346Z"
+  },
+  "pickupTime": "11:00 AM to 12:00 PM",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 20,
+      "_id": {
+        "$oid": "672315dc727e9378fceabca4"
+      }
+    }
+  ],
+  "__v": 1,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-23T13:47:26.674Z"
+  }
 },
 {
   "_id": {
-    "$oid": "6569f198ca2d9fc3f584a280"
+    "$oid": "660e31f4f64c66cb3eac7861"
   },
   "userId": {
-    "$oid": "6569f16bca2d9fc3f584a27c"
+    "$oid": "660bfcfe81bbced854f9f3c3"
   },
-  "__v": 0
+  "totalPrice": 10,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-04T04:42:24.276Z"
+  },
+  "pickupTime": "1:00 PM to 2:00 PM",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 1,
+      "_id": {
+        "$oid": "67231340727e9378fceab252"
+      }
+    }
+  ],
+  "__v": 1,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T07:05:21.731Z"
+  }
 },
 {
   "_id": {
-    "$oid": "656a0ae0ca2d9fc3f584a283"
+    "$oid": "660e3759f64c66cb3eac786b"
   },
   "userId": {
-    "$oid": "6569f16bca2d9fc3f584a27c"
+    "$oid": "660bfcfe81bbced854f9f3c3"
   },
+  "totalPrice": 100,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-04T05:14:45.780Z"
+  },
+  "pickupTime": "12:00",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 10,
+      "_id": {
+        "$oid": "67232128727e9378fceac45f"
+      }
+    }
+  ],
+  "__v": 1,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T06:54:36.484Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "660e377cf64c66cb3eac7876"
+  },
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 100,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-04T05:14:45.780Z"
+  },
+  "pickupTime": "12:00 PM to 1:00 PM",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 10,
+      "_id": {
+        "$oid": "67233defb27efd53fd3bbdf1"
+      }
+    }
+  ],
+  "__v": 2,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T10:35:37.366Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "660e37d7f64c66cb3eac7882"
+  },
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 100,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-04T05:17:04.123Z"
+  },
+  "pickupTime": "12:00 PM",
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 10,
+      "_id": {
+        "$oid": "67233e11b27efd53fd3bc2bd"
+      }
+    }
+  ],
+  "__v": 1,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T10:46:38.259Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6625c00e05649df0df2b0cf8"
+  },
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 205,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-22T01:40:26.783Z"
+  },
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 18,
+      "_id": {
+        "$oid": "6741d2854ebf466e2b0a5eb8"
+      }
+    },
+    {
+      "itemId": 2,
+      "quantity": 5,
+      "price": 5,
+      "_id": {
+        "$oid": "6741d2854ebf466e2b0a5eb9"
+      }
+    }
+  ],
+  "__v": 2,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T10:47:17.466Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6627314ebfa4db8a15aa4c9a"
+  },
+  "userId": {
+    "$oid": "6621fc51acf5044aae3919db"
+  },
+  "totalPrice": 0,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-23T03:55:21.987Z"
+  },
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [],
+  "__v": 0,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T10:56:32.325Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6627317abfa4db8a15aa4ca0"
+  },
+  "userId": {
+    "$oid": "6621fc51acf5044aae3919db"
+  },
+  "totalPrice": 25,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-23T03:55:21.987Z"
+  },
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 5,
+      "price": 5,
+      "_id": {
+        "$oid": "67430c465ab3bb740f4c37f6"
+      }
+    }
+  ],
+  "__v": 1,
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "isPickedUpReached": true,
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T10:36:17.142Z"
+  },
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  }
+},
+{
+  "_id": {
+    "$oid": "66273193bfa4db8a15aa4ca7"
+  },
+  "userId": {
+    "$oid": "6621fc51acf5044aae3919db"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-23T03:55:21.987Z"
+  },
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [],
+  "__v": 0,
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "isPickedUpReached": true,
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T14:31:56.922Z"
+  },
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  }
+},
+{
+  "_id": {
+    "$oid": "662731a0bfa4db8a15aa4caf"
+  },
+  "userId": {
+    "$oid": "6621fc51acf5044aae3919db"
+  },
+  "totalPrice": 100,
+  "isPaid": true,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-23T03:55:21.987Z"
+  },
+  "isPickedUp": true,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": true,
+  "isDelivered": true,
+  "orders": [
+    {
+      "itemId": 1,
+      "quantity": 10,
+      "price": 10,
+      "_id": {
+        "$oid": "6742c7b7e23da0f5a546cda8"
+      }
+    }
+  ],
+  "__v": 1,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  },
+  "deliveryCompletedAt": {
+    "$date": "2024-11-24T18:00:01.643Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "662731e2bfa4db8a15aa4cb8"
+  },
+  "userId": {
+    "$oid": "6621fc51acf5044aae3919db"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-23T03:55:21.987Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": true,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  }
+},
+{
+  "_id": {
+    "$oid": "66273202bfa4db8a15aa4cc2"
+  },
+  "userId": {
+    "$oid": "6621fc51acf5044aae3919db"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-23T03:55:21.987Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0,
+  "isPickedUpReached": true,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  }
+},
+{
+  "_id": {
+    "$oid": "662736dabfa4db8a15aa4ccd"
+  },
+  "userId": {
+    "$oid": "6621fc51acf5044aae3919db"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-23T03:55:21.987Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa18fc266bbc6716c50e0"
+    "$oid": "6629c096041a24f5ae0028f9"
   },
-  "quantity": 1,
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-04-25T02:31:33.443Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa18fc266bbc6716c50e2"
+    "$oid": "663de1a6a62660adca9fe97b"
   },
-  "quantity": 1,
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": ""
+  },
+  "pickupDate": {
+    "$date": "2024-05-10T08:58:06.348Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa3b5950270d905b3c1e8"
+    "$oid": "663de1b3a62660adca9fe988"
   },
-  "quantity": 1,
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": ""
+  },
+  "pickupDate": {
+    "$date": "2024-05-10T08:58:06.348Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa3b5950270d905b3c1ea"
+    "$oid": "663de243fca26006c47fef80"
   },
-  "quantity": 1,
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": ""
+  },
+  "pickupDate": {
+    "$date": "2024-05-10T08:58:06.348Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa752dc5f0acd84c70097"
+    "$oid": "6641f87ad6f1ce43bbe3fda0"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": ""
+  },
+  "pickupDate": {
+    "$date": "2024-05-13T09:36:39.884Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa752dc5f0acd84c70099"
+    "$oid": "6641f931d052567d43378e24"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_O9xfOyAXpb5cLb"
+  },
+  "pickupDate": {
+    "$date": "2024-05-13T09:36:39.884Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa8b9854674c2e7ab86a7"
+    "$oid": "6641fa6ad052567d43378e54"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_O9xkv2mP8Ov4Tx"
+  },
+  "pickupDate": {
+    "$date": "2024-05-13T09:36:39.884Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa8b9854674c2e7ab86a9"
+    "$oid": "6641fbb6d052567d43378ea7"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_O9xqlevp39YFj8"
+  },
+  "pickupDate": {
+    "$date": "2024-05-13T11:33:56.024Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa95c11ddbe08422ab163"
+    "$oid": "6659e0ef7f1d2badac2f3e60"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OH8XE6JTVbWVDz"
+  },
+  "pickupDate": {
+    "$date": "2024-06-05T14:38:28.419Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa95c11ddbe08422ab165"
+    "$oid": "666476c03e681c5b48482f7f"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OKJWPQWGnKGFat"
+  },
+  "pickupDate": {
+    "$date": "2024-06-09T15:20:15.253Z"
+  },
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa9dd2fe22726d1568476"
+    "$oid": "666477993e681c5b48482f95"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OKJaEQLb3uxaMN"
+  },
+  "pickupDate": {
+    "$date": "2024-06-09T15:24:03.821Z"
+  },
+  "pickupTime": "12:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aa9dd2fe22726d1568478"
+    "$oid": "66647c413e681c5b48482fd4"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OKJvDleWVhVhDz"
+  },
+  "pickupDate": {
+    "$date": "2024-06-09T15:38:26.868Z"
+  },
+  "pickupTime": "10:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aaa86fd70b8a396f9eafe"
+    "$oid": "66671de884929702fa2156f7"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OL6tPCugWOQPrc"
+  },
+  "pickupDate": {
+    "$date": "2024-06-11T15:36:37.226Z"
+  },
+  "pickupTime": "10:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aaa86fd70b8a396f9eb00"
+    "$oid": "666c5ac95c059804ab92b4ec"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OMgMmvW1y0axpv"
+  },
+  "pickupDate": {
+    "$date": "2024-06-15T14:59:15.911Z"
+  },
+  "pickupTime": "10:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": true,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0,
+  "isPickedUpReached": false,
+  "pickupDriverId": {
+    "$oid": "659ce6092a9d6004d8ed7cea"
+  }
+},
+{
+  "_id": {
+    "$oid": "666c630f5c059804ab92b6c7"
+  },
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OMgy46AiZnr25m"
+  },
+  "pickupDate": {
+    "$date": "2024-06-15T15:34:33.582Z"
+  },
+  "pickupTime": "10:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aaaef484d2094f5f4f6dd"
+    "$oid": "666d3ca79649c8fbfd7e3f34"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OMwmnDU8WRfGJG"
+  },
+  "pickupDate": {
+    "$date": "2024-06-15T07:01:58.137Z"
+  },
+  "pickupTime": "14:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aaaef484d2094f5f4f6df"
+    "$oid": "66ad8a51096ac2810631139b"
   },
-  "quantity": 1,
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OgFRuZr9HOJ7re"
+  },
+  "pickupDate": {
+    "$date": "2024-08-03T01:39:14.972Z"
+  },
+  "pickupTime": "10:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aab285d7ad95f13e82257"
+    "$oid": "66b241f70b73ac133ff9b7b9"
   },
-  "quantity": 1,
-  "items": "KARCHIEF",
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OhfElVpnCF0GW7"
+  },
+  "pickupDate": {
+    "$date": "2024-08-08T15:21:48.705Z"
+  },
+  "pickupTime": "11:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aab285d7ad95f13e82259"
+    "$oid": "66b3912c430b6ec0f2b04efa"
   },
-  "quantity": 1,
-  "items": "QUILT",
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_Oi3bZ8qLmbhywR"
+  },
+  "pickupDate": {
+    "$date": "2024-08-08T15:21:31.928Z"
+  },
+  "pickupTime": "11:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aab7a5f5a819209dfd83b"
+    "$oid": "66d2dcfba53c57d5af6bf5b8"
   },
-  "quantity": 1,
-  "items": "KARCHIEF",
-  "service": "IRONING",
+  "userId": {
+    "$oid": "65d87f25769e10375de6b619"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OrS0y92wKqLWTx"
+  },
+  "pickupDate": {
+    "$date": "2024-08-31T09:04:42.712Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aab7a5f5a819209dfd83d"
+    "$oid": "66d2dfe5a53c57d5af6bf7a8"
   },
-  "quantity": 1,
-  "items": "QUILT",
-  "service": "IRONING",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OrSE6jdgMupsjZ"
+  },
+  "pickupDate": {
+    "$date": "2024-08-31T08:48:58.124Z"
+  },
+  "pickupTime": "16:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aabab5f5a819209dfd840"
+    "$oid": "66d2dfe5a53c57d5af6bf7aa"
   },
-  "quantity": 1,
-  "items": "TROUSERS",
-  "service": "DRYCLEAN",
+  "userId": {
+    "$oid": "660bfcfe81bbced854f9f3c3"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OrSE6jlt2afrmq"
+  },
+  "pickupDate": {
+    "$date": "2024-08-31T08:48:58.124Z"
+  },
+  "pickupTime": "16:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aabab5f5a819209dfd842"
+    "$oid": "66d416891012d1e4fb9af011"
   },
-  "quantity": 1,
-  "items": "SHIRT",
-  "service": "DRYCLEAN",
+  "userId": {
+    "$oid": "65d87f25769e10375de6b619"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OrooArdJR3KIbx"
+  },
+  "pickupDate": {
+    "$date": "2024-09-01T07:22:32.184Z"
+  },
+  "pickupTime": "14:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aabab5f5a819209dfd844"
+    "$oid": "66d416a21012d1e4fb9af05c"
   },
-  "quantity": 1,
-  "items": "KARCHIEF",
-  "service": "IRONING",
+  "userId": {
+    "$oid": "65d87f25769e10375de6b619"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0,
+    "razorpayOrderId": "order_OroocjlHnx6WQd"
+  },
+  "pickupDate": {
+    "$date": "2024-09-01T07:22:32.184Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aabab5f5a819209dfd846"
+    "$oid": "67400d5054b7c8b01f828389"
   },
-  "quantity": 1,
-  "items": "QUILT",
-  "service": "IRONING",
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:49:13.466Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656ab295ca40d1f07988b434"
+    "$oid": "67400d6254b7c8b01f828393"
   },
-  "items": "TROUSERS",
-  "service": "DRYCLEAN",
-  "quantity": 1,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:49:13.466Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656ab295ca40d1f07988b436"
+    "$oid": "67400dc654b7c8b01f82839f"
   },
-  "items": "SHIRT",
-  "service": "DRYCLEAN",
-  "quantity": 1,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:49:13.466Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656ab295ca40d1f07988b438"
+    "$oid": "67400ea154b7c8b01f8283ad"
   },
-  "items": "KARCHIEF",
-  "service": "IRONING",
-  "quantity": 1,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:49:13.466Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656ab295ca40d1f07988b43a"
+    "$oid": "67400ed054b7c8b01f8283bd"
   },
-  "items": "QUILT",
-  "service": "IRONING",
-  "quantity": 1,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aca05ca40d1f07988b43d"
+    "$oid": "67400ee154b7c8b01f8283cf"
   },
-  "items": "TROUSERS",
-  "service": "DRYCLEAN",
-  "quantity": 1,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aca05ca40d1f07988b43f"
+    "$oid": "67400f8c0b77bc20317503c4"
   },
-  "items": "SHIRT",
-  "service": "DRYCLEAN",
-  "quantity": 1,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aca05ca40d1f07988b441"
+    "$oid": "67400f960b77bc20317503da"
   },
-  "items": "KARCHIEF",
-  "service": "IRONING",
-  "quantity": 1,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aca05ca40d1f07988b443"
+    "$oid": "67400f9e0b77bc20317503f2"
   },
-  "items": "QUILT",
-  "service": "IRONING",
-  "quantity": 5,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656aca53ca40d1f07988b446"
+    "$oid": "67400fa30b77bc203175040c"
   },
-  "items": "QUILT",
-  "service": "IRONING",
-  "quantity": 5,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656acb7bca40d1f07988b449"
+    "$oid": "67400fe70099da53d08bcfe6"
   },
-  "items": "KARCHIEF",
-  "service": "IRONING",
-  "quantity": 5,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "656acb7bca40d1f07988b44b"
+    "$oid": "67400fea0099da53d08bd004"
   },
-  "items": "QUILT",
-  "service": "IRONING",
-  "quantity": 5,
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674010035fb61b8f6efca77a"
+  },
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674010215fb61b8f6efca79c"
+  },
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674010235fb61b8f6efca7c0"
+  },
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674010595edfa90f71bb53fb"
+  },
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "17:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67401091d329f1c053c18f72"
+  },
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-22T04:55:34.109Z"
+  },
+  "pickupTime": "16:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674018bb9f9d9168cf2f8bcd"
+  },
+  "userId": {
+    "$oid": "673ffe564a2748a24ae57ebe"
+  },
+  "totalPrice": 0,
+  "isPaid": false,
+  "payment": {
+    "totalPaid": 0,
+    "totalUnpaid": 0
+  },
+  "pickupDate": {
+    "$date": "2024-11-25T05:37:47.704Z"
+  },
+  "pickupTime": "10:00",
+  "isPickedUp": false,
+  "isPickedUpReached": false,
+  "isDriverConfirmed": false,
+  "isWorkStarted": false,
+  "isWorkCompleted": false,
+  "isDeliveryPickuped": false,
+  "isDelivered": false,
+  "orders": [],
   "__v": 0
 }]
