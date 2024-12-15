@@ -113,6 +113,12 @@ router.post("/:phone/verify-otp", async (req, res) => {
 });
   
 
+/**
+ * @route POST /:phone/driver-pickup1
+ * @description Assigns a driver to an order for pickup.
+ * @param {string} phone - The phone number of the driver.
+ * @body {string} order - The ID of the order to be picked up.
+ */
 router.post("/:phone/driver-pickup1", verifyDriverToken,  async (req, res) => {
   const { phone } = req.params; // Extract driver phone number from URL
   const { order } = req.body; // Extract order ID from request body
@@ -148,7 +154,13 @@ router.post("/:phone/driver-pickup1", verifyDriverToken,  async (req, res) => {
   }
 });
 
-// Route to fetch a specific order for a driver by phone and orderId
+
+/**
+ * @route GET /:phone/order/:orderId
+ * @description Fetches a specific order for a driver.
+ * @param {string} phone - The phone number of the driver.
+ * @param {string} orderId - The ID of the order to be fetched.
+ */
 router.get("/:phone/order/:orderId", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
 
@@ -177,6 +189,12 @@ router.get("/:phone/order/:orderId", verifyDriverToken,  async (req, res) => {
 });
 
 
+/**
+ * @route POST /:phone/order/:orderId/reached-location
+ * @description Updates the order to indicate the driver reached the location.
+ * @param {string} phone - The phone number of the driver.
+ * @param {string} orderId - The ID of the order to be updated.
+ */
 router.post("/:phone/order/:orderId/reached-location", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
 
@@ -206,6 +224,17 @@ router.post("/:phone/order/:orderId/reached-location", verifyDriverToken,  async
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+
+/**
+ * @route POST /:phone/orders/:orderId
+ * @description Updates an existing order with new items, total price, payment status, and Razorpay order ID. Marks the order as picked up.
+ * @param {string} phone - The phone number of the driver.
+ * @param {string} orderId - The ID of the order to be updated.
+ * @body {Array} orders - Array of items to update in the order.
+ * @body {number} totalPrice - The updated total price of the order.
+ * @body {boolean} isPaid - The payment status of the order.
+ * @body {string} razorpayOrderId - The Razorpay order ID associated with the payment.
+ */
 
 router.post("/:phone/orders/:orderId", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
@@ -280,7 +309,12 @@ router.get("/:phone/history-orders", verifyDriverToken, async (req, res) => {
   }
 });
 
-
+/**
+ * @route POST /:phone/driver-delivery1
+ * @description Assigns a driver to an order for delivery and updates the order and driver's delivery list.
+ * @param {string} phone - The phone number of the driver.
+ * @body {string} order - The ID of the order to be delivered.
+ */
 router.post("/:phone/driver-delivery1", verifyDriverToken,  async (req, res) => {
   const { phone } = req.params; // Extract driver phone number from URL
   const { order } = req.body; // Extract order ID from request body
@@ -318,6 +352,13 @@ router.post("/:phone/driver-delivery1", verifyDriverToken,  async (req, res) => 
 });
 
 
+
+/**
+ * @route POST /:phone/order/:orderId/complete-delivery
+ * @description Marks an order as completed.
+ * @param {string} phone - The phone number of the driver.
+ * @param {string} orderId - The ID of the order to be marked as completed.
+ */
 router.post("/:phone/order/:orderId/complete-delivery", verifyDriverToken, async (req, res) => {
   const { phone, orderId } = req.params;
   console.log("complete-delivery",req.params);
@@ -358,6 +399,13 @@ router.post("/:phone/order/:orderId/complete-delivery", verifyDriverToken, async
   }
 });
 
+
+/**
+ * @route GET /:phone/order/:orderId/payment-status
+ * @description Retrieves the payment status of a specific order for a driver.
+ * @param {string} phone - The phone number of the driver.
+ * @param {string} orderId - The ID of the order whose payment status is to be checked.
+ */
 router.get("/:phone/order/:orderId/payment-status", verifyDriverToken, async (req, res) => {
   const { phone, orderId } = req.params;
 
