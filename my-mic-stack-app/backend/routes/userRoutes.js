@@ -519,6 +519,22 @@ router.post("/:phone/updateAddress", verifyToken, async (req, res) => {
   }
 });
 
+router.post("/:phone/order/:orderId/mark-as-paid", verifyToken, async (req, res) => {
+  
+  try {
+    console.log("mark-as-paid")
+    const { orderId } = req.params;
+    const { isPaid,paymentId } = req.body;
+
+    // Update the payment status
+    await Order.findByIdAndUpdate(orderId, { isPaid ,"payment.razorpayOrderId": paymentId });
+
+    res.status(200).json({ message: 'Payment status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating payment status', error });
+  }
+});
+
 
 
 module.exports = router;
