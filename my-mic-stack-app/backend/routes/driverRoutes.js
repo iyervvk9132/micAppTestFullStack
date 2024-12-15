@@ -209,7 +209,7 @@ router.post("/:phone/order/:orderId/reached-location", verifyDriverToken,  async
 
 router.post("/:phone/orders/:orderId", verifyDriverToken,  async (req, res) => {
   const { phone, orderId } = req.params;
-  const { orders, totalPrice, isPaid } = req.body;
+  const { orders, totalPrice, isPaid, razorpayOrderId } = req.body;
   console.log("req.body", req.body);
 
   try {
@@ -227,11 +227,13 @@ router.post("/:phone/orders/:orderId", verifyDriverToken,  async (req, res) => {
 
     // Update the orders array by appending new items
     order.orders = orders;
+    console.log("Razorpay:",razorpayOrderId)
 
     // Update the total price
     order.totalPrice = totalPrice;
     order.isPickedUp = true;
     order.isPaid = isPaid;
+    order.payment.razorpayOrderId = razorpayOrderId;
     console.log("order:".order);
 
     // Save the updated order
