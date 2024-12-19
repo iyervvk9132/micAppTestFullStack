@@ -168,6 +168,16 @@ app.set("view engine", "ejs");
  */
 app.use(express.static("views"));
 
+app.use((req, res, next) => {
+  console.log(`Incoming Request: ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+// app.post('/driver/:phone/order/:orderId/generateQr', (req, res) => {
+//   console.log('Endpoint hit with orderId:', req.params.orderId);
+//   console.log('Endpoint hit with phone:', req.params.phone);
+//   res.send('OK');
+// });
 //  Import routes
 const userRoutes = require('./routes/userRoutes');
 const driverRoutes = require('./routes/driverRoutes');
@@ -175,14 +185,12 @@ const Order = require("./models/orderModel");
 const orderRoutes = require(`./models/orderModel`);
 // const paymentRoutes = require('./routes/paymentRoutes');
 // const testRoutes = require('./routes/testRoutes');
-
 // Use routes
 app.use('/user', userRoutes);
 app.use('/driver', driverRoutes);
 app.use('/order', orderRoutes);
 // app.use('/payment', paymentRoutes);
 // app.use('/test', testRoutes);
-
 
 /**
  * @route GET /
@@ -602,7 +610,13 @@ app.post("/orders/:orderId/update-payment", async (req, res) => {
   }
 });
 
+app.post("/webhook", (req, res) => {
+  // Log the incoming request body
+  console.log("Webhook received:", req.body);
 
+  // Send a response to acknowledge receipt
+  res.status(200).send("Webhook received successfully");
+});
 
 /**
  * @listen

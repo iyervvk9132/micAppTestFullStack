@@ -8,9 +8,50 @@ const Driver = require('../models/driverModel');
 const nexmo = require('../middlewares/message');
 const  jwt  = require('jsonwebtoken');
 const { verifyDriverToken } = require('../middlewares/verifyToken');
-
+const Razorpay = require("razorpay"); 
 const secretKey = "iyer_vivek";
 
+
+const razorpay = new Razorpay({
+  key_id: "rzp_test_hz7exB8EYQbPhc",
+  key_secret: "i2LIhe1AicXd8VidEuFapAYU",
+});
+
+router.post("/:phone/order/:orderId/generateQr", async (req, res) => {
+  try {
+    const {orderId,phone}=req.params;
+    console.log("Received request to generate QR code for order:", orderId);
+    const order = await Order.findById(orderId).populate("userId");
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+    console.log(order);
+
+
+    const orderDetails = {
+      type: "upi_qr",
+  name: "MIC STORE",
+  usage: "single_use",
+  fixed_amount: true,
+  payment_amount: order.totalPrice*100,
+  customer_id: order.userId.razorpayCustomerId,
+  notes: {
+    purpose: "Test UPI QR Code notes"
+  }
+
+    };
+
+    const startTime = Date.now();
+    const razorpayOrder = await razorpay.qrCode.create(orderDetails);
+    console.log("Razorpay Order created in:", razorpayOrder);
+
+    const qrCodeUrl = razorpayOrder.image_url; // Replace with your QR code logic
+    res.status(200).json({ qrUrl: qrCodeUrl });
+  } catch (error) {
+    console.error("Error generating Razorpay QR code:", error);
+    res.status(500).json({ error: "Failed to generate QR code" });
+  }
+});
 
 /**
  * @route POST /driver/login

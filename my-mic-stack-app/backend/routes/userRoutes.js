@@ -8,12 +8,23 @@ const nexmo = require('../middlewares/message');
 const jwt = require("jsonwebtoken");
 const Order = require('../models/orderModel');
 const { readFileSync } = require('fs');
+const Razorpay = require("razorpay"); // Razorpay for payment processing
 
 const secretKey = "iyer_vivek";
 
 const dataList = JSON.parse(readFileSync("./models/PRICE_FINAL_DATA.json"));
 
 
+/**
+ * @constant razorpay
+ * @description Configuring Razorpay with API keys.
+ * @property {string} key_id - Razorpay API key ID.
+ * @property {string} key_secret - Razorpay API secret key.
+ */
+const razorpay = new Razorpay({
+  key_id: "rzp_test_hz7exB8EYQbPhc",
+  key_secret: "i2LIhe1AicXd8VidEuFapAYU",
+});
 
 /**
  * @route POST /user/login
@@ -22,49 +33,72 @@ const dataList = JSON.parse(readFileSync("./models/PRICE_FINAL_DATA.json"));
  * @returns {Object} The response object or an error message.
  */
 router.post("/login", async (req, res) => {
-    const phone = req.body.phone;
-    console.log("user/login");
-    console.log(req.body);
-    const newphone = phone.substring(1);
-    console.log(newphone);
-  
-    try {
-      const user = await User.findOne({ phone: newphone });
-      console.log(user);
-  
-      let verificationCode;
-      if (user) {
-        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-        await User.updateOne({ phone: newphone }, { verificationCode });
-      } else {
-        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-        await User.create({ phone: newphone, verificationCode });
-      }
-  
-      nexmo.message.sendSms(
-        "Yourrouter",
-        phone,
-        `Your verification code is: ${verificationCode}`,
-        (err, responseData) => {
-          if (err) {
-            console.error(err);
-            res.status(500).json({
-              success: false,
-              message: "Failed to send verification code",
-            });
-          } else {
-            console.log(responseData);
-            res
-              .status(200)
-              .json({ success: true, message: "verification code success" });
-          }
-        }
-      );
-    } catch (error) {
-      console.error("Error during login:", error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
+  const phone = req.body.phone;
+  console.log("user/login");
+  console.log(req.body);
+
+  const newphone = phone.substring(1); // Remove leading character
+  console.log(newphone);
+
+  try {
+    // Find existing user or create a new one
+    let user = await User.findOne({ phone: newphone });
+    console.log(user);
+
+    let verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    if (user) {
+      // Update verification code for existing user
+      
+      await User.updateOne({ phone: newphone }, { verificationCode });
+    } else {
+      // Create new user
+      user = await User.create({ phone: newphone, verificationCode });
     }
-  });
+
+    // Add or update Razorpay customer
+    let razorpayCustomerId = user.razorpayCustomerId;
+    if (!razorpayCustomerId) {
+      // Create a new Razorpay customer
+      const razorpayCustomer = await razorpay.customers.create({
+        contact: newphone,
+      });
+      console.log("Razorpay customer created:", razorpayCustomer);
+
+      // Save the Razorpay customer ID in the database
+      razorpayCustomerId = razorpayCustomer.id;
+      await User.updateOne({ phone: newphone }, { razorpayCustomerId });
+    } else {
+      console.log("Razorpay customer ID already exists:", razorpayCustomerId);
+    }
+
+    // Send SMS with verification code
+    nexmo.message.sendSms(
+      "Yourrouter",
+      phone,
+      `Your verification code is: ${verificationCode}`,
+      (err, responseData) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({
+            success: false,
+            message: "Failed to send verification code",
+          });
+        } else {
+          console.log(responseData);
+          res.status(200).json({
+            success: true,
+            message: "Verification code sent successfully",
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
 
 
 /**

@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
   ],
   totalUnpaid: Number,
   totalPaid: Number,
-  payzappId: { type: mongoose.Schema.Types.ObjectId }, // Fixed type
+  razorpayId: { type: mongoose.Schema.Types.ObjectId }, // Fixed type
+  razorpayCustomerId: { type: String }, 
   address: {
     latitude: Number,
     longitude: Number,
