@@ -182,7 +182,7 @@ app.use((req, res, next) => {
 const userRoutes = require('./routes/userRoutes');
 const driverRoutes = require('./routes/driverRoutes');
 const Order = require("./models/orderModel");
-const orderRoutes = require(`./models/orderModel`);
+const orderRoutes = require(`./routes/orderRoutes`);
 // const paymentRoutes = require('./routes/paymentRoutes');
 // const testRoutes = require('./routes/testRoutes');
 // Use routes

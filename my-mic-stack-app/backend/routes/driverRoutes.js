@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 const Order = require('../models/orderModel');
-const Driver = require('../models/driverModel');
+const Driver = require('../models/driverModel.js');
 const nexmo = require('../middlewares/message');
 const  jwt  = require('jsonwebtoken');
 const { verifyDriverToken } = require('../middlewares/verifyToken');

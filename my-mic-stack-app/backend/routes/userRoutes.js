@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const {verifyToken} = require('../middlewares/verifyToken'); // Example for using a middleware
 const User = require('../models/userModel');
+const Driver =require('../models/driverModel')
 const nexmo = require('../middlewares/message');
 const jwt = require("jsonwebtoken");
 const Order = require('../models/orderModel');
@@ -43,7 +44,6 @@ router.post("/login", async (req, res) => {
   try {
     // Find existing user or create a new one
     let user = await User.findOne({ phone: newphone });
-    console.log(user);
 
     let verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -51,6 +51,7 @@ router.post("/login", async (req, res) => {
       // Update verification code for existing user
       
       await User.updateOne({ phone: newphone }, { verificationCode });
+      console.log(verificationCode);
     } else {
       // Create new user
       user = await User.create({ phone: newphone, verificationCode });
@@ -204,10 +205,11 @@ router.get("/verify-otp", (req, res) => {
     try {
       console.log("verify-otp");
       console.log(req.body);
-  
+      console.log(phone, verificationCode);
       const user = await User.findOne({ phone, verificationCode });
   
       if (user) {
+        console.log("found verificationCode");
         await User.updateOne({ phone }, { isVerified: true });
         console.log(user.address);
   
@@ -245,22 +247,37 @@ router.get("/verify-otp", (req, res) => {
 router.post("/verify-otp", async (req, res) => {
     const { phone, verificationCode } = req.body;
     console.log(req.body);
+    console.log(phone);
+    console.log(verificationCode);
     const newPhone = phone.startsWith("+") ? phone.substring(1) : phone;
   
     try {
-      const user = await User.findOne({ phone: phone, verificationCode });
-      console.log(user);
+      const user = await User.findOne({ phone:newPhone, verificationCode });
+      console.log("user found");
   
       if (user) {
+        console.log("user found");
+        // Generate JWT token
+        const token = jwt.sign(
+          { _id: user._id.toString(), phone: user.phone },
+          secretKey
+        );
+        console.log(token);
+  
+        // Store the token in the database
+        user.tokens = user.tokens.concat({ token });
+        await user.save();
+  
+        
+
         await User.updateOne({ phone }, { isVerified: true });
-        console.log(user.address);
-        if (user.address.isFilled === false) {
-          // let verify = res.redirect(`/user/${newPhone}/verify-address`);
-          res.status(200);
-        } else {
-          // res.redirect(`/user/${newPhone}/home`);
-          res.status(200);
-        }
+        
+        res.status(200).json({
+          message: "OTP verified, proceed to home",
+          token, 
+          phone:newPhone,
+        });
+      
       } else {
         res.status(401).send("Invalid verification code");
       }
@@ -404,10 +421,17 @@ router.get("/:phone/pricelist", (req, res) => {
  */
 router.get("/:phone/history-orders", verifyToken, async (req, res) => {
   console.log(req.params);
-  const user = await User.findOne({ phone: req.params.phone }).populate(
-    "order.orderId"
-  );
-  console.log(user.order);
+  const user = await User.findOne({ phone: req.params.phone }).populate({
+    path: "order.orderId",
+    populate: [
+      { path: "pickupDriverId", model: Driver },
+      { path: "deliveryDriverId", model: Driver },
+    ],
+  });
+  
+  // console.log("User before population:", JSON.stringify(user, null, 2));
+console.log("User after population:", JSON.stringify(user.order));
+
   if (user) {
     res.send({ orders: user.order });
     // res.render("historyOrders", { user: user });

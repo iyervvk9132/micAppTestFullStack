@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const User = require('../models/userModel');
+const Driver =require('../models/driverModel')
 
 
 const orderSchema = new mongoose.Schema({
@@ -25,12 +27,12 @@ const orderSchema = new mongoose.Schema({
   deliveryTime: String,
   isPickedUp: { type: Boolean, default: false },
   isPickedUpReached: { type: Boolean, default: false },
-  pickupDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "driver" },
+  pickupDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "Driver" },
   isDriverConfirmed: { type: Boolean, default: false },
   isWorkStarted: { type: Boolean, default: false },
   isWorkCompleted: { type: Boolean, default: false },
   isDeliveryPickuped: { type: Boolean, default: false },
-  deliveryDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "driver" },
+  deliveryDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "Driver" },
   isDelivered: { type: Boolean, default: false },
   deliveryCompletedAt:Date,
 });

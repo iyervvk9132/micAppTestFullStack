@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel"); // Adjust the path based on your project structure
-const Driver = require("../models/driverModel");
+const Driver = require("../models/driverModel.js");
 const secretKey = "iyer_vivek";
 
 const verifyToken = async (req, res, next) => {
