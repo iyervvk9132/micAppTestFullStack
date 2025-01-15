@@ -35,6 +35,7 @@ const orderSchema = new mongoose.Schema({
   deliveryDriverId: { type: mongoose.Schema.Types.ObjectId, ref: "Driver" },
   isDelivered: { type: Boolean, default: false },
   deliveryCompletedAt:Date,
+  customOrderId :{type:String, unique:true},
 });
 
 /**

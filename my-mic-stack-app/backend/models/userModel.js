@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
   totalPaid: Number,
   razorpayId: { type: mongoose.Schema.Types.ObjectId }, // Fixed type
   razorpayCustomerId: { type: String }, 
+  customCustomerId: { type: String, unique: true }, // New field
+
   address: {
     latitude: Number,
     longitude: Number,

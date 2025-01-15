@@ -56,10 +56,34 @@ router.post("/login", async (req, res) => {
       // Create new user
       user = await User.create({ phone: newphone, verificationCode });
     }
+    let customCustomerId = User.customCustomerId;
+    console.log("customCustomerId:",customCustomerId);
+    if(User.customCustomerId){
+      
+    console.log("customCustomerId exist");
+    }
+
+    else{
+      console.log("")
+      let isUnique = false;
+
+      while (!isUnique) {
+        customCustomerId = Math.floor(10000 + Math.random() * 90000).toString();
+        const existingCustomer = await User.findOne({ customCustomerId });
+        if (!existingCustomer) {
+          isUnique = true;
+        }
+      }
+      await User.updateOne({ phone: newphone }, { customCustomerId },);
+
+
+    }
 
     // Add or update Razorpay customer
     let razorpayCustomerId = user.razorpayCustomerId;
     if (!razorpayCustomerId) {
+      //check if user is already in razorpay 
+      
       // Create a new Razorpay customer
       const razorpayCustomer = await razorpay.customers.create({
         contact: newphone,
@@ -68,7 +92,7 @@ router.post("/login", async (req, res) => {
 
       // Save the Razorpay customer ID in the database
       razorpayCustomerId = razorpayCustomer.id;
-      await User.updateOne({ phone: newphone }, { razorpayCustomerId });
+      await User.updateOne({ phone: newphone }, { razorpayCustomerId },);
     } else {
       console.log("Razorpay customer ID already exists:", razorpayCustomerId);
     }
@@ -100,6 +124,27 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
+const haversineDistance = (coords1, coords2) => {
+  const toRad = (x) => (x * Math.PI) / 180;
+  const R = 6371; // Earth's radius in kilometers
+
+  const dLat = toRad(coords2.latitude - coords1.latitude);
+  const dLon = toRad(coords2.longitude - coords1.longitude);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(coords1.latitude)) *
+      Math.cos(toRad(coords2.latitude)) *
+      Math.sin(dLon / 2) ** 2;
+
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+const referencePoints = [
+  { latitude: 13.04018838064303, longitude: 80.23848521988627, label: "TN" },
+  { latitude: 13.055026527306097, longitude: 80.22905902395878, label: "CH" },
+];
 
 
 /**
@@ -245,9 +290,9 @@ router.get("/verify-otp", (req, res) => {
  * @returns {Object} The response object or an error message.
  */
 router.post("/verify-otp", async (req, res) => {
-    const { phone, verificationCode } = req.body;
-    console.log(req.body);
-    console.log(phone);
+    const { phone, verificationCode } = req.body; 
+    console.log(req.body); 
+    console.log(phone); 
     console.log(verificationCode);
     const newPhone = phone.startsWith("+") ? phone.substring(1) : phone;
   
@@ -313,8 +358,8 @@ router.get("/:phone/new-order", (req, res) => {
 router.post("/:phone/orderList", verifyToken, async (req, res) => {
   let nonZeroValues = {};
   let total = 0;
-  let outputString = "";
-  let orderList = [];
+  let pickupDate, pickupTime;
+
   console.log(req.body);
 
   const { phone } = req.params;
@@ -332,16 +377,13 @@ router.post("/:phone/orderList", verifyToken, async (req, res) => {
 
   console.log("nonZeroValues");
   for (const key in nonZeroValues) {
-
     if (key === "pickupDate") {
       pickupDate = nonZeroValues[key];
-      console.log("pickupDate");
-      console.log(nonZeroValues[key]);
+      console.log("pickupDate:", pickupDate);
     }
     if (key === "pickupTime") {
       pickupTime = nonZeroValues[key];
-      console.log("pickupTime");
-      console.log(nonZeroValues[key]);
+      console.log("pickupTime:", pickupTime);
     }
   }
 
@@ -359,11 +401,44 @@ router.post("/:phone/orderList", verifyToken, async (req, res) => {
       return res
         .status(400)
         .send("User address is not filled. Please update your address.");
-    }const result1 = await Order.create({
+    }
+
+    const { latitude, longitude } = user.address;
+    if (!latitude || !longitude) {
+      console.error("User latitude or longitude not found");
+      return res
+        .status(400)
+        .send("User address latitude and longitude are not available.");
+    }
+
+    // Find the closest reference point
+    const distances = referencePoints.map((point) => ({
+      label: point.label,
+      distance: haversineDistance(
+        { latitude, longitude },
+        { latitude: point.latitude, longitude: point.longitude }
+      ),
+    }));
+
+    const closestPoint = distances.reduce((min, current) =>
+      current.distance < min.distance ? current : min
+    );
+
+    console.log("Closest Point:", closestPoint);
+
+    // Generate a custom order ID with the closest point label
+    const randomNumber = Math.floor(100000 + Math.random() * 900000); // 6-digit number
+    const customOrderId = `${closestPoint.label}/${user.customCustomerId}/${randomNumber}`;
+
+    console.log("Custom Order ID:", customOrderId);
+
+    const result1 = await Order.create({
       userId: user._id,
       // orders: orderList,
       pickupDate: Date.parse(pickupDate),
       pickupTime: pickupTime,
+
+      customOrderId, // Include the custom order ID
       // deliveryDate: Date.parse(deliveryDate),
       // deliveryTime: deliveryTime,
       totalPrice: total,
@@ -372,16 +447,16 @@ router.post("/:phone/orderList", verifyToken, async (req, res) => {
         totalUnpaid: total, // Initialize totalUnpaid with the total amount
       },
     });
-  
+
     // Update the user document with the new order ID
     const result = await User.updateOne(
       { phone: req.params.phone },
       { $push: { order: { orderId: result1._id } } },
       { upsert: true }
     );
-  
+
     console.log("Order created:", result1);
-  
+
     if (result.acknowledged ) {
       // Redirect to the payment page or another relevant page
       console.log("success response sent")
@@ -393,6 +468,7 @@ router.post("/:phone/orderList", verifyToken, async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 });
+
 /**
  * @route GET /user/:phone/pricelist
  * @description Renders the price list page with available options for users.
